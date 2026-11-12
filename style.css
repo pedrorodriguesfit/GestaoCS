@@ -206,3 +206,78 @@ dialog::backdrop{background:rgba(9,30,34,.55)}
   .cal-mais{font-size:10px}
   .cal-nav h2{min-width:0;flex:1}
 }
+
+/* Logo FIT na faixa superior */
+.topbar .brand{gap:14px}
+.brand-logo{display:block;height:40px;width:auto;flex:none}
+.brand-sep{width:1px;height:28px;background:rgba(255,255,255,.28);flex:none}
+.brand-nome{font-weight:700;font-size:18px;letter-spacing:.2px;white-space:nowrap}
+@media (max-width:640px){
+  .topbar .brand{gap:10px}
+  .brand-logo{height:30px!important}
+  .brand-sep{height:22px}
+  .brand-nome{font-size:15px}
+}
+
+.acoes{display:flex;gap:6px;flex-wrap:wrap}
+.span-all.dia-aviso{grid-column:1/-1}
+
+td.col-acoes{white-space:nowrap;width:1%}
+td.col-acoes .acoes{flex-wrap:nowrap}
+td.col-acoes .btn{white-space:nowrap}
+.canal{white-space:nowrap}
+
+/* Tabela de análises: colunas com largura mínima (nada espremido) */
+#analises-lista table{min-width:1000px}
+td{overflow-wrap:break-word;word-break:normal}
+td.col-data,td.col-id{white-space:nowrap}
+td.col-data{min-width:96px}
+td.col-id{min-width:80px}
+td.col-atend{min-width:130px}
+td.col-canal{min-width:96px;white-space:nowrap}
+td.col-gestor{min-width:120px}
+.cell-long{min-width:170px;max-width:320px}
+td.col-acoes{min-width:92px}
+.table-wrap{max-width:100%}
+
+/* Mapa de lugares */
+.mapa-barra{display:flex;align-items:center;gap:12px;margin-bottom:12px}
+.mapa-grid{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:16px;align-items:start}
+@media (max-width:980px){.mapa-grid{grid-template-columns:1fr}}
+.mapa-card{padding:14px}
+.mapa-svg{width:100%;height:auto;display:block}
+.mapa-svg .mesa{fill:#fff;stroke:#2b2f36;stroke-width:1.6}
+.mapa-svg .mesa-linha{stroke:#2b2f36;stroke-width:1}
+.mapa-svg .lugar{cursor:pointer;stroke:#6b7280;stroke-width:1.5;outline:none}
+.mapa-svg .lugar.pessoa{stroke:#111827;stroke-width:3.5}
+.mapa-svg .lugar:hover{filter:brightness(.9)}
+.mapa-svg .lugar:focus-visible{stroke:#f59e0b;stroke-width:4}
+.mapa-svg .lugar.sel{stroke:#f59e0b;stroke-width:6}
+.mapa-svg .lugar-n{font:700 25px system-ui,sans-serif;pointer-events:none}
+.mapa-svg .ilha-rot{cursor:pointer;outline:none}
+.mapa-svg .ilha-rot rect{fill:#16a34a}
+.mapa-svg .ilha-rot text{fill:#fff;font:700 31px system-ui,sans-serif}
+.mapa-svg .ilha-rot:hover rect,.mapa-svg .ilha-rot:focus-visible rect{fill:#15803d}
+.mapa-svg .ilha.sel .ilha-rot rect{fill:#f59e0b}
+.mapa-svg .ilha-halo{fill:rgba(245,158,11,.10);stroke:#f59e0b;stroke-width:3;stroke-dasharray:10 8}
+.mapa-svg .ilha-sub{font:600 27px system-ui,sans-serif;fill:#475569}
+.mapa-legenda{display:flex;gap:6px 16px;flex-wrap:wrap;margin-top:10px;font-size:13px;color:var(--ink)}
+.mapa-legenda span{display:inline-flex;align-items:center;gap:6px}
+.sw-cor{display:inline-block;width:14px;height:14px;border-radius:4px;background:var(--c);flex:none}
+.mapa-painel h3{font-size:18px;margin-bottom:8px}
+.mp-atual{background:#f6f9f9;border:1px solid var(--line);border-radius:10px;padding:8px 12px;display:flex;flex-direction:column;gap:2px}
+.mp-lista{list-style:none;margin:6px 0 0;padding:0;display:flex;flex-direction:column;gap:4px;font-size:14px}
+.mp-lista li{display:flex;align-items:center;gap:8px}
+td.c,th.c{text-align:center}
+td.neg{color:var(--danger);font-weight:700}
+td.pos{color:var(--ok);font-weight:700}
+details.card summary{cursor:pointer;font-weight:700}
+
+@media (max-width:720px){.mapa-card{overflow-x:auto}.mapa-svg{min-width:720px}}
+
+/* Coluna de ações sempre visível, mesmo quando a tabela rola para o lado */
+#analises-lista th:last-child,#analises-lista td.col-acoes{position:sticky;right:0;background:#fff;box-shadow:-8px 0 8px -8px rgba(15,38,43,.25)}
+#analises-lista th:last-child{background:#eef4f4;z-index:2}
+#analises-lista tr:hover td.col-acoes{background:#fafdfd}
+
+#analises-lista td.col-acoes .acoes{flex-direction:column;align-items:stretch;gap:6px}
