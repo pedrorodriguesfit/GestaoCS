@@ -316,7 +316,8 @@ const S = {
   aba: 'avisos', carregadoEm: 0, ultimoConvite: null, painelAdmin: 'gestores', buscaFunc: '',
   fAv: { gestor: '', func: '', setor: '', de: '', ate: '', encerrados: false },
   fAn: { id: '', resumo: '', avaliacao: '', pontos: '', canal: '', de: '', ate: '', gestor: '' },
-  anLimite: 200
+  anLimite: 200,
+  visao: 'cartoes', cal: { ano: new Date().getFullYear(), mes: new Date().getMonth() }, calPend: false
 };
 const ui = {};
 const ehAdmin = () => !!S.perfil && S.perfil.papel === 'admin';
@@ -341,7 +342,7 @@ async function acao(fn, okMsg) {
   try { await fn(); if (okMsg) toast(okMsg); return true; }
   catch (e) { toast(erroAmigavel(e), true); return false; }
 }
-async function atualizarDepois() { await recarregar(); atualizarAvisos(); atualizarAnalises(); atualizarBadge(); }
+async function atualizarDepois() { await recarregar(); atualizarAvisos(); atualizarAnalises(); atualizarBadge(); if (typeof preencherDia === 'function') preencherDia(); }
 
 /* ================= modal ================= */
 function modal({ titulo, corpo, rodape, largo }) {
@@ -478,7 +479,7 @@ document.addEventListener('visibilitychange', () => { if (document.visibilitySta
 
 async function sair() {
   clearInterval(timer); await api.sair();
-  Object.assign(S, { perfil: null, perfis: [], funcionarios: [], naturezas: [], avisos: [], analises: [], aba: 'avisos', anLimite: 200, ultimoConvite: null, buscaFunc: '',
+  Object.assign(S, { perfil: null, perfis: [], funcionarios: [], naturezas: [], avisos: [], analises: [], aba: 'avisos', anLimite: 200, ultimoConvite: null, buscaFunc: '', visao: 'cartoes', calPend: false,
     fAv: { gestor: '', func: '', setor: '', de: '', ate: '', encerrados: false },
     fAn: { id: '', resumo: '', avaliacao: '', pontos: '', canal: '', de: '', ate: '', gestor: '' } });
   renderLogin();
@@ -521,7 +522,7 @@ function podeExcluirAviso(a) {
 }
 
 function viewAvisos() {
-  const f = S.fAv;
+  const f = S.fAv, cal = S.visao === 'calendario';
   const setores = [...new Set(S.funcionarios.map(x => x.subsetor).filter(Boolean).concat(S.avisos.map(a => a.setor).filter(Boolean)))].sort((a, b) => a.localeCompare(b, 'pt-BR'));
   const selGestor = h('select', { id: 'fav-gestor', onchange: e => { f.gestor = e.target.value; atualizarAvisos(); } },
     h('option', { value: '' }, 'Todos'), S.perfis.slice().sort(byNome).map(p => h('option', { value: String(p.id) }, p.nome)), h('option', { value: 'none' }, 'Sem gestor definido'));
@@ -529,14 +530,19 @@ function viewAvisos() {
   const selSetor = h('select', { id: 'fav-setor', onchange: e => { f.setor = e.target.value; atualizarAvisos(); } },
     h('option', { value: '' }, 'Todos'), setores.map(s => h('option', { value: s }, s)));
   selSetor.value = f.setor;
-  const limpar = () => { Object.assign(f, { gestor: '', func: '', setor: '', de: '', ate: '', encerrados: false }); render(); };
+  const limpar = () => { Object.assign(f, { gestor: '', func: '', setor: '', de: '', ate: '', encerrados: false }); S.calPend = false; render(); };
+  const alternar = v => () => { if (S.visao !== v) { S.visao = v; render(); } };
 
   ui.pend = h('div', { id: 'avisos-pend' });
   ui.lista = h('div', { id: 'avisos-lista' });
   return h('div', {},
     h('div', { class: 'page-head' },
       h('div', {}, h('h1', { text: 'Quadro de avisos' }), h('p', { text: ehAdmin() ? 'Aprove os avisos enviados pelos supervisores e acompanhe a rotina do setor.' : 'Ausências, férias, atestados e outras informações que afetam a rotina do setor.' })),
-      h('button', { class: 'btn primary', id: 'btn-novo-aviso', onclick: abrirNovoAviso }, '+ Novo aviso')),
+      h('div', { class: 'head-acoes' },
+        h('div', { class: 'seg seg-btn', role: 'group', 'aria-label': 'Forma de visualizar' },
+          h('button', { type: 'button', id: 'vis-cartoes', 'aria-pressed': String(!cal), onclick: alternar('cartoes') }, 'Cartões'),
+          h('button', { type: 'button', id: 'vis-calendario', 'aria-pressed': String(cal), onclick: alternar('calendario') }, 'Calendário')),
+        h('button', { class: 'btn primary', id: 'btn-novo-aviso', onclick: abrirNovoAviso }, '+ Novo aviso'))),
     ui.pend,
     h('div', { class: 'card panel' },
       h('div', { class: 'filters' },
@@ -545,11 +551,13 @@ function viewAvisos() {
           h('input', { id: 'fav-func', type: 'search', list: 'dl-func', placeholder: 'Digite o nome', autocomplete: 'off', value: f.func, oninput: e => { f.func = e.target.value; atualizarAvisos(); } }),
           h('datalist', { id: 'dl-func' }, S.funcionarios.slice().sort(byNome).map(x => h('option', { value: x.nome })))),
         h('div', { class: 'field' }, h('label', { for: 'fav-setor', text: 'Setor' }), selSetor),
-        h('div', { class: 'field' }, h('label', { for: 'fav-de', text: 'Data (de)' }), h('input', { id: 'fav-de', type: 'date', value: f.de, onchange: e => { f.de = e.target.value; atualizarAvisos(); } })),
-        h('div', { class: 'field' }, h('label', { for: 'fav-ate', text: 'Data (até)' }), h('input', { id: 'fav-ate', type: 'date', value: f.ate, onchange: e => { f.ate = e.target.value; atualizarAvisos(); } }))),
+        cal ? null : h('div', { class: 'field' }, h('label', { for: 'fav-de', text: 'Data (de)' }), h('input', { id: 'fav-de', type: 'date', value: f.de, onchange: e => { f.de = e.target.value; atualizarAvisos(); } })),
+        cal ? null : h('div', { class: 'field' }, h('label', { for: 'fav-ate', text: 'Data (até)' }), h('input', { id: 'fav-ate', type: 'date', value: f.ate, onchange: e => { f.ate = e.target.value; atualizarAvisos(); } }))),
       h('div', { class: 'filters-foot' },
-        h('label', { class: 'check' }, h('input', { id: 'fav-enc', type: 'checkbox', checked: f.encerrados, onchange: e => { f.encerrados = e.target.checked; atualizarAvisos(); } }), 'Incluir avisos já encerrados'),
-        h('span', { class: 'hint' }, 'Com só a primeira data preenchida, mostra os avisos daquele dia.'),
+        cal
+          ? h('label', { class: 'check' }, h('input', { id: 'fav-calpend', type: 'checkbox', checked: S.calPend, onchange: e => { S.calPend = e.target.checked; atualizarAvisos(); } }), ehAdmin() ? 'Incluir avisos aguardando aprovação' : 'Incluir os meus avisos em análise')
+          : h('label', { class: 'check' }, h('input', { id: 'fav-enc', type: 'checkbox', checked: f.encerrados, onchange: e => { f.encerrados = e.target.checked; atualizarAvisos(); } }), 'Incluir avisos já encerrados'),
+        cal ? null : h('span', { class: 'hint' }, 'Com só a primeira data preenchida, mostra os avisos daquele dia.'),
         h('button', { class: 'linkbtn', type: 'button', onclick: limpar }, 'Limpar filtros'))),
     ui.lista);
 }
@@ -588,6 +596,7 @@ function cardAviso(a, { decidir = false } = {}) {
     h('div', { class: 'when' }, h('span', { text: quando }), unico ? null : h('small', { text: `${diasEntre(a.data_inicio, a.data_fim)} dias` }),
       a.status !== 'aprovado' ? h('span', { class: 'chip ' + a.status, text: a.status === 'pendente' ? 'Aguardando aprovação' : 'Recusado' }) : null),
     a.observacao ? h('div', { class: 'obs', text: a.observacao }) : null,
+    a.status === 'pendente' ? avisoSobreposicao(a) : null,
     a.status === 'recusado' && a.motivo_recusa ? h('div', { class: 'motivo', text: 'Motivo: ' + a.motivo_recusa }) : null,
     h('div', { class: 'foot' }, h('span', { text: `Enviado por ${a.criado_por_nome || '—'} em ${fmtDataHora(a.criado_em)}` }), acoes.length ? h('span', { class: 'acoes' }, acoes) : null));
 }
@@ -609,6 +618,7 @@ function atualizarAvisos() {
   }
   ui.pend.replaceChildren(...pend);
 
+  if (S.visao === 'calendario') { ui.lista.replaceChildren(calendario()); return; }
   /* quadro geral: só aprovados */
   const base = S.avisos.filter(a => a.status === 'aprovado' && passaFiltroAviso(a, f));
   const blocos = [];
@@ -673,6 +683,106 @@ function abrirNovoAviso() {
       h('div', { class: 'field span-all' }, h('label', { for: 'na-obs', text: 'Observações' }), obs, h('small', { text: 'Não registre diagnóstico, CID ou outros dados de saúde. Informe apenas o que o time precisa saber para se organizar.' })), erro));
   const dlg = modal({ titulo: 'Novo aviso', corpo: form,
     rodape: [h('button', { class: 'btn', type: 'button', onclick: () => dlg.close() }, 'Cancelar'), h('button', { class: 'btn primary', id: 'na-enviar', type: 'submit', form: 'form-aviso' }, adm ? 'Publicar aviso' : 'Enviar para aprovação')] });
+}
+
+/* ================= CALENDÁRIO ================= */
+const MESES = ['janeiro', 'fevereiro', 'março', 'abril', 'maio', 'junho', 'julho', 'agosto', 'setembro', 'outubro', 'novembro', 'dezembro'];
+const DIAS_SEM = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'];
+const isoDe = (y, m, d) => `${y}-${pad(m + 1)}-${pad(d)}`;
+function somaDias(iso, n) { const d = new Date(iso + 'T12:00:00'); d.setDate(d.getDate() + n); return isoDe(d.getFullYear(), d.getMonth(), d.getDate()); }
+function nomeCurto(nome) { const p = String(nome).trim().split(/\s+/); return p.length > 1 ? `${p[0]} ${p[p.length - 1][0]}.` : p[0]; }
+
+/* Avisos pendentes: mostra se há aprovados do mesmo time no mesmo período */
+function sobreposicoes(a) {
+  if (a.gestor_id == null) return [];
+  return S.avisos.filter(b => b.id !== a.id && b.status === 'aprovado' && b.gestor_id === a.gestor_id && b.data_inicio <= a.data_fim && b.data_fim >= a.data_inicio);
+}
+function avisoSobreposicao(a) {
+  const lista = sobreposicoes(a); if (!lista.length) return null;
+  const itens = lista.slice(0, 3).map(b => `${nomeCurto(b.funcionario_nome)} (${b.data_inicio === b.data_fim ? fmtCurta(b.data_inicio) : fmtCurta(b.data_inicio) + ' a ' + fmtCurta(b.data_fim)})`).join(', ');
+  return h('div', { class: 'sobrepoe', 'data-sobreposicao': lista.length, text: `Atenção: sobrepõe com o mesmo time: ${itens}${lista.length > 3 ? ` e mais ${lista.length - 3}` : ''}.` });
+}
+
+function avisosDoDia(base, iso) { return base.filter(a => a.data_inicio <= iso && a.data_fim >= iso); }
+function gruposDoMesmoTime(lista) {
+  const por = {}; lista.forEach(a => { if (a.gestor_id != null) (por[a.gestor_id] ||= []).push(a); });
+  return Object.values(por).filter(g => g.length >= 2);
+}
+function baseCalendario() {
+  const f = { ...S.fAv, de: '', ate: '' };
+  return S.avisos.filter(a => (a.status === 'aprovado' || (S.calPend && a.status === 'pendente')) && passaFiltroAviso(a, f));
+}
+
+function calendario() {
+  const { ano, mes } = S.cal;
+  const ult = new Date(ano, mes + 1, 0).getDate();
+  const ini = isoDe(ano, mes, 1), fim = isoDe(ano, mes, ult), hoje = hojeISO();
+  const base = baseCalendario().filter(a => a.data_inicio <= fim && a.data_fim >= ini);
+  const porDia = {};
+  for (let d = 1; d <= ult; d++) { const iso = isoDe(ano, mes, d); porDia[iso] = avisosDoDia(base, iso); }
+  const diasMulti = Object.keys(porDia).filter(k => porDia[k].length >= 2);
+  const diasTime = Object.keys(porDia).filter(k => gruposDoMesmoTime(porDia[k]).length > 0);
+
+  const nav = (delta) => () => { let m = S.cal.mes + delta, y = S.cal.ano; if (m < 0) { m = 11; y--; } if (m > 11) { m = 0; y++; } S.cal = { ano: y, mes: m }; atualizarAvisos(); };
+  const topo = h('div', { class: 'cal-nav' },
+    h('button', { class: 'btn sm', type: 'button', id: 'cal-prev', 'aria-label': 'Mês anterior', onclick: nav(-1) }, '‹'),
+    h('h2', { id: 'cal-titulo', text: `${MESES[mes]} de ${ano}` }),
+    h('button', { class: 'btn sm', type: 'button', id: 'cal-next', 'aria-label': 'Próximo mês', onclick: nav(1) }, '›'),
+    h('button', { class: 'btn sm', type: 'button', id: 'cal-hoje', onclick: () => { const d = new Date(); S.cal = { ano: d.getFullYear(), mes: d.getMonth() }; atualizarAvisos(); } }, 'Hoje'));
+
+  const botoesDias = (dias) => dias.map(k => h('button', { type: 'button', class: 'chip-dia', 'data-dia': k, onclick: () => abrirDia(k), text: `${fmtCurta(k)} (${porDia[k].length})` }));
+  const resumo = h('div', { class: 'cal-resumo', id: 'cal-resumo' },
+    h('div', {}, h('strong', { text: String(base.length) }), base.length === 1 ? ' aviso neste mês · ' : ' avisos neste mês · ',
+      h('span', { class: 'tem-multi' }, h('strong', { id: 'cal-n-multi', text: String(diasMulti.length) }), diasMulti.length === 1 ? ' dia com mais de 1 aviso' : ' dias com mais de 1 aviso'), ' · ',
+      h('span', { class: 'tem-time' }, h('strong', { id: 'cal-n-time', text: String(diasTime.length) }), diasTime.length === 1 ? ' dia com sobreposição no mesmo time' : ' dias com sobreposição no mesmo time')),
+    diasMulti.length ? h('div', { class: 'cal-lista-dias' }, h('span', { class: 'hint', text: 'Dias com mais de 1 aviso:' }), botoesDias(diasMulti)) : null);
+
+  const legenda = h('div', { class: 'cal-legenda' },
+    h('span', {}, h('i', { class: 'sw multi' }), 'Mais de 1 aviso no dia'),
+    h('span', {}, h('i', { class: 'sw time' }), 'Sobreposição no mesmo time'),
+    h('span', {}, h('i', { class: 'sw pend' }), 'Aguardando aprovação'));
+
+  const cabec = DIAS_SEM.map(d => h('div', { class: 'cal-cab', text: d }));
+  const vazios = new Date(ano, mes, 1).getDay();
+  const celulas = [];
+  for (let i = 0; i < vazios; i++) celulas.push(h('div', { class: 'cal-dia vazio', 'aria-hidden': 'true' }));
+  for (let d = 1; d <= ult; d++) {
+    const iso = isoDe(ano, mes, d), lista = porDia[iso], n = lista.length, dow = new Date(ano, mes, d).getDay();
+    const time = gruposDoMesmoTime(lista).length > 0;
+    const mostrar = lista.slice(0, 3), extra = n - mostrar.length;
+    const cls = 'cal-dia' + (n >= 2 ? ' multi' : '') + (time ? ' conflito' : '') + (iso === hoje ? ' hoje' : '') + (dow === 0 || dow === 6 ? ' fds' : '');
+    celulas.push(h('div', { class: cls, 'data-dia': iso, 'data-n': n, tabindex: '0', role: 'button',
+      'aria-label': `${d} de ${MESES[mes]}: ${n} ${n === 1 ? 'aviso' : 'avisos'}${time ? ', sobreposição no mesmo time' : ''}`,
+      onclick: () => abrirDia(iso), onkeydown: e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); abrirDia(iso); } } },
+      h('div', { class: 'cal-topo' }, h('span', { class: 'cal-num', text: d }), n ? h('span', { class: 'cal-n' + (n >= 2 ? ' alto' : ''), title: `${n} ${n === 1 ? 'aviso' : 'avisos'}`, text: n }) : null),
+      h('div', { class: 'cal-itens' },
+        mostrar.map(a => h('div', { class: 'cal-item' + (a.status === 'pendente' ? ' pend' : ''), style: `--cor:${corNatureza(a.natureza)}`, title: `${a.funcionario_nome} · ${a.natureza}`, text: `${nomeCurto(a.funcionario_nome)} · ${a.natureza}` })),
+        extra > 0 ? h('div', { class: 'cal-mais', text: `+${extra} mais` }) : null)));
+  }
+  return h('div', { class: 'cal', id: 'calendario' }, topo, resumo, legenda, h('div', { class: 'cal-grid' }, cabec, celulas));
+}
+
+/* Detalhe de um dia */
+let diaAberto = null;
+function conteudoDia(iso) {
+  const lista = avisosDoDia(baseCalendario(), iso).sort((a, b) => a.funcionario_nome.localeCompare(b.funcionario_nome, 'pt-BR'));
+  const grupos = gruposDoMesmoTime(lista);
+  const topo = [];
+  if (lista.length >= 2) topo.push(h('div', { class: 'dia-aviso multi', id: 'dia-multi', text: `${lista.length} avisos neste dia.` }));
+  grupos.forEach(g => topo.push(h('div', { class: 'dia-aviso time', 'data-time': '1', text: `Sobreposição no time de ${nomeGestor(g[0].gestor_id) || 'gestor não definido'}: ${g.map(a => a.funcionario_nome).join(', ')}.` })));
+  if (!lista.length) return h('div', { class: 'empty', text: 'Nenhum aviso neste dia.' });
+  return h('div', {}, topo, h('div', { class: 'grid', style: 'grid-template-columns:repeat(auto-fill,minmax(280px,1fr));margin-top:10px' }, lista.map(a => cardAviso(a, { decidir: ehAdmin() && a.status === 'pendente' }))));
+}
+function abrirDia(iso) {
+  const corpo = h('div', { id: 'dia-corpo' });
+  const dlg = modal({ titulo: `${diaSemana(iso)}, ${fmtData(iso)}`, corpo, largo: true });
+  diaAberto = { iso, corpo };
+  dlg.addEventListener('close', () => { diaAberto = null; });
+  preencherDia();
+}
+function preencherDia() {
+  if (!diaAberto || !document.body.contains(diaAberto.corpo)) { diaAberto = null; return; }
+  diaAberto.corpo.replaceChildren(conteudoDia(diaAberto.iso));
 }
 
 /* ================= ANÁLISE DE ATENDIMENTOS ================= */
@@ -880,3 +990,4 @@ async function boot() {
 }
 boot();
 })();
+
