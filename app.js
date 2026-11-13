@@ -113,11 +113,11 @@ function criarApiDemo() {
 
   function seed() {
     const F = (id, nome, cargo, subsetor, nivel, adm, sup, hor, alm, reg, extra = {}) => ({ id, matricula: String(1000 + id), nome, cargo, subsetor, nivel, admissao: adm,
-      superior_id: sup, gestor_id: sup && sup <= 3 ? sup : null, gestor_nome: null, apelido: null, horario_trabalho: hor, horario_almoco: alm, regime: reg, vaga: false, ...extra });
+      superior_id: sup, gestor_id: sup && sup <= 3 ? sup : null, gestor_nome: null, apelido: null, cor_equipe: null, horario_trabalho: hor, horario_almoco: alm, regime: reg, vaga: false, ...extra });
     const funcionarios = [
-      F(1, 'Admin Demo', 'Gerente De Sucesso Do Cliente', 'Gestão', 'Head', '2023-07-11', null, '-', '-', '-', { gestor_nome: 'Diretoria Demo', apelido: 'Admin Demo' }),
-      F(2, 'Ana Souza', 'Supervisor De Sucesso Do Cliente I', 'Gestão', 'Supervisão', '2023-10-16', 1, '-', '-', '-', { apelido: 'Ana Souza' }),
-      F(3, 'Bruno Lima', 'Supervisor De Sucesso Do Cliente I', 'Gestão', 'Supervisão', '2024-03-18', 1, '-', '-', '-', { apelido: 'Bruno Lima' }),
+      F(1, 'Admin Demo', 'Gerente De Sucesso Do Cliente', 'Gestão', 'Head', '2023-07-11', null, '-', '-', '-', { gestor_nome: 'Diretoria Demo', apelido: 'Admin Demo', cor_equipe: '#E97132' }),
+      F(2, 'Ana Souza', 'Supervisor De Sucesso Do Cliente I', 'Gestão', 'Supervisão', '2023-10-16', 1, '-', '-', '-', { apelido: 'Ana Souza', cor_equipe: '#CCECFF' }),
+      F(3, 'Bruno Lima', 'Supervisor De Sucesso Do Cliente I', 'Gestão', 'Supervisão', '2024-03-18', 1, '-', '-', '-', { apelido: 'Bruno Lima', cor_equipe: '#FF99CC' }),
       F(4, 'Carla Mendes', 'Auxiliar De Sucesso Do Cliente I', 'Atendimento N1', 'N1', '2025-02-10', 2, '08:00 às 18:00', '12:00 às 13:12', 'Segunda a Sexta'),
       F(5, 'Diego Alves', 'Auxiliar De Sucesso Do Cliente I', 'Atendimento N1', 'N1', '2025-03-03', 2, '10:00 às 20:00', '14:18 às 15:30', '5x2 (escala)'),
       F(6, 'Elisa Rocha', 'Auxiliar De Sucesso Do Cliente I', 'Atendimento N1', 'N1', '2025-06-16', 2, '11:30 às 21:30', '15:30 às 16:42', '5x2 (escala)'),
@@ -340,7 +340,7 @@ function criarApiDemo() {
     },
     async criarFuncionario(d) {
       admin(); if (!String(d.nome || '').trim()) throw new Error('Informe o nome');
-      const novo = { id: ++db.seq.func, matricula: null, cargo: null, subsetor: null, nivel: null, admissao: null, horario_trabalho: null, horario_almoco: null, regime: null, vaga: false, superior_id: null, gestor_id: null, gestor_nome: null, apelido: null, ...d, nome: d.nome.trim() };
+      const novo = { matricula: null, cargo: null, subsetor: null, nivel: null, admissao: null, horario_trabalho: null, horario_almoco: null, regime: null, vaga: false, superior_id: null, gestor_id: null, gestor_nome: null, apelido: null, cor_equipe: null, ...d, id: ++db.seq.func, nome: d.nome.trim() };
       if (novo.superior_id != null) novo.gestor_id = gestorDoSite(novo.superior_id);
       db.funcionarios.push(novo); salvar(); return wait(novo.id);
     },
@@ -435,7 +435,7 @@ function criarApiSupabase(sb) {
     },
     async criarFuncionario(d) {
       const linha = { nome: String(d.nome || '').trim(), matricula: d.matricula || null, cargo: d.cargo || null, subsetor: d.subsetor || null, nivel: d.nivel || null, admissao: d.admissao || null,
-        horario_trabalho: d.horario_trabalho || null, horario_almoco: d.horario_almoco || null, regime: d.regime || null, vaga: !!d.vaga, superior_id: d.superior_id ?? null, gestor_nome: d.gestor_nome || null };
+        horario_trabalho: d.horario_trabalho || null, horario_almoco: d.horario_almoco || null, regime: d.regime || null, vaga: !!d.vaga, superior_id: d.superior_id ?? null, gestor_nome: d.gestor_nome || null, cor_equipe: d.cor_equipe || null };
       const r = ok(await sb.from('funcionarios').insert(linha).select('id'));
       return r && r[0] ? r[0].id : null;
     },
@@ -452,7 +452,7 @@ const S = {
   fAn: { id: '', atendente: '', resumo: '', avaliacao: '', pontos: '', canal: '', de: '', ate: '', gestor: '' },
   anLimite: 200,
   lugares: [], lugaresIndisponivel: false, colabIndisponivel: false, mapa: { modo: 'lugar', sel: null },
-  org: { visao: 'planilha', busca: '', sub: '', nivel: '', gestor: '', regime: '', tipo: 'todos', sort: { col: 'nome', dir: 1 }, aberto: null, achados: null, zoom: 1, arrasto: null, rolarPara: null },
+  org: { visao: 'planilha', busca: '', sub: '', nivel: '', gestor: '', regime: '', tipo: 'todos', sort: { col: 'nome', dir: 1 }, aberto: null, achados: null, zoom: 1, arrasto: null, rolarPara: null, foco: null, autoAjuste: true },
   visao: 'cartoes', cal: { ano: new Date().getFullYear(), mes: new Date().getMonth() }, calPend: false
 };
 const ui = {};
@@ -619,7 +619,7 @@ document.addEventListener('visibilitychange', () => { if (document.visibilitySta
 
 async function sair() {
   clearInterval(timer); await api.sair();
-  Object.assign(S, { perfil: null, perfis: [], funcionarios: [], naturezas: [], avisos: [], analises: [], lugares: [], lugaresIndisponivel: false, mapa: { modo: 'lugar', sel: null }, org: { visao: 'planilha', busca: '', sub: '', nivel: '', gestor: '', regime: '', tipo: 'todos', sort: { col: 'nome', dir: 1 }, aberto: null, achados: null, zoom: 1, arrasto: null, rolarPara: null }, aba: 'avisos', anLimite: 200, ultimoConvite: null, buscaFunc: '', visao: 'cartoes', calPend: false,
+  Object.assign(S, { perfil: null, perfis: [], funcionarios: [], naturezas: [], avisos: [], analises: [], lugares: [], lugaresIndisponivel: false, mapa: { modo: 'lugar', sel: null }, org: { visao: 'planilha', busca: '', sub: '', nivel: '', gestor: '', regime: '', tipo: 'todos', sort: { col: 'nome', dir: 1 }, aberto: null, achados: null, zoom: 1, arrasto: null, rolarPara: null, foco: null, autoAjuste: true }, aba: 'avisos', anLimite: 200, ultimoConvite: null, buscaFunc: '', visao: 'cartoes', calPend: false,
     fAv: { gestor: '', func: '', setor: '', de: '', ate: '', encerrados: false },
     fAn: { id: '', atendente: '', resumo: '', avaliacao: '', pontos: '', canal: '', de: '', ate: '', gestor: '' } });
   renderLogin();
@@ -627,7 +627,7 @@ async function sair() {
 
 /* ================= estrutura principal ================= */
 function render() {
-  subst($('#app'), demoBanner(), cabecalho(), h('main', {}, S.aba === 'avisos' ? viewAvisos() : S.aba === 'analises' ? viewAnalises() : S.aba === 'mapa' ? viewMapa() : viewOrg()));
+  subst($('#app'), demoBanner(), cabecalho(), h('main', { class: S.aba === 'org' ? 'largo' : '' }, S.aba === 'avisos' ? viewAvisos() : S.aba === 'analises' ? viewAnalises() : S.aba === 'mapa' ? viewMapa() : viewOrg()));
   atualizarAvisos(); atualizarAnalises(); atualizarMapa(); atualizarOrg(true);
   const abaAtiva = $('.tab[aria-selected="true"]'); if (abaAtiva && abaAtiva.scrollIntoView) abaAtiva.scrollIntoView({ inline: 'center', block: 'nearest' });
 }
@@ -1069,11 +1069,16 @@ function sv(tag, props = {}, ...kids) {
   for (const kid of kids.flat(Infinity)) { if (kid == null || kid === false) continue; el.append(kid.nodeType ? kid : document.createTextNode(String(kid))); }
   return el;
 }
-const PAL_SETOR = ['#2563eb', '#16a34a', '#d97706', '#9333ea', '#dc2626', '#0891b2', '#be185d', '#65a30d', '#7c3aed', '#ea580c', '#0d9488', '#4f46e5'];
+const COR_SETOR_FIXA = { 'gestao': '#1abc9c', 'atendimento': '#3498db', 'inadimplencia': '#e74c3c', 'estrategicos': '#9b59b6', 'ativacao': '#f1c40f', 'backoffice': '#f39c12', 'qualidade': '#27ae60', 'melhoria continua': '#2ecc71' };
+const PAL_SETOR = ['#3498db', '#e74c3c', '#9b59b6', '#f1c40f', '#f39c12', '#27ae60', '#1abc9c', '#2ecc71', '#e67e22', '#16a085', '#8e44ad', '#c0392b'];
 function listaSetores() {
   return [...new Set(pessoas().map(f => f.subsetor).filter(Boolean).concat(S.lugares.map(l => l.setor).filter(Boolean)))].sort((a, b) => a.localeCompare(b, 'pt-BR'));
 }
-const corSetorMapa = setor => { const i = listaSetores().indexOf(setor); return PAL_SETOR[(i < 0 ? 0 : i) % PAL_SETOR.length]; };
+function corSetorMapa(setor) {
+  const k = norm(setor); if (!k) return '#b0b0b0'; if (COR_SETOR_FIXA[k]) return COR_SETOR_FIXA[k];
+  for (const nome of Object.keys(COR_SETOR_FIXA)) if (k.startsWith(nome + ' ')) return COR_SETOR_FIXA[nome];
+  let x = 0; for (const c of k) x = (x * 31 + c.charCodeAt(0)) >>> 0; return PAL_SETOR[x % PAL_SETOR.length];
+}
 const lugarAtual = id => S.lugares.find(l => l.lugar === id);
 const rotuloLugar = id => { const l = LUGAR_POR_ID[id]; return `Ilha ${l.ilha} · Lugar ${l.n}`; };
 const descLugar = a => !a ? 'Livre' : a.tipo === 'pessoa' ? `${a.funcionario_nome}${a.setor ? ` (${a.setor})` : ''}` : a.setor;
@@ -1219,6 +1224,15 @@ const COLS_ORG = [
   { k: 'horario_almoco', t: 'Horário de almoço', tipo: 'horario' },
   { k: 'regime', t: 'Regime de trabalho', tipo: 'lista' }
 ];
+const LARG_COLS = { matricula: 6, nome: 14, cargo: 15, subsetor: 8, nivel: 8, admissao: 7, gestor: 10, horario_trabalho: 9, horario_almoco: 9, regime: 9 };
+const PAL_EQUIPE = ['#B5E6A2', '#FF99CC', '#66FFFF', '#F1A983', '#FFC000', '#FFFF00', '#CCECFF', '#CC99FF', '#D0D0D0', '#E97132', '#9FD4A3', '#F4B6C2', '#B9D7EA', '#D7BDE2'];
+/* cor da linha = cor da equipe do gestor da pessoa (como na planilha original); sem gestor na planilha, branca */
+const corEquipeDe = f => { const sup = f.superior_id != null ? S.funcionarios.find(x => x.id === f.superior_id) : null; return (sup && sup.cor_equipe) || '#FFFFFF'; };
+const proximaCorEquipe = () => { const usadas = new Set(S.funcionarios.map(x => (x.cor_equipe || '').toUpperCase())); return PAL_EQUIPE.find(c => !usadas.has(c.toUpperCase())) || '#E5E7EB'; };
+async function garantirCorEquipe(supId) {
+  const sup = supId != null ? S.funcionarios.find(x => x.id === supId) : null;
+  if (sup && !sup.cor_equipe) { const cor = proximaCorEquipe(); await api.atualizarFuncionario(sup.id, { cor_equipe: cor }); sup.cor_equipe = cor; }
+}
 const RE_HORARIO = /^(-|\d{2}:\d{2} às \d{2}:\d{2})$/;
 const normHorario = v => String(v || '').replace(/\s+à\s+/g, ' às ').replace(/\s+/g, ' ').trim();
 const cargoCurto = c => String(c || '').replace(/\s+de sucesso do cliente/i, '').trim();
@@ -1264,7 +1278,7 @@ async function salvarCelula(f, col, valor) {
     else if (!f.vaga && v.toLowerCase() === 'vaga aberta') return toast('Para uma vaga, use o botão "Nova vaga". Aqui informe o nome da pessoa.', true);
     else patch = { nome: v };
   } else if (col.k === 'gestor') {
-    if (valor.tipo === 'pessoa') { const p = S.funcionarios.find(x => x.id === valor.id); patch = { superior_id: p.id, gestor_nome: nomeExibicao(p) }; }
+    if (valor.tipo === 'pessoa') { const p = S.funcionarios.find(x => x.id === valor.id); patch = { superior_id: p.id, gestor_nome: nomeExibicao(p) }; patch.__cor = p.id; }
     else if (valor.tipo === 'externo') patch = { superior_id: null, gestor_nome: valor.nome };
     else patch = { superior_id: null, gestor_nome: null };
   } else if (col.tipo === 'horario') {
@@ -1273,7 +1287,8 @@ async function salvarCelula(f, col, valor) {
     patch = { [col.k]: h_ || null };
   } else if (col.k === 'admissao') patch = { admissao: v || null };
   else patch = { [col.k]: v || null };
-  const ok = await acao(async () => { await api.atualizarFuncionario(f.id, patch); await atualizarDepois(); }, patch.vaga === false ? 'Vaga preenchida.' : 'Alteração salva.');
+  const corDe = patch.__cor; delete patch.__cor;
+  const ok = await acao(async () => { await api.atualizarFuncionario(f.id, patch); if (corDe != null) await garantirCorEquipe(corDe); await atualizarDepois(); }, patch.vaga === false ? 'Vaga preenchida.' : 'Alteração salva.');
   if (!ok) atualizarOrg(true);
 }
 function iniciarEdicao(td, f, col) {
@@ -1326,6 +1341,9 @@ function abrirFormColab({ modo, f = null, superior = null }) {
   sGest.addEventListener('change', () => boxOutro.classList.toggle('hidden', sGest.value !== '__outro'));
   const iHor = inp('fc-horario', v('horario_trabalho'), { list: 'dl-fc-hor', placeholder: '08:00 às 18:00 ou -' }), iAlm = inp('fc-almoco', v('horario_almoco'), { list: 'dl-fc-hor', placeholder: '12:00 às 13:12 ou -' });
   const iReg = inp('fc-regime', v('regime'), { list: 'dl-fc-reg' });
+  let corMexida = false, corLimpa = false;
+  const iCor = h('input', { id: 'fc-cor', type: 'color', value: (f && f.cor_equipe) || '#ffffff', oninput: () => { corMexida = true; corLimpa = false; } });
+  const limparCor = h('button', { class: 'linkbtn', type: 'button', id: 'fc-cor-limpar', onclick: () => { iCor.value = '#ffffff'; corLimpa = true; corMexida = false; } }, 'Sem cor');
   const erro = h('div', { class: 'err hidden', role: 'alert' });
   const titulo = { novo: 'Novo colaborador', vaga: 'Nova vaga', preencher: 'Preencher vaga', editar: ehVaga ? 'Editar vaga' : 'Editar colaborador' }[modo];
   const form = h('form', { id: 'form-colab', novalidate: true, onsubmit: async ev => {
@@ -1343,10 +1361,12 @@ function abrirFormColab({ modo, f = null, superior = null }) {
     const dados = { nome, matricula: iMat.value.trim() || null, cargo: iCargo.value.trim() || null, subsetor: iSub.value.trim() || null, nivel: iNivel.value.trim() || null,
       admissao: iAdm.value || null, horario_trabalho: hor || null, horario_almoco: alm || null, regime: iReg.value.trim() || null,
       superior_id: sup ? sup.id : null, gestor_nome: sup ? nomeExibicao(sup) : (sGest.value === '__outro' ? iOutro.value.trim() : null) };
+    if (corLimpa) dados.cor_equipe = null; else if (corMexida) dados.cor_equipe = iCor.value.toUpperCase();
     const b = $('#fc-salvar'); b.disabled = true;
     const ok = await acao(async () => {
       if (modo === 'novo' || modo === 'vaga') await api.criarFuncionario({ ...dados, vaga: modo === 'vaga' });
       else await api.atualizarFuncionario(f.id, { ...dados, vaga: modo === 'preencher' ? false : f.vaga });
+      if (sup) await garantirCorEquipe(sup.id);
       await atualizarDepois();
     }, { novo: 'Colaborador incluído.', vaga: 'Vaga incluída.', preencher: 'Vaga preenchida.', editar: 'Alterações salvas.' }[modo]);
     if (ok) dlg.close(); else b.disabled = false;
@@ -1354,7 +1374,8 @@ function abrirFormColab({ modo, f = null, superior = null }) {
     h('div', { class: 'form-grid' },
       campo('fc-nome', ehVaga ? 'Nome' : 'Nome', iNome, 'span-all'), campo('fc-matricula', 'Matrícula', iMat), campo('fc-admissao', 'Admissão', iAdm),
       campo('fc-cargo', 'Cargo', iCargo), campo('fc-subsetor', 'Subsetor', iSub), campo('fc-nivel', 'Nível de atuação', iNivel), campo('fc-gestor', 'Gestor', sGest), boxOutro,
-      campo('fc-horario', 'Horário de trabalho', iHor), campo('fc-almoco', 'Horário de almoço', iAlm), campo('fc-regime', 'Regime de trabalho', iReg)),
+      campo('fc-horario', 'Horário de trabalho', iHor), campo('fc-almoco', 'Horário de almoço', iAlm), campo('fc-regime', 'Regime de trabalho', iReg),
+      ehVaga ? null : h('div', { class: 'field' }, h('label', { for: 'fc-cor', text: 'Cor da equipe que esta pessoa lidera' }), h('div', { class: 'cor-linha' }, iCor, limparCor), h('small', { text: 'Pinta, na planilha, as linhas de quem tem esta pessoa como gestor.' }))),
     dl('dl-fc-cargo', 'cargo'), dl('dl-fc-sub', 'subsetor'), dl('dl-fc-nivel', 'nivel'), dl('dl-fc-reg', 'regime'),
     h('datalist', { id: 'dl-fc-hor' }, [...new Set([...unicosOrg('horario_trabalho'), ...unicosOrg('horario_almoco')])].map(x => h('option', { value: x }))), erro);
   const extra = [];
@@ -1397,8 +1418,8 @@ function viewOrg() {
   const gestoresTxt = [...new Set(S.funcionarios.map(f => gestorTexto(f)).filter(Boolean))].sort((a, b) => a.localeCompare(b, 'pt-BR'));
   const tipo = h('select', { id: 'of-tipo', onchange: e => { o.tipo = e.target.value; atualizarOrg(true); } }, h('option', { value: 'todos' }, 'Colaboradores e vagas'), h('option', { value: 'pessoas' }, 'Só colaboradores'), h('option', { value: 'vagas' }, 'Só vagas'));
   tipo.value = o.tipo;
-  const busca = h('input', { id: 'of-busca', type: 'search', placeholder: 'Nome, matrícula, cargo...', autocomplete: 'off', value: o.busca, oninput: e => { o.busca = e.target.value; atualizarOrg(true); if (o.visao === 'organograma') buscarNoOrganograma(); } });
-  const alternar = v => () => { if (o.visao !== v) { o.visao = v; render(); } };
+  const busca = h('input', { id: 'of-busca', type: 'search', placeholder: o.visao === 'organograma' ? 'Buscar pessoa no organograma...' : 'Nome, matrícula, cargo...', autocomplete: 'off', value: o.busca, oninput: e => { o.busca = e.target.value; atualizarOrg(true); if (o.visao === 'organograma') buscarNoOrganograma(); } });
+  const alternar = v => () => { if (o.visao !== v) { o.visao = v; o.autoAjuste = true; render(); } };
   return h('div', {},
     h('div', { class: 'page-head' }, h('div', {}, h('h1', { text: 'Colaboradores e Organização' }),
       h('p', { text: adm ? 'A planilha de colaboradores e o organograma, ambos editáveis. Clique em uma célula para alterar e use os botões para incluir colaboradores e vagas.' : 'A planilha de colaboradores e o organograma do setor. Somente o administrador altera.' })),
@@ -1406,8 +1427,9 @@ function viewOrg() {
         h('div', { class: 'seg seg-btn', role: 'group', 'aria-label': 'Forma de visualizar' }, h('button', { type: 'button', id: 'org-v-planilha', 'aria-pressed': String(o.visao === 'planilha'), onclick: alternar('planilha') }, 'Planilha'), h('button', { type: 'button', id: 'org-v-org', 'aria-pressed': String(o.visao === 'organograma'), onclick: alternar('organograma') }, 'Organograma')),
         adm ? h('button', { class: 'btn primary', id: 'org-novo', onclick: () => abrirFormColab({ modo: 'novo' }) }, '+ Colaborador') : null,
         adm ? h('button', { class: 'btn primary', id: 'org-nova-vaga', onclick: () => abrirFormColab({ modo: 'vaga' }) }, '+ Vaga') : null,
-        h('button', { class: 'btn', id: 'org-csv', onclick: exportarCsv }, 'Exportar CSV'))),
-    h('div', { class: 'card panel' },
+        h('button', { class: 'btn', id: 'org-csv', onclick: exportarCsv }, 'Exportar CSV'),
+        o.visao === 'organograma' ? h('div', { class: 'org-busca' }, h('label', { for: 'of-busca', class: 'sr-only', text: 'Buscar pessoa' }), busca) : null)),
+    o.visao === 'planilha' ? h('div', { class: 'card panel' },
       h('div', { class: 'filters' },
         h('div', { class: 'field' }, h('label', { for: 'of-busca', text: 'Buscar' }), busca),
         o.visao === 'planilha' ? sel('of-sub', 'Subsetor', 'sub', unicosOrg('subsetor')) : null,
@@ -1415,7 +1437,7 @@ function viewOrg() {
         o.visao === 'planilha' ? sel('of-gestor', 'Gestor', 'gestor', gestoresTxt) : null,
         o.visao === 'planilha' ? sel('of-regime', 'Regime', 'regime', unicosOrg('regime')) : null,
         o.visao === 'planilha' ? h('div', { class: 'field' }, h('label', { for: 'of-tipo', text: 'Mostrar' }), tipo) : null),
-      h('div', { class: 'filters-foot' }, o.visao === 'planilha' ? h('button', { class: 'linkbtn', type: 'button', onclick: () => { Object.assign(o, { busca: '', sub: '', nivel: '', gestor: '', regime: '', tipo: 'todos' }); render(); } }, 'Limpar filtros') : h('span', { class: 'hint', text: 'A busca localiza e destaca a pessoa no organograma.' }))),
+      h('div', { class: 'filters-foot' }, o.visao === 'planilha' ? h('button', { class: 'linkbtn', type: 'button', onclick: () => { Object.assign(o, { busca: '', sub: '', nivel: '', gestor: '', regime: '', tipo: 'todos' }); render(); } }, 'Limpar filtros') : h('span', { class: 'hint', text: 'A busca localiza e destaca a pessoa no organograma.' }))) : null,
     S.colabIndisponivel ? h('div', { class: 'err', id: 'org-indisponivel', style: 'margin:12px 0', text: 'O banco de dados ainda não tem as colunas desta aba (horários, regime, vagas e gestor por pessoa). Rode o arquivo atualizacao_05_colaboradores.sql no Supabase (veja o README) e recarregue a página.' }) : null,
     ui.org);
 }
@@ -1427,6 +1449,7 @@ function atualizarOrg(forcar) {
   const listas = h('div', { class: 'hidden' }, ['cargo', 'subsetor', 'nivel', 'regime'].map(k => h('datalist', { id: 'dl-org-' + k }, unicosOrg(k).map(x => h('option', { value: x })))),
     h('datalist', { id: 'dl-org-horario' }, [...new Set([...unicosOrg('horario_trabalho'), ...unicosOrg('horario_almoco')])].map(x => h('option', { value: x }))));
   subst(ui.org, listas, o.visao === 'planilha' ? tabelaOrg() : organograma());
+  if (o.visao === 'organograma' && o.autoAjuste) { ajustarOrg(); o.autoAjuste = false; }
   if (o.visao === 'organograma' && o.rolarPara) { const el = $(`.org-no[data-no="${o.rolarPara}"]`); if (el) el.scrollIntoView({ block: 'center', inline: 'center', behavior: 'smooth' }); o.rolarPara = null; }
 }
 
@@ -1434,9 +1457,10 @@ function tabelaOrg() {
   const o = S.org, adm = ehAdmin(), lista = filtrarOrg();
   const nPessoas = S.funcionarios.filter(f => !f.vaga).length, nVagas = S.funcionarios.length - nPessoas;
   const seta = k => o.sort.col === k ? (o.sort.dir === 1 ? ' ▲' : ' ▼') : '';
+  const estiloBtn = 'background:none;border:0;color:inherit;font:inherit;font-weight:700;cursor:pointer;padding:0;text-transform:none;letter-spacing:0';
   const cab = COLS_ORG.map(c => h('th', { class: 'th-ord', 'data-col': c.k, 'aria-sort': o.sort.col === c.k ? (o.sort.dir === 1 ? 'ascending' : 'descending') : 'none' },
-    h('button', { type: 'button', class: 'ord', onclick: () => { o.sort = { col: c.k, dir: o.sort.col === c.k ? -o.sort.dir : 1 }; atualizarOrg(true); } }, c.t + seta(c.k))));
-  if (adm) cab.push(h('th', { class: 'th-acoes', text: '' }));
+    h('button', { type: 'button', class: 'ord', style: estiloBtn, title: 'Ordenar por ' + c.t, onclick: () => { o.sort = { col: c.k, dir: o.sort.col === c.k ? -o.sort.dir : 1 }; atualizarOrg(true); } }, c.t + seta(c.k))));
+  if (adm) cab.push(h('th', { class: 'th-acoes', 'aria-label': 'Ações' }));
   const linhas = lista.map(f => {
     const cels = COLS_ORG.map(c => {
       const txt = valorOrg(f, c.k);
@@ -1445,14 +1469,17 @@ function tabelaOrg() {
       return td;
     });
     if (adm) cels.push(h('td', { class: 'col-acoes' }, h('span', { class: 'acoes' },
-      f.vaga ? h('button', { class: 'btn sm', 'data-acao': 'preencher', onclick: () => abrirFormColab({ modo: 'preencher', f }) }, 'Preencher') : null,
-      f.vaga ? h('button', { class: 'btn sm', 'data-acao': 'duplicar', onclick: () => acao(async () => { await api.criarFuncionario({ ...f, id: undefined, nome: 'Vaga aberta', vaga: true, matricula: null, admissao: null }); await atualizarDepois(); }, 'Vaga duplicada.') }, 'Duplicar') : null,
-      h('button', { class: 'btn sm danger', 'data-acao': 'excluir-colab', onclick: () => excluirColab(f) }, 'Excluir'))));
-    return h('tr', { class: f.vaga ? 'linha-vaga' : '', 'data-id': f.id }, cels);
+      f.vaga ? h('button', { class: 'ic', type: 'button', 'data-acao': 'preencher', title: 'Preencher a vaga', 'aria-label': 'Preencher a vaga', onclick: () => abrirFormColab({ modo: 'preencher', f }) }, '✓') : null,
+      f.vaga ? h('button', { class: 'ic', type: 'button', 'data-acao': 'duplicar', title: 'Duplicar a vaga', 'aria-label': 'Duplicar a vaga', onclick: () => acao(async () => { await api.criarFuncionario({ ...f, id: undefined, nome: 'Vaga aberta', vaga: true, matricula: null, admissao: null, cor_equipe: null }); await atualizarDepois(); }, 'Vaga duplicada.') }, '⧉') : null,
+      h('button', { class: 'ic ic-x', type: 'button', 'data-acao': 'excluir-colab', title: f.vaga ? 'Excluir a vaga' : 'Excluir colaborador', 'aria-label': f.vaga ? 'Excluir a vaga' : 'Excluir colaborador', onclick: () => excluirColab(f) }, '✕'))));
+    return h('tr', { class: f.vaga ? 'linha-vaga' : '', 'data-id': f.id, style: `--linha:${corEquipeDe(f)}` }, cels);
   });
+  const larg = k => `width:${LARG_COLS[k]}%`;
   return h('div', {},
     h('p', { class: 'meta-line', id: 'org-total', text: `${lista.length} ${lista.length === 1 ? 'linha' : 'linhas'}${lista.length !== S.funcionarios.length ? ` (de ${S.funcionarios.length})` : ''} · ${nPessoas} colaboradores e ${nVagas} ${nVagas === 1 ? 'vaga' : 'vagas'}` }),
-    lista.length ? h('div', { class: 'table-wrap org-tabela' }, h('table', { id: 'org-tabela' }, h('thead', {}, h('tr', {}, cab)), h('tbody', {}, linhas))) : h('div', { class: 'empty', text: 'Nenhuma linha com esses filtros.' }));
+    lista.length ? h('div', { class: 'table-wrap org-tabela' }, h('table', { id: 'org-tabela' },
+      h('colgroup', {}, COLS_ORG.map(c => h('col', { style: larg(c.k) })), adm ? h('col', { style: 'width:5%' }) : null),
+      h('thead', {}, h('tr', {}, cab)), h('tbody', {}, linhas))) : h('div', { class: 'empty', text: 'Nenhuma linha com esses filtros.' }));
 }
 
 /* ----- organograma ----- */
@@ -1481,29 +1508,41 @@ function organograma() {
   const o = S.org, adm = ehAdmin(), topo = arvoreOrg();
   if (!o.aberto) o.aberto = expandirPadrao(topo);
   const nTotal = S.funcionarios.length;
+  const setores = [...new Set(S.funcionarios.map(f => f.subsetor).filter(Boolean))].sort((a, b) => a.localeCompare(b, 'pt-BR'));
   const barra = h('div', { class: 'org-barra' },
-    h('button', { class: 'btn sm', id: 'org-expandir', type: 'button', onclick: () => { const s = new Set(); percorrer(topo, n => { if (n.filhos.length) s.add(n.id); }); o.aberto = s; atualizarOrg(true); } }, 'Expandir tudo'),
-    h('button', { class: 'btn sm', id: 'org-recolher', type: 'button', onclick: () => { o.aberto = expandirPadrao(topo); atualizarOrg(true); } }, 'Recolher equipes'),
-    h('span', { class: 'org-zoom-ctl' }, h('button', { class: 'btn sm', id: 'org-zoom-menos', type: 'button', 'aria-label': 'Diminuir', onclick: () => { o.zoom = Math.max(0.4, +(o.zoom - 0.1).toFixed(2)); atualizarOrg(true); } }, '−'),
+    h('button', { class: 'btn sm', id: 'org-expandir', type: 'button', onclick: () => { const s = new Set(); percorrer(topo, n => { if (n.filhos.length) s.add(n.id); }); o.aberto = s; o.foco = null; o.autoAjuste = true; atualizarOrg(true); } }, 'Expandir tudo'),
+    h('button', { class: 'btn sm', id: 'org-recolher', type: 'button', onclick: () => { o.aberto = expandirPadrao(topo); o.foco = null; o.autoAjuste = true; atualizarOrg(true); } }, 'Recolher equipes'),
+    h('button', { class: 'btn sm', id: 'org-ajustar', type: 'button', onclick: () => { o.autoAjuste = true; atualizarOrg(true); } }, 'Ajustar à tela'),
+    h('span', { class: 'org-zoom-ctl' }, h('button', { class: 'btn sm', id: 'org-zoom-menos', type: 'button', 'aria-label': 'Diminuir', onclick: () => { o.zoom = Math.max(0.3, +(o.zoom - 0.1).toFixed(2)); atualizarOrg(true); } }, '−'),
       h('span', { id: 'org-zoom-val', text: Math.round(o.zoom * 100) + '%' }), h('button', { class: 'btn sm', id: 'org-zoom-mais', type: 'button', 'aria-label': 'Aumentar', onclick: () => { o.zoom = Math.min(1.6, +(o.zoom + 0.1).toFixed(2)); atualizarOrg(true); } }, '+')),
     adm ? h('span', { class: 'hint', text: 'Arraste uma pessoa sobre o gestor dela para mudar a hierarquia. Clique para editar.' }) : h('span', { class: 'hint', text: 'Clique em uma pessoa para ver os dados.' }));
-  const lista = nos => h('ul', {}, nos.map(n => h('li', {}, caixaOrg(n), n.filhos.length && o.aberto.has(n.id) ? filhosOrg(n) : null)));
-  const filhosOrg = n => { const folhas = n.filhos.every(c => !c.filhos.length); return h('ul', { class: folhas ? 'vertical' : '' }, n.filhos.map(c => h('li', {}, caixaOrg(c), c.filhos.length && o.aberto.has(c.id) ? filhosOrg(c) : null))); };
-  return h('div', {}, barra, h('p', { class: 'meta-line', id: 'org-resumo', text: `${nTotal} posições no organograma (${S.funcionarios.filter(f => f.vaga).length} vagas)` }),
-    h('div', { class: 'org-wrap' }, h('div', { class: 'org', id: 'organograma', style: `zoom:${o.zoom}` }, lista(topo))));
+  const legenda = h('div', { class: 'org-legenda', id: 'org-legenda' }, h('span', { class: 'hint', text: 'Setores (clique para expandir e destacar):' }),
+    setores.map(x => { const n = S.funcionarios.filter(f => f.subsetor === x).length; return h('button', { class: 'org-chip' + (o.foco === x ? ' ativo' : ''), type: 'button', 'data-setor': x, style: `--cor:${corSetorMapa(x)}`, 'aria-pressed': String(o.foco === x), onclick: () => focarSetor(x) }, h('i', { class: 'sw-cor', style: `--c:${corSetorMapa(x)}` }), `${x} (${n})`); }));
+  const filhosOrg = n => {
+    const folhas = n.filhos.every(c => !c.filhos.length);
+    if (folhas && n.filhos.length > 6) { const cols = n.filhos.length <= 14 ? 3 : 4; return h('div', { class: 'org-equipe-wrap' }, h('div', { class: 'org-stub' }), h('div', { class: 'org-equipe', style: `--cols:${cols}`, 'data-equipe': String(n.id) }, n.filhos.map(c => h('div', { class: 'org-folha' }, caixaOrg(c))))); }
+    return h('ul', {}, n.filhos.map(c => h('li', {}, caixaOrg(c), c.filhos.length && o.aberto.has(c.id) ? filhosOrg(c) : null)));
+  };
+  const raiz = h('ul', {}, topo.map(n => h('li', {}, caixaOrg(n), n.filhos.length && o.aberto.has(n.id) ? filhosOrg(n) : null)));
+  return h('div', {}, barra, legenda, h('p', { class: 'meta-line', id: 'org-resumo', text: `${nTotal} posições no organograma (${S.funcionarios.filter(f => f.vaga).length} vagas)` }),
+    h('div', { class: 'org-wrap' }, h('div', { class: 'org', id: 'organograma', style: `zoom:${o.zoom}` }, raiz)));
+}
+function avatarOrg() {
+  return sv('svg', { viewBox: '0 0 64 64', 'aria-hidden': 'true', class: 'org-silhueta' }, sv('circle', { cx: 32, cy: 25, r: 11.5 }), sv('path', { d: 'M7 66c0-17 11-26 25-26s25 9 25 26z' }));
 }
 function caixaOrg(n) {
   const o = S.org, adm = ehAdmin(), f = n.f, ext = !f, aberto = o.aberto && o.aberto.has(n.id), arrasta = !ext && adm;
-  const cor = f ? corSetorMapa(f.subsetor) : '#64748b';
-  const box = h('div', { class: 'org-no' + (ext ? ' ext' : '') + (f && f.vaga ? ' vaga' : '') + (o.achados && o.achados.has(n.id) ? ' achado' : ''), 'data-no': String(n.id), style: `--cor:${cor}`, tabindex: '0', role: 'button',
-    draggable: arrasta ? 'true' : null, title: ext ? `${n.nome} (gestor fora da planilha)` : [f.vaga ? 'Vaga aberta' : f.nome, f.cargo, f.horario_trabalho && f.horario_trabalho !== '-' ? 'Horário: ' + f.horario_trabalho : '', f.regime && f.regime !== '-' ? f.regime : ''].filter(Boolean).join(' · '),
+  const cor = f ? corSetorMapa(f.subsetor) : '#94a3b8';
+  const apagado = o.foco && (!f || f.subsetor !== o.foco);
+  const box = h('div', { class: 'org-no' + (ext ? ' ext' : '') + (f && f.vaga ? ' vaga' : '') + (o.achados && o.achados.has(n.id) ? ' achado' : '') + (apagado ? ' apagado' : ''), 'data-no': String(n.id), style: `--cor:${cor}`, tabindex: '0', role: 'button',
+    draggable: arrasta ? 'true' : null, title: ext ? `${n.nome} (gestor fora da planilha)` : [f.vaga ? 'Vaga aberta' : f.nome, f.cargo, f.subsetor, f.horario_trabalho && f.horario_trabalho !== '-' ? 'Horário: ' + f.horario_trabalho : '', f.regime && f.regime !== '-' ? f.regime : ''].filter(Boolean).join(' · '),
     onclick: () => { if (ext) abrirExterno(n); else if (adm) abrirFormColab({ modo: 'editar', f }); else abrirFicha(f); },
     onkeydown: e => { if (e.key === 'Enter' && e.target === box) { e.preventDefault(); box.click(); } } },
+    h('div', { class: 'org-avatar' }, avatarOrg(),
+      n.filhos.length ? h('button', { class: 'org-toggle', type: 'button', 'aria-expanded': String(!!aberto), 'aria-label': aberto ? 'Recolher equipe' : `Mostrar ${n.filhos.length} subordinados`,
+        onclick: e => { e.stopPropagation(); if (aberto) o.aberto.delete(n.id); else o.aberto.add(n.id); atualizarOrg(true); } }, aberto ? '−' : `+${n.filhos.length}`) : null),
     h('div', { class: 'org-nome', text: ext ? n.nome : (f.vaga ? 'Vaga aberta' : nomeExibicao(f)) }),
-    h('div', { class: 'org-meta', text: ext ? 'Fora da planilha' : [f.nivel, f.subsetor].filter(Boolean).join(' · ') || '—' }),
-    f && f.vaga ? h('div', { class: 'org-meta', text: cargoCurto(f.cargo) }) : null,
-    n.filhos.length ? h('button', { class: 'org-toggle', type: 'button', 'aria-expanded': String(!!aberto), 'aria-label': aberto ? 'Recolher equipe' : `Mostrar ${n.filhos.length} subordinados`,
-      onclick: e => { e.stopPropagation(); if (aberto) o.aberto.delete(n.id); else o.aberto.add(n.id); atualizarOrg(true); } }, aberto ? '−' : `+${n.filhos.length}`) : null);
+    h('div', { class: 'org-meta', text: ext ? 'Fora da planilha' : (f.vaga ? cargoCurto(f.cargo) : [f.nivel, f.subsetor].filter(Boolean).join(' · ')) || '—' }));
   if (arrasta) box.addEventListener('dragstart', e => { o.arrasto = { id: n.id, proibidos: new Set([n.id, ...subordinadosDe(n.id)]) }; e.dataTransfer.effectAllowed = 'move'; try { e.dataTransfer.setData('text/plain', String(n.id)); } catch { /* ok */ } box.classList.add('arrastando'); });
   if (arrasta) box.addEventListener('dragend', () => { o.arrasto = null; box.classList.remove('arrastando'); document.querySelectorAll('.org-no.alvo').forEach(x => x.classList.remove('alvo')); });
   if (adm) {
@@ -1513,13 +1552,28 @@ function caixaOrg(n) {
   }
   return box;
 }
+/* Clicar em um setor da legenda abre os caminhos até todos os seus integrantes e deixa os demais esmaecidos */
+function focarSetor(setor) {
+  const o = S.org;
+  if (o.foco === setor) { o.foco = null; atualizarOrg(true); return; }
+  o.foco = setor; const topo = arvoreOrg(), paiDe = new Map(); percorrer(topo, (n, pai) => paiDe.set(n.id, pai));
+  if (!o.aberto) o.aberto = expandirPadrao(topo);
+  percorrer(topo, n => { if (n.f && n.f.subsetor === setor) { let p = paiDe.get(n.id); while (p) { o.aberto.add(p.id); p = paiDe.get(p.id); } } });
+  o.autoAjuste = true; atualizarOrg(true);
+}
+function ajustarOrg() {
+  const wrap = $('.org-wrap'), org = $('#organograma'); if (!wrap || !org) return;
+  const z0 = S.org.zoom || 1; org.style.zoom = 1; const natural = org.scrollWidth || 1;
+  const z = Math.max(0.45, Math.min(1, +((wrap.clientWidth - 28) / natural).toFixed(2)));
+  S.org.zoom = z; org.style.zoom = z; const v = $('#org-zoom-val'); if (v) v.textContent = Math.round(z * 100) + '%'; void z0;
+}
 async function moverNo(id, alvo) {
   const f = S.funcionarios.find(x => x.id === id); if (!f) return;
   const ext = !alvo.f, destino = ext ? alvo.nome : alvo.f.nome;
   if (!ext && alvo.f.id === f.superior_id) return;
   if (!confirm(`Mover ${f.vaga ? 'a vaga' : f.nome} para ficar sob ${destino}?`)) return;
   const patch = ext ? { superior_id: null, gestor_nome: alvo.nome } : { superior_id: alvo.f.id, gestor_nome: nomeExibicao(alvo.f) };
-  await acao(async () => { await api.atualizarFuncionario(id, patch); await atualizarDepois(); }, 'Organograma atualizado.');
+  await acao(async () => { await api.atualizarFuncionario(id, patch); if (!ext) await garantirCorEquipe(alvo.f.id); await atualizarDepois(); }, 'Organograma atualizado.');
 }
 function abrirExterno(n) {
   const adm = ehAdmin();
