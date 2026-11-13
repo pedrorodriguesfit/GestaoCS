@@ -67,6 +67,7 @@ function erroAmigavel(e) {
   if (/Email not confirmed/i.test(m)) return 'O e-mail ainda não foi confirmado. Peça ao administrador para conferir a configuração do Supabase (veja o README).';
   if (/User already registered/i.test(m)) return 'Este e-mail já tem acesso. Use a aba "Entrar" (ou "Esqueci minha senha").';
   if (/Database error saving new user|convite_invalido/i.test(m)) return 'Não foi possível criar o acesso. Confira se o e-mail é o mesmo que o administrador cadastrou e se o código está correto e dentro do prazo (7 dias).';
+  if (/Could not find the .* column|column .* does not exist/i.test(m)) return 'O banco de dados ainda não tem as colunas novas. Rode a atualização do Supabase indicada no README (atualizacao_05_colaboradores.sql) e recarregue a página.';
   if (/row-level security|permission denied|insufficient/i.test(m)) return 'Você não tem permissão para esta ação.';
   if (/Password should be at least/i.test(m)) return 'A senha precisa ter pelo menos 8 caracteres.';
   if (/rate limit|too many/i.test(m)) return 'Muitas tentativas seguidas. Aguarde alguns minutos e tente de novo.';
@@ -105,23 +106,27 @@ const lugarValido = id => !!LUGAR_POR_ID[id];
 
 /* ================= camada de dados: DEMO ================= */
 function criarApiDemo() {
-  const KEY = 'gestaocs_demo_v1';
+  const KEY = 'gestaocs_demo_v2';
   const SESS = 'gestaocs_demo_sessao';
   const hoje = new Date();
   const dia = n => { const d = new Date(hoje); d.setDate(d.getDate() + n); return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`; };
 
   function seed() {
+    const F = (id, nome, cargo, subsetor, nivel, adm, sup, hor, alm, reg, extra = {}) => ({ id, matricula: String(1000 + id), nome, cargo, subsetor, nivel, admissao: adm,
+      superior_id: sup, gestor_id: sup && sup <= 3 ? sup : null, gestor_nome: null, apelido: null, horario_trabalho: hor, horario_almoco: alm, regime: reg, vaga: false, ...extra });
     const funcionarios = [
-      [1, 'Admin Demo', 'Gerente de Sucesso do Cliente', 'Gestão', null],
-      [2, 'Ana Souza', 'Supervisora', 'Gestão', 1],
-      [3, 'Bruno Lima', 'Supervisor', 'Gestão', 1],
-      [4, 'Carla Mendes', 'Auxiliar de Atendimento', 'Atendimento N1', 2],
-      [5, 'Diego Alves', 'Auxiliar de Atendimento', 'Atendimento N1', 2],
-      [6, 'Elisa Rocha', 'Auxiliar de Atendimento', 'Atendimento N1', 2],
-      [7, 'Fábio Nunes', 'Analista', 'Atendimento N3', 3],
-      [8, 'Gabi Torres', 'Analista', 'Atendimento N3', 3],
-      [9, 'Heitor Dias', 'Analista', 'Inadimplência', 3]
-    ].map(([id, nome, cargo, subsetor, gestor_id]) => ({ id, matricula: String(1000 + id), nome, cargo, subsetor, nivel: '', gestor_id, gestor_nome: null }));
+      F(1, 'Admin Demo', 'Gerente De Sucesso Do Cliente', 'Gestão', 'Head', '2023-07-11', null, '-', '-', '-', { gestor_nome: 'Diretoria Demo', apelido: 'Admin Demo' }),
+      F(2, 'Ana Souza', 'Supervisor De Sucesso Do Cliente I', 'Gestão', 'Supervisão', '2023-10-16', 1, '-', '-', '-', { apelido: 'Ana Souza' }),
+      F(3, 'Bruno Lima', 'Supervisor De Sucesso Do Cliente I', 'Gestão', 'Supervisão', '2024-03-18', 1, '-', '-', '-', { apelido: 'Bruno Lima' }),
+      F(4, 'Carla Mendes', 'Auxiliar De Sucesso Do Cliente I', 'Atendimento N1', 'N1', '2025-02-10', 2, '08:00 às 18:00', '12:00 às 13:12', 'Segunda a Sexta'),
+      F(5, 'Diego Alves', 'Auxiliar De Sucesso Do Cliente I', 'Atendimento N1', 'N1', '2025-03-03', 2, '10:00 às 20:00', '14:18 às 15:30', '5x2 (escala)'),
+      F(6, 'Elisa Rocha', 'Auxiliar De Sucesso Do Cliente I', 'Atendimento N1', 'N1', '2025-06-16', 2, '11:30 às 21:30', '15:30 às 16:42', '5x2 (escala)'),
+      F(7, 'Fábio Nunes', 'Analista De Sucesso Do Cliente Júnior I', 'Atendimento N3', 'N3', '2024-11-11', 3, '09:00 às 19:00', '13:00 às 14:12', 'Segunda a Sexta'),
+      F(8, 'Gabi Torres', 'Analista De Sucesso Do Cliente Júnior I', 'Atendimento N3', 'N3', '2025-01-20', 3, '07:00 às 17:00', '11:42 às 12:54', 'Segunda a Sexta'),
+      F(9, 'Heitor Dias', 'Analista De Sucesso Do Cliente Júnior I', 'Inadimplência', 'N3', '2025-08-04', 3, '08:00 às 18:00', '12:12 às 13:24', 'Segunda a Sexta'),
+      F(10, 'Vaga aberta', 'Auxiliar De Sucesso Do Cliente I', 'Atendimento N1', 'N1', null, 2, '12:00 às 22:00', '15:30 às 16:42', '5x2 (escala)', { matricula: null, vaga: true }),
+      F(11, 'Vaga aberta', 'Analista De Sucesso Do Cliente Júnior II', 'Inadimplência', 'N3', null, 3, '08:00 às 18:00', '12:00 às 13:12', 'Segunda a Sexta', { matricula: null, vaga: true })
+    ];
     const perfis = [
       { id: 1, user_id: 'u1', email: 'admin@demo.com', nome: 'Admin Demo', papel: 'admin', funcionario_id: 1 },
       { id: 2, user_id: 'u2', email: 'ana@demo.com', nome: 'Ana Souza', papel: 'supervisor', funcionario_id: 2 },
@@ -134,7 +139,7 @@ function criarApiDemo() {
         criado_em: new Date(hoje.getTime() - id * 3600000).toISOString(), decidido_por: status === 'aprovado' ? 1 : null, decidido_em: null };
     };
     return {
-      seq: { aviso: 20, analise: 10, func: 20, perfil: 10, nat: 10 },
+      seq: { aviso: 20, analise: 10, func: 30, perfil: 10, nat: 10 },
       perfis, funcionarios,
       naturezas: ['Férias', 'Atestado', 'Ausência Temporária', 'Folga', 'Day Off'].map((nome, i) => ({ id: i + 1, nome, ordem: i + 1 })),
       avisos: [
@@ -167,6 +172,14 @@ function criarApiDemo() {
   const exigir = () => { const p = eu(); if (!p) throw new Error('Sem acesso'); return p; };
   const admin = () => { const p = exigir(); if (p.papel !== 'admin') throw new Error('Você não tem permissão para esta ação.'); return p; };
   const podeCriarPara = fid => { const p = exigir(); if (p.papel === 'admin') return true; const fu = db.funcionarios.find(f => f.id === fid); return !!fu && (fu.gestor_id === p.id || fu.id === p.funcionario_id); };
+  const subordinados = id => { const out = new Set(); const vai = x => db.funcionarios.filter(f => f.superior_id === x).forEach(f => { if (!out.has(f.id)) { out.add(f.id); vai(f.id); } }); vai(id); return out; };
+  const gestorDoSite = superiorId => { const p = db.perfis.find(x => x.funcionario_id === superiorId); return p ? p.id : null; };
+  function validarFuncionario(f, patch) {
+    if ('superior_id' in patch && patch.superior_id != null) {
+      if (patch.superior_id === f.id) throw new Error('Uma pessoa não pode ser gestora de si mesma');
+      if (subordinados(f.id).has(patch.superior_id)) throw new Error('Não é possível: o novo gestor já é subordinado desta pessoa (formaria um ciclo)');
+    }
+  }
   const gerarCodigo = () => Array.from(crypto.getRandomValues(new Uint8Array(6)), b => b.toString(16).padStart(2, '0')).join('').toUpperCase().slice(0, 12);
   const limpaCod = c => String(c || '').replace(/[^A-Za-z0-9]/g, '').toUpperCase();
   const wait = async v => { await new Promise(r => setTimeout(r, 40)); return v; };
@@ -313,10 +326,27 @@ function criarApiDemo() {
       db.analises.forEach(a => { if (a.gestor_id === id) a.gestor_id = null; });
       db.convites = db.convites.filter(c => c.perfil_id !== id); salvar(); return wait();
     },
-    async atualizarFuncionario(id, patch) { admin(); const f = db.funcionarios.find(x => x.id === id); if (!f) throw new Error('Funcionário não encontrado'); Object.assign(f, patch); salvar(); return wait(); },
-    async criarFuncionario(d) { admin(); if (!String(d.nome).trim()) throw new Error('Informe o nome'); db.funcionarios.push({ id: ++db.seq.func, matricula: '', nivel: '', gestor_nome: null, ...d, nome: d.nome.trim() }); salvar(); return wait(); },
+    async atualizarFuncionario(id, patch) {
+      admin(); const f = db.funcionarios.find(x => x.id === id); if (!f) throw new Error('Funcionário não encontrado');
+      validarFuncionario(f, patch);
+      const nomeAntes = f.nome, setorAntes = f.subsetor, supAntes = f.superior_id;
+      Object.assign(f, patch);
+      if ('superior_id' in patch && patch.superior_id !== supAntes) f.gestor_id = gestorDoSite(f.superior_id);
+      if (f.nome !== nomeAntes || f.subsetor !== setorAntes) {
+        db.avisos.forEach(a => { if (a.funcionario_id === f.id) { a.funcionario_nome = f.nome; a.setor = f.subsetor; } });
+        (db.lugares || []).forEach(l => { if (l.funcionario_id === f.id) { l.funcionario_nome = f.nome; l.setor = f.subsetor; } });
+      }
+      salvar(); return wait();
+    },
+    async criarFuncionario(d) {
+      admin(); if (!String(d.nome || '').trim()) throw new Error('Informe o nome');
+      const novo = { id: ++db.seq.func, matricula: null, cargo: null, subsetor: null, nivel: null, admissao: null, horario_trabalho: null, horario_almoco: null, regime: null, vaga: false, superior_id: null, gestor_id: null, gestor_nome: null, apelido: null, ...d, nome: d.nome.trim() };
+      if (novo.superior_id != null) novo.gestor_id = gestorDoSite(novo.superior_id);
+      db.funcionarios.push(novo); salvar(); return wait(novo.id);
+    },
     async excluirFuncionario(id) {
-      admin(); db.funcionarios = db.funcionarios.filter(f => f.id !== id);
+      admin(); db.funcionarios.forEach(f => { if (f.superior_id === id) { f.superior_id = null; f.gestor_id = null; } });
+      db.funcionarios = db.funcionarios.filter(f => f.id !== id);
       db.perfis.forEach(p => { if (p.funcionario_id === id) p.funcionario_id = null; });
       db.avisos.forEach(a => { if (a.funcionario_id === id) a.funcionario_id = null; });
       db.lugares = (db.lugares || []).filter(l => l.funcionario_id !== id); salvar(); return wait();
@@ -403,7 +433,12 @@ function criarApiSupabase(sb) {
       const dados = ok(await sb.from('funcionarios').update(patch).eq('id', id).select('id'));
       if (!dados.length) throw new Error('Você não tem permissão para esta ação.');
     },
-    async criarFuncionario(d) { ok(await sb.from('funcionarios').insert({ nome: d.nome.trim(), cargo: d.cargo || null, subsetor: d.subsetor || null, gestor_id: d.gestor_id || null })); },
+    async criarFuncionario(d) {
+      const linha = { nome: String(d.nome || '').trim(), matricula: d.matricula || null, cargo: d.cargo || null, subsetor: d.subsetor || null, nivel: d.nivel || null, admissao: d.admissao || null,
+        horario_trabalho: d.horario_trabalho || null, horario_almoco: d.horario_almoco || null, regime: d.regime || null, vaga: !!d.vaga, superior_id: d.superior_id ?? null, gestor_nome: d.gestor_nome || null };
+      const r = ok(await sb.from('funcionarios').insert(linha).select('id'));
+      return r && r[0] ? r[0].id : null;
+    },
     async excluirFuncionario(id) { await removido(sb.from('funcionarios').delete().eq('id', id)); }
   };
 }
@@ -416,14 +451,17 @@ const S = {
   fAv: { gestor: '', func: '', setor: '', de: '', ate: '', encerrados: false },
   fAn: { id: '', atendente: '', resumo: '', avaliacao: '', pontos: '', canal: '', de: '', ate: '', gestor: '' },
   anLimite: 200,
-  lugares: [], lugaresIndisponivel: false, mapa: { modo: 'lugar', sel: null },
+  lugares: [], lugaresIndisponivel: false, colabIndisponivel: false, mapa: { modo: 'lugar', sel: null },
+  org: { visao: 'planilha', busca: '', sub: '', nivel: '', gestor: '', regime: '', tipo: 'todos', sort: { col: 'nome', dir: 1 }, aberto: null, achados: null, zoom: 1, arrasto: null, rolarPara: null },
   visao: 'cartoes', cal: { ano: new Date().getFullYear(), mes: new Date().getMonth() }, calPend: false
 };
 const ui = {};
 const ehAdmin = () => !!S.perfil && S.perfil.papel === 'admin';
 const byNome = (a, b) => a.nome.localeCompare(b.nome, 'pt-BR');
 const nomeGestor = id => { const p = S.perfis.find(x => x.id === id); return p ? p.nome : ''; };
-const meuTime = () => S.funcionarios.filter(f => f.gestor_id === S.perfil.id);
+const pessoas = () => S.funcionarios.filter(f => !f.vaga);
+const nomeExibicao = f => (f && (f.apelido || nomeEnxuto(f.nome))) || '';
+const meuTime = () => pessoas().filter(f => f.gestor_id === S.perfil.id);
 
 function carregarScript(src) {
   return new Promise((ok, falha) => {
@@ -437,13 +475,14 @@ async function recarregar() {
   const d = await api.carregarTudo();
   S.perfis = d.perfis; S.funcionarios = d.funcionarios; S.naturezas = d.naturezas; S.avisos = d.avisos; S.analises = d.analises;
   S.lugares = d.lugares || []; S.lugaresIndisponivel = !!d.lugaresIndisponivel;
+  S.colabIndisponivel = S.funcionarios.length > 0 && !('vaga' in S.funcionarios[0]);
   S.carregadoEm = Date.now();
 }
 async function acao(fn, okMsg) {
   try { await fn(); if (okMsg) toast(okMsg); return true; }
   catch (e) { toast(erroAmigavel(e), true); return false; }
 }
-async function atualizarDepois() { await recarregar(); atualizarAvisos(); atualizarAnalises(); atualizarBadge(); if (typeof preencherDia === 'function') preencherDia(); if (typeof atualizarMapa === 'function') atualizarMapa(); }
+async function atualizarDepois() { await recarregar(); atualizarAvisos(); atualizarAnalises(); atualizarBadge(); if (typeof preencherDia === 'function') preencherDia(); if (typeof atualizarMapa === 'function') atualizarMapa(); if (typeof atualizarOrg === 'function') atualizarOrg(); }
 
 /* ================= modal ================= */
 function modal({ titulo, corpo, rodape, largo }) {
@@ -574,13 +613,13 @@ async function entrarNoApp() {
 }
 async function silencioso() {
   if (!S.perfil || document.visibilityState !== 'visible' || document.querySelector('dialog[open]')) return;
-  try { await recarregar(); atualizarAvisos(); atualizarAnalises(); atualizarBadge(); atualizarMapa(); } catch { /* tenta de novo no próximo ciclo */ }
+  try { await recarregar(); atualizarAvisos(); atualizarAnalises(); atualizarBadge(); atualizarMapa(); atualizarOrg(); } catch { /* tenta de novo no próximo ciclo */ }
 }
 document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible' && S.perfil && Date.now() - S.carregadoEm > POLL_MS) silencioso(); });
 
 async function sair() {
   clearInterval(timer); await api.sair();
-  Object.assign(S, { perfil: null, perfis: [], funcionarios: [], naturezas: [], avisos: [], analises: [], lugares: [], lugaresIndisponivel: false, mapa: { modo: 'lugar', sel: null }, aba: 'avisos', anLimite: 200, ultimoConvite: null, buscaFunc: '', visao: 'cartoes', calPend: false,
+  Object.assign(S, { perfil: null, perfis: [], funcionarios: [], naturezas: [], avisos: [], analises: [], lugares: [], lugaresIndisponivel: false, mapa: { modo: 'lugar', sel: null }, org: { visao: 'planilha', busca: '', sub: '', nivel: '', gestor: '', regime: '', tipo: 'todos', sort: { col: 'nome', dir: 1 }, aberto: null, achados: null, zoom: 1, arrasto: null, rolarPara: null }, aba: 'avisos', anLimite: 200, ultimoConvite: null, buscaFunc: '', visao: 'cartoes', calPend: false,
     fAv: { gestor: '', func: '', setor: '', de: '', ate: '', encerrados: false },
     fAn: { id: '', atendente: '', resumo: '', avaliacao: '', pontos: '', canal: '', de: '', ate: '', gestor: '' } });
   renderLogin();
@@ -588,8 +627,9 @@ async function sair() {
 
 /* ================= estrutura principal ================= */
 function render() {
-  subst($('#app'), demoBanner(), cabecalho(), h('main', {}, S.aba === 'avisos' ? viewAvisos() : S.aba === 'analises' ? viewAnalises() : viewMapa()));
-  atualizarAvisos(); atualizarAnalises(); atualizarMapa();
+  subst($('#app'), demoBanner(), cabecalho(), h('main', {}, S.aba === 'avisos' ? viewAvisos() : S.aba === 'analises' ? viewAnalises() : S.aba === 'mapa' ? viewMapa() : viewOrg()));
+  atualizarAvisos(); atualizarAnalises(); atualizarMapa(); atualizarOrg(true);
+  const abaAtiva = $('.tab[aria-selected="true"]'); if (abaAtiva && abaAtiva.scrollIntoView) abaAtiva.scrollIntoView({ inline: 'center', block: 'nearest' });
 }
 function pendentesN() { return ehAdmin() ? S.avisos.filter(a => a.status === 'pendente').length : 0; }
 function atualizarBadge() {
@@ -602,7 +642,7 @@ function cabecalho() {
   const aba = (id, rotulo, extra) => h('button', { class: 'tab', role: 'tab', id: 'tab-' + id, 'aria-selected': String(S.aba === id), onclick: () => { S.aba = id; render(); } }, rotulo, extra || null);
   const head = h('header', { class: 'topbar' }, h('div', { class: 'topbar-in' },
     h('div', { class: 'brand' }, h('img', { class: 'brand-logo', src: LOGO_FIT, alt: 'FIT Energia', width: '134', height: '40', style: 'height:40px;width:auto' }), h('span', { class: 'brand-sep', 'aria-hidden': 'true' }), h('span', { class: 'brand-nome', text: 'Gestão CS' })),
-    h('nav', { class: 'tabs', role: 'tablist' }, aba('avisos', 'Quadro de avisos', ehAdmin() ? ui.badge : null), aba('analises', 'Análise de atendimentos'), aba('mapa', 'Mapa de lugares')),
+    h('nav', { class: 'tabs', role: 'tablist' }, aba('avisos', 'Quadro de avisos', ehAdmin() ? ui.badge : null), aba('analises', 'Análise de atendimentos'), aba('mapa', 'Mapa de lugares'), aba('org', 'Colaboradores e Organização')),
     h('div', { class: 'user' },
       ehAdmin() ? h('button', { class: 'btn sm ghost-light', id: 'btn-admin', onclick: () => abrirAdmin() }, 'Administração') : null,
       h('div', { class: 'who' }, p.nome, h('small', {}, p.papel === 'admin' ? 'Administrador' : 'Supervisor')),
@@ -614,8 +654,8 @@ function cabecalho() {
 /* ================= QUADRO DE AVISOS ================= */
 function funcionariosPermitidos() {
   const p = S.perfil;
-  if (p.papel === 'admin') return S.funcionarios.slice().sort(byNome);
-  return S.funcionarios.filter(f => f.gestor_id === p.id || f.id === p.funcionario_id).sort(byNome);
+  if (p.papel === 'admin') return pessoas().sort(byNome);
+  return pessoas().filter(f => f.gestor_id === p.id || f.id === p.funcionario_id).sort(byNome);
 }
 function podeEditarAviso(a) {
   const p = S.perfil; if (p.papel === 'admin') return true;
@@ -628,7 +668,7 @@ function podeExcluirAviso(a) {
 
 function viewAvisos() {
   const f = S.fAv, cal = S.visao === 'calendario';
-  const setores = [...new Set(S.funcionarios.map(x => x.subsetor).filter(Boolean).concat(S.avisos.map(a => a.setor).filter(Boolean)))].sort((a, b) => a.localeCompare(b, 'pt-BR'));
+  const setores = [...new Set(pessoas().map(x => x.subsetor).filter(Boolean).concat(S.avisos.map(a => a.setor).filter(Boolean)))].sort((a, b) => a.localeCompare(b, 'pt-BR'));
   const selGestor = h('select', { id: 'fav-gestor', onchange: e => { f.gestor = e.target.value; atualizarAvisos(); } },
     h('option', { value: '' }, 'Todos'), S.perfis.slice().sort(byNome).map(p => h('option', { value: String(p.id) }, p.nome)), h('option', { value: 'none' }, 'Sem gestor definido'));
   selGestor.value = f.gestor;
@@ -654,7 +694,7 @@ function viewAvisos() {
         h('div', { class: 'field' }, h('label', { for: 'fav-gestor', text: 'Gestor' }), selGestor),
         h('div', { class: 'field' }, h('label', { for: 'fav-func', text: 'Funcionário' }),
           h('input', { id: 'fav-func', type: 'search', list: 'dl-func', placeholder: 'Digite o nome', autocomplete: 'off', value: f.func, oninput: e => { f.func = e.target.value; atualizarAvisos(); } }),
-          h('datalist', { id: 'dl-func' }, S.funcionarios.slice().sort(byNome).map(x => h('option', { value: x.nome })))),
+          h('datalist', { id: 'dl-func' }, pessoas().sort(byNome).map(x => h('option', { value: x.nome })))),
         h('div', { class: 'field' }, h('label', { for: 'fav-setor', text: 'Setor' }), selSetor),
         cal ? null : h('div', { class: 'field' }, h('label', { for: 'fav-de', text: 'Data (de)' }), h('input', { id: 'fav-de', type: 'date', value: f.de, onchange: e => { f.de = e.target.value; atualizarAvisos(); } })),
         cal ? null : h('div', { class: 'field' }, h('label', { for: 'fav-ate', text: 'Data (até)' }), h('input', { id: 'fav-ate', type: 'date', value: f.ate, onchange: e => { f.ate = e.target.value; atualizarAvisos(); } }))),
@@ -1031,7 +1071,7 @@ function sv(tag, props = {}, ...kids) {
 }
 const PAL_SETOR = ['#2563eb', '#16a34a', '#d97706', '#9333ea', '#dc2626', '#0891b2', '#be185d', '#65a30d', '#7c3aed', '#ea580c', '#0d9488', '#4f46e5'];
 function listaSetores() {
-  return [...new Set(S.funcionarios.map(f => f.subsetor).filter(Boolean).concat(S.lugares.map(l => l.setor).filter(Boolean)))].sort((a, b) => a.localeCompare(b, 'pt-BR'));
+  return [...new Set(pessoas().map(f => f.subsetor).filter(Boolean).concat(S.lugares.map(l => l.setor).filter(Boolean)))].sort((a, b) => a.localeCompare(b, 'pt-BR'));
 }
 const corSetorMapa = setor => { const i = listaSetores().indexOf(setor); return PAL_SETOR[(i < 0 ? 0 : i) % PAL_SETOR.length]; };
 const lugarAtual = id => S.lugares.find(l => l.lugar === id);
@@ -1090,14 +1130,14 @@ function painelMapa() {
     if (!adm) return h('div', {}, h('h3', { id: 'mp-titulo', text: rotuloLugar(sel) }), atual, h('p', { class: 'hint', text: 'Somente o administrador altera o mapa.' }));
     const opc = h('select', { id: 'mp-opcao' }, h('option', { value: '' }, 'Selecione...'),
       h('optgroup', { label: 'Setores' }, setores.map(x => h('option', { value: 's:' + x }, x))),
-      h('optgroup', { label: 'Pessoas' }, S.funcionarios.slice().sort(byNome).map(p => h('option', { value: 'p:' + p.id }, `${p.nome}${p.subsetor ? ' · ' + p.subsetor : ''}${ocupa[p.id] && ocupa[p.id] !== sel ? ` (hoje: ${rotuloLugar(ocupa[p.id])})` : ''}`))));
+      h('optgroup', { label: 'Pessoas' }, pessoas().sort(byNome).map(p => h('option', { value: 'p:' + p.id }, `${p.nome}${p.subsetor ? ' · ' + p.subsetor : ''}${ocupa[p.id] && ocupa[p.id] !== sel ? ` (hoje: ${rotuloLugar(ocupa[p.id])})` : ''}`))));
     opc.value = a ? (a.tipo === 'pessoa' ? 'p:' + a.funcionario_id : 's:' + a.setor) : '';
     const aplicar = async () => {
       const v = opc.value; if (!v) return toast('Escolha um setor ou uma pessoa na lista.', true);
       let item;
       if (v.startsWith('s:')) item = { lugar: sel, tipo: 'setor', setor: v.slice(2) };
       else {
-        const fid = Number(v.slice(2)), p = S.funcionarios.find(f => f.id === fid);
+        const fid = Number(v.slice(2)), p = pessoas().find(f => f.id === fid);
         if (ocupa[fid] && ocupa[fid] !== sel && !confirm(`${p.nome} já está em ${rotuloLugar(ocupa[fid])}. Mover para ${rotuloLugar(sel)}? O lugar anterior ficará livre.`)) return;
         item = { lugar: sel, tipo: 'pessoa', funcionario_id: fid };
       }
@@ -1147,8 +1187,8 @@ function atualizarMapa() {
     usados.map(x => h('span', {}, h('i', { class: 'sw-cor', style: `--c:${corSetorMapa(x)}` }), `${x} (${cont(x)})`)),
     h('span', { class: 'hint' }, 'Contorno escuro = pessoa específica'));
   // resumo por setor
-  const setoresF = [...new Set(S.funcionarios.map(f => f.subsetor).filter(Boolean))].sort((a, b) => a.localeCompare(b, 'pt-BR'));
-  const linhasRes = setoresF.map(x => { const p = S.funcionarios.filter(f => f.subsetor === x).length, l = cont(x), saldo = l - p;
+  const setoresF = [...new Set(pessoas().map(f => f.subsetor).filter(Boolean))].sort((a, b) => a.localeCompare(b, 'pt-BR'));
+  const linhasRes = setoresF.map(x => { const p = pessoas().filter(f => f.subsetor === x).length, l = cont(x), saldo = l - p;
     return h('tr', { 'data-setor': x }, h('td', {}, h('i', { class: 'sw-cor', style: `--c:${corSetorMapa(x)}` }), ' ', x), h('td', { class: 'c', text: p }), h('td', { class: 'c', text: l }),
       h('td', { class: 'c ' + (saldo < 0 ? 'neg' : saldo > 0 ? 'pos' : ''), text: saldo > 0 ? `+${saldo}` : String(saldo) })); });
   const designados = LUGARES.map(l => ({ l, a: lugarAtual(l.id) })).filter(x => x.a);
@@ -1166,6 +1206,343 @@ function atualizarMapa() {
         h('tbody', {}, designados.map(({ l, a }) => h('tr', { 'data-lugar-linha': l.id }, h('td', { text: `Ilha ${l.ilha}` }), h('td', { text: l.n }), h('td', { text: descLugar(a) })))))) : h('p', { class: 'hint', text: 'Nenhum lugar designado ainda.' })));
 }
 
+/* ================= COLABORADORES E ORGANIZAÇÃO ================= */
+const COLS_ORG = [
+  { k: 'matricula', t: 'Matrícula', tipo: 'texto' },
+  { k: 'nome', t: 'Nome', tipo: 'texto' },
+  { k: 'cargo', t: 'Cargo', tipo: 'lista' },
+  { k: 'subsetor', t: 'Subsetor', tipo: 'lista' },
+  { k: 'nivel', t: 'Nível de atuação', tipo: 'lista' },
+  { k: 'admissao', t: 'Admissão', tipo: 'data' },
+  { k: 'gestor', t: 'Gestor', tipo: 'gestor' },
+  { k: 'horario_trabalho', t: 'Horário de trabalho', tipo: 'horario' },
+  { k: 'horario_almoco', t: 'Horário de almoço', tipo: 'horario' },
+  { k: 'regime', t: 'Regime de trabalho', tipo: 'lista' }
+];
+const RE_HORARIO = /^(-|\d{2}:\d{2} às \d{2}:\d{2})$/;
+const normHorario = v => String(v || '').replace(/\s+à\s+/g, ' às ').replace(/\s+/g, ' ').trim();
+const cargoCurto = c => String(c || '').replace(/\s+de sucesso do cliente/i, '').trim();
+const gestorTexto = f => { const sup = f.superior_id != null ? S.funcionarios.find(x => x.id === f.superior_id) : null; return sup ? nomeExibicao(sup) : (f.gestor_nome || ''); };
+const fmtAdm = iso => iso ? fmtData(String(iso).slice(0, 10)) : '';
+const unicosOrg = k => [...new Set(S.funcionarios.map(f => f[k]).filter(v => v && v !== '-'))].sort((a, b) => String(a).localeCompare(String(b), 'pt-BR'));
+
+function valorOrg(f, k) { return k === 'gestor' ? gestorTexto(f) : k === 'admissao' ? fmtAdm(f.admissao) : (f[k] == null ? '' : String(f[k])); }
+function chaveOrdem(f, k) {
+  if (k === 'admissao') return f.admissao || '9999';
+  if (k === 'matricula') return f.matricula && /^\d+$/.test(f.matricula) ? f.matricula.padStart(10, '0') : '~';
+  return norm(valorOrg(f, k)) || '~';
+}
+function filtrarOrg() {
+  const o = S.org, t = norm(o.busca);
+  const arr = S.funcionarios.filter(f => {
+    if (o.tipo === 'pessoas' && f.vaga) return false;
+    if (o.tipo === 'vagas' && !f.vaga) return false;
+    if (o.sub && (f.subsetor || '') !== o.sub) return false;
+    if (o.nivel && (f.nivel || '') !== o.nivel) return false;
+    if (o.regime && (f.regime || '') !== o.regime) return false;
+    if (o.gestor && gestorTexto(f) !== o.gestor) return false;
+    if (t && !norm(`${f.nome} ${f.matricula || ''} ${f.cargo || ''} ${f.subsetor || ''} ${gestorTexto(f)}`).includes(t)) return false;
+    return true;
+  });
+  const { col, dir } = o.sort;
+  return arr.sort((a, b) => { const x = chaveOrdem(a, col), y = chaveOrdem(b, col); return (x < y ? -1 : x > y ? 1 : norm(a.nome).localeCompare(norm(b.nome))) * dir; });
+}
+function subordinadosDe(id) {
+  const out = new Set(); const vai = x => S.funcionarios.filter(f => f.superior_id === x).forEach(f => { if (!out.has(f.id)) { out.add(f.id); vai(f.id); } }); vai(id); return out;
+}
+
+/* ----- edição de uma célula da planilha ----- */
+function opcoesGestor(sel, excluirId) {
+  const prop = pessoas().filter(p => p.id !== excluirId).sort(byNome);
+  return [h('option', { value: '' }, '(sem gestor)'), prop.map(p => h('option', { value: String(p.id) }, `${nomeExibicao(p)}${p.apelido && norm(p.apelido) !== norm(nomeEnxuto(p.nome)) ? ' · ' + nomeEnxuto(p.nome) : ''}`)), h('option', { value: '__outro' }, 'Outro (gestor fora da planilha)...')];
+}
+async function salvarCelula(f, col, valor) {
+  let patch; const v = typeof valor === 'string' ? valor.trim() : valor;
+  if (col.k === 'nome') {
+    if (!v) return toast('O nome não pode ficar vazio.', true);
+    if (f.vaga && v.toLowerCase() !== 'vaga aberta') patch = { nome: v, vaga: false };
+    else if (!f.vaga && v.toLowerCase() === 'vaga aberta') return toast('Para uma vaga, use o botão "Nova vaga". Aqui informe o nome da pessoa.', true);
+    else patch = { nome: v };
+  } else if (col.k === 'gestor') {
+    if (valor.tipo === 'pessoa') { const p = S.funcionarios.find(x => x.id === valor.id); patch = { superior_id: p.id, gestor_nome: nomeExibicao(p) }; }
+    else if (valor.tipo === 'externo') patch = { superior_id: null, gestor_nome: valor.nome };
+    else patch = { superior_id: null, gestor_nome: null };
+  } else if (col.tipo === 'horario') {
+    const h_ = normHorario(v);
+    if (h_ && !RE_HORARIO.test(h_)) return toast('Use o formato 08:00 às 18:00 (ou - quando não houver).', true);
+    patch = { [col.k]: h_ || null };
+  } else if (col.k === 'admissao') patch = { admissao: v || null };
+  else patch = { [col.k]: v || null };
+  const ok = await acao(async () => { await api.atualizarFuncionario(f.id, patch); await atualizarDepois(); }, patch.vaga === false ? 'Vaga preenchida.' : 'Alteração salva.');
+  if (!ok) atualizarOrg(true);
+}
+function iniciarEdicao(td, f, col) {
+  if (!ehAdmin() || td.querySelector('.cel-edit')) return;
+  let ed, feito = false;
+  const restaurar = () => { feito = true; atualizarOrg(true); };
+  const fim = salvar => { if (feito) return; feito = true; ed.classList.remove('cel-edit'); if (!salvar) { atualizarOrg(true); return; } enviar(); };
+  const teclas = e => { if (e.key === 'Escape') { e.preventDefault(); fim(false); } else if (e.key === 'Enter' && col.tipo !== 'gestor') { e.preventDefault(); fim(true); } };
+  let enviar;
+  if (col.tipo === 'gestor') {
+    ed = h('select', { class: 'cel-edit', 'aria-label': 'Gestor' }, opcoesGestor(null, f.id));
+    ed.value = f.superior_id != null && S.funcionarios.some(x => x.id === f.superior_id) ? String(f.superior_id) : '';
+    enviar = () => {
+      if (ed.value === '__outro') { const nome = prompt('Nome do gestor (que não está na planilha):', f.gestor_nome || ''); if (nome === null || !nome.trim()) return atualizarOrg(true); return salvarCelula(f, col, { tipo: 'externo', nome: nome.trim() }); }
+      if (ed.value === '') return salvarCelula(f, col, { tipo: 'nenhum' });
+      return salvarCelula(f, col, { tipo: 'pessoa', id: Number(ed.value) });
+    };
+    ed.addEventListener('change', () => fim(true));
+    ed.addEventListener('blur', () => setTimeout(() => fim(false), 150));
+  } else {
+    const atual = col.k === 'admissao' ? (f.admissao ? String(f.admissao).slice(0, 10) : '') : (f[col.k] == null ? '' : String(f[col.k]));
+    const attrs = { class: 'cel-edit', type: col.tipo === 'data' ? 'date' : 'text', value: atual, maxlength: '200', 'aria-label': col.t };
+    if (col.tipo === 'lista') attrs.list = 'dl-org-' + col.k;
+    if (col.tipo === 'horario') { attrs.list = 'dl-org-horario'; attrs.placeholder = '08:00 às 18:00'; }
+    ed = h('input', attrs);
+    enviar = () => { if (ed.value.trim() === atual.trim()) return atualizarOrg(true); return salvarCelula(f, col, ed.value); };
+    ed.addEventListener('blur', () => fim(true));
+  }
+  ed.addEventListener('keydown', teclas);
+  td.classList.add('editando'); subst(td, ed); ed.focus(); if (ed.select) try { ed.select(); } catch { /* alguns tipos não permitem */ }
+}
+
+/* ----- formulário completo (novo, vaga, preencher vaga, editar) ----- */
+function abrirFormColab({ modo, f = null, superior = null }) {
+  const editar = modo === 'editar' || modo === 'preencher', ehVaga = modo === 'vaga' || (f && f.vaga && modo === 'editar');
+  const v = k => (f && f[k] != null ? String(f[k]) : '');
+  const campo = (id, rot, el, extra = '') => h('div', { class: 'field ' + extra }, h('label', { for: id, text: rot }), el);
+  const inp = (id, val, extra = {}) => h('input', { id, type: 'text', value: val, maxlength: '200', autocomplete: 'off', ...extra });
+  const dl = (id, k) => h('datalist', { id }, unicosOrg(k).map(x => h('option', { value: x })));
+  const iNome = inp('fc-nome', modo === 'preencher' ? '' : (ehVaga ? 'Vaga aberta' : v('nome')), { placeholder: 'Nome completo', disabled: modo === 'vaga' || (modo === 'editar' && f.vaga) });
+  const iMat = inp('fc-matricula', v('matricula'));
+  const iCargo = inp('fc-cargo', v('cargo'), { list: 'dl-fc-cargo' }), iSub = inp('fc-subsetor', v('subsetor'), { list: 'dl-fc-sub' }), iNivel = inp('fc-nivel', v('nivel'), { list: 'dl-fc-nivel' });
+  const iAdm = h('input', { id: 'fc-admissao', type: 'date', value: f && f.admissao ? String(f.admissao).slice(0, 10) : '' });
+  const sGest = h('select', { id: 'fc-gestor' }, opcoesGestor(null, f ? f.id : null));
+  const supInicial = f ? f.superior_id : superior;
+  sGest.value = supInicial != null && S.funcionarios.some(x => x.id === supInicial) ? String(supInicial) : '';
+  const iOutro = inp('fc-gestor-outro', f && f.superior_id == null ? (f.gestor_nome || '') : '', { placeholder: 'Nome do gestor' });
+  const boxOutro = h('div', { class: 'field hidden', id: 'fc-outro-box' }, h('label', { for: 'fc-gestor-outro', text: 'Nome do gestor (fora da planilha)' }), iOutro);
+  if (f && f.superior_id == null && f.gestor_nome && f.gestor_nome !== '-') { sGest.value = '__outro'; boxOutro.classList.remove('hidden'); }
+  sGest.addEventListener('change', () => boxOutro.classList.toggle('hidden', sGest.value !== '__outro'));
+  const iHor = inp('fc-horario', v('horario_trabalho'), { list: 'dl-fc-hor', placeholder: '08:00 às 18:00 ou -' }), iAlm = inp('fc-almoco', v('horario_almoco'), { list: 'dl-fc-hor', placeholder: '12:00 às 13:12 ou -' });
+  const iReg = inp('fc-regime', v('regime'), { list: 'dl-fc-reg' });
+  const erro = h('div', { class: 'err hidden', role: 'alert' });
+  const titulo = { novo: 'Novo colaborador', vaga: 'Nova vaga', preencher: 'Preencher vaga', editar: ehVaga ? 'Editar vaga' : 'Editar colaborador' }[modo];
+  const form = h('form', { id: 'form-colab', novalidate: true, onsubmit: async ev => {
+    ev.preventDefault(); erro.classList.add('hidden');
+    const nome = modo === 'vaga' || (modo === 'editar' && f.vaga) ? 'Vaga aberta' : iNome.value.trim();
+    const hor = normHorario(iHor.value), alm = normHorario(iAlm.value);
+    const falhas = [];
+    if (!nome || (modo === 'preencher' && nome.toLowerCase() === 'vaga aberta')) falhas.push('informe o nome da pessoa');
+    if ((modo === 'vaga' || ehVaga) && (!iCargo.value.trim() || !iSub.value.trim())) falhas.push('informe cargo e subsetor da vaga');
+    if (hor && !RE_HORARIO.test(hor)) falhas.push('horário de trabalho no formato 08:00 às 18:00 (ou -)');
+    if (alm && !RE_HORARIO.test(alm)) falhas.push('horário de almoço no formato 12:00 às 13:12 (ou -)');
+    if (sGest.value === '__outro' && !iOutro.value.trim()) falhas.push('informe o nome do gestor');
+    if (falhas.length) { erro.textContent = 'Verifique: ' + falhas.join('; ') + '.'; erro.classList.remove('hidden'); return; }
+    const sup = sGest.value && sGest.value !== '__outro' ? S.funcionarios.find(x => x.id === Number(sGest.value)) : null;
+    const dados = { nome, matricula: iMat.value.trim() || null, cargo: iCargo.value.trim() || null, subsetor: iSub.value.trim() || null, nivel: iNivel.value.trim() || null,
+      admissao: iAdm.value || null, horario_trabalho: hor || null, horario_almoco: alm || null, regime: iReg.value.trim() || null,
+      superior_id: sup ? sup.id : null, gestor_nome: sup ? nomeExibicao(sup) : (sGest.value === '__outro' ? iOutro.value.trim() : null) };
+    const b = $('#fc-salvar'); b.disabled = true;
+    const ok = await acao(async () => {
+      if (modo === 'novo' || modo === 'vaga') await api.criarFuncionario({ ...dados, vaga: modo === 'vaga' });
+      else await api.atualizarFuncionario(f.id, { ...dados, vaga: modo === 'preencher' ? false : f.vaga });
+      await atualizarDepois();
+    }, { novo: 'Colaborador incluído.', vaga: 'Vaga incluída.', preencher: 'Vaga preenchida.', editar: 'Alterações salvas.' }[modo]);
+    if (ok) dlg.close(); else b.disabled = false;
+  } },
+    h('div', { class: 'form-grid' },
+      campo('fc-nome', ehVaga ? 'Nome' : 'Nome', iNome, 'span-all'), campo('fc-matricula', 'Matrícula', iMat), campo('fc-admissao', 'Admissão', iAdm),
+      campo('fc-cargo', 'Cargo', iCargo), campo('fc-subsetor', 'Subsetor', iSub), campo('fc-nivel', 'Nível de atuação', iNivel), campo('fc-gestor', 'Gestor', sGest), boxOutro,
+      campo('fc-horario', 'Horário de trabalho', iHor), campo('fc-almoco', 'Horário de almoço', iAlm), campo('fc-regime', 'Regime de trabalho', iReg)),
+    dl('dl-fc-cargo', 'cargo'), dl('dl-fc-sub', 'subsetor'), dl('dl-fc-nivel', 'nivel'), dl('dl-fc-reg', 'regime'),
+    h('datalist', { id: 'dl-fc-hor' }, [...new Set([...unicosOrg('horario_trabalho'), ...unicosOrg('horario_almoco')])].map(x => h('option', { value: x }))), erro);
+  const extra = [];
+  if (modo === 'editar' && f) {
+    const nSub = S.funcionarios.filter(x => x.superior_id === f.id).length;
+    extra.push(h('button', { class: 'btn danger', type: 'button', id: 'fc-excluir', style: 'margin-right:auto', onclick: () => excluirColab(f, () => dlg.close()) }, 'Excluir'));
+    if (!f.vaga) { extra.push(h('button', { class: 'btn', type: 'button', id: 'fc-add-sub', onclick: () => { dlg.close(); abrirFormColab({ modo: 'novo', superior: f.id }); } }, 'Adicionar subordinado'),
+      h('button', { class: 'btn', type: 'button', id: 'fc-add-vaga', onclick: () => { dlg.close(); abrirFormColab({ modo: 'vaga', superior: f.id }); } }, 'Adicionar vaga'));
+      if (nSub) form.prepend(h('div', { class: 'hint', style: 'margin-bottom:8px', text: `${nSub} ${nSub === 1 ? 'pessoa tem' : 'pessoas têm'} esta pessoa como gestor.` }));
+    }
+  }
+  const dlg = modal({ titulo, corpo: form, largo: true, rodape: [...extra, h('button', { class: 'btn', type: 'button', onclick: () => dlg.close() }, 'Cancelar'), h('button', { class: 'btn primary', id: 'fc-salvar', type: 'submit', form: 'form-colab' }, modo === 'preencher' ? 'Preencher vaga' : 'Salvar')] });
+  setTimeout(() => { const alvo = modo === 'vaga' || (f && f.vaga && modo === 'editar') ? $('#fc-cargo') : $('#fc-nome'); if (alvo && !alvo.disabled) alvo.focus(); }, 30);
+}
+function excluirColab(f, depois) {
+  const n = S.funcionarios.filter(x => x.superior_id === f.id).length;
+  const quem = f.vaga ? `a vaga de ${cargoCurto(f.cargo) || 'sem cargo'} (${f.subsetor || 'sem subsetor'})` : f.nome;
+  if (!confirm(`Excluir ${quem}?${n ? `\n\n${n} ${n === 1 ? 'pessoa fica' : 'pessoas ficam'} sem gestor.` : ''}${f.vaga ? '' : '\nOs avisos antigos continuam no quadro e o lugar no mapa é liberado.'}`)) return;
+  acao(async () => { await api.excluirFuncionario(f.id); await atualizarDepois(); }, f.vaga ? 'Vaga excluída.' : 'Colaborador excluído.').then(ok => { if (ok && depois) depois(); });
+}
+function abrirFicha(f) {
+  const linhas = COLS_ORG.map(c => [c.t, valorOrg(f, c.k) || '—']);
+  modal({ titulo: f.vaga ? 'Vaga aberta' : f.nome, corpo: h('dl', { class: 'ficha' }, linhas.map(([k, vv]) => [h('dt', { text: k }), h('dd', { text: vv })])) });
+}
+
+/* ----- exportar CSV ----- */
+function exportarCsv() {
+  const lista = filtrarOrg(); const esc_ = x => { const s = String(x ?? ''); return /[;"\n]/.test(s) ? '"' + s.replace(/"/g, '""') + '"' : s; };
+  const linhas = [COLS_ORG.map(c => c.t).join(';'), ...lista.map(f => COLS_ORG.map(c => esc_(c.k === 'admissao' ? fmtAdm(f.admissao) : valorOrg(f, c.k))).join(';'))];
+  const blob = new Blob(['\ufeff' + linhas.join('\r\n')], { type: 'text/csv;charset=utf-8' });
+  const a = h('a', { href: URL.createObjectURL(blob), download: `colaboradores-${hojeISO()}.csv` }); document.body.append(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(a.href), 2000);
+  toast(`${lista.length} linhas exportadas.`);
+}
+
+/* ----- tela ----- */
+function viewOrg() {
+  const o = S.org, adm = ehAdmin();
+  ui.org = h('div', { id: 'org-raiz' });
+  const sel = (id, rot, chave, valores, extra) => { const s = h('select', { id, onchange: e => { o[chave] = e.target.value; atualizarOrg(true); } }, h('option', { value: '' }, 'Todos'), valores.map(x => h('option', { value: x }, x))); s.value = o[chave]; return h('div', { class: 'field' }, h('label', { for: id, text: rot }), s); };
+  const gestoresTxt = [...new Set(S.funcionarios.map(f => gestorTexto(f)).filter(Boolean))].sort((a, b) => a.localeCompare(b, 'pt-BR'));
+  const tipo = h('select', { id: 'of-tipo', onchange: e => { o.tipo = e.target.value; atualizarOrg(true); } }, h('option', { value: 'todos' }, 'Colaboradores e vagas'), h('option', { value: 'pessoas' }, 'Só colaboradores'), h('option', { value: 'vagas' }, 'Só vagas'));
+  tipo.value = o.tipo;
+  const busca = h('input', { id: 'of-busca', type: 'search', placeholder: 'Nome, matrícula, cargo...', autocomplete: 'off', value: o.busca, oninput: e => { o.busca = e.target.value; atualizarOrg(true); if (o.visao === 'organograma') buscarNoOrganograma(); } });
+  const alternar = v => () => { if (o.visao !== v) { o.visao = v; render(); } };
+  return h('div', {},
+    h('div', { class: 'page-head' }, h('div', {}, h('h1', { text: 'Colaboradores e Organização' }),
+      h('p', { text: adm ? 'A planilha de colaboradores e o organograma, ambos editáveis. Clique em uma célula para alterar e use os botões para incluir colaboradores e vagas.' : 'A planilha de colaboradores e o organograma do setor. Somente o administrador altera.' })),
+      h('div', { class: 'head-acoes' },
+        h('div', { class: 'seg seg-btn', role: 'group', 'aria-label': 'Forma de visualizar' }, h('button', { type: 'button', id: 'org-v-planilha', 'aria-pressed': String(o.visao === 'planilha'), onclick: alternar('planilha') }, 'Planilha'), h('button', { type: 'button', id: 'org-v-org', 'aria-pressed': String(o.visao === 'organograma'), onclick: alternar('organograma') }, 'Organograma')),
+        adm ? h('button', { class: 'btn primary', id: 'org-novo', onclick: () => abrirFormColab({ modo: 'novo' }) }, '+ Colaborador') : null,
+        adm ? h('button', { class: 'btn primary', id: 'org-nova-vaga', onclick: () => abrirFormColab({ modo: 'vaga' }) }, '+ Vaga') : null,
+        h('button', { class: 'btn', id: 'org-csv', onclick: exportarCsv }, 'Exportar CSV'))),
+    h('div', { class: 'card panel' },
+      h('div', { class: 'filters' },
+        h('div', { class: 'field' }, h('label', { for: 'of-busca', text: 'Buscar' }), busca),
+        o.visao === 'planilha' ? sel('of-sub', 'Subsetor', 'sub', unicosOrg('subsetor')) : null,
+        o.visao === 'planilha' ? sel('of-nivel', 'Nível', 'nivel', unicosOrg('nivel')) : null,
+        o.visao === 'planilha' ? sel('of-gestor', 'Gestor', 'gestor', gestoresTxt) : null,
+        o.visao === 'planilha' ? sel('of-regime', 'Regime', 'regime', unicosOrg('regime')) : null,
+        o.visao === 'planilha' ? h('div', { class: 'field' }, h('label', { for: 'of-tipo', text: 'Mostrar' }), tipo) : null),
+      h('div', { class: 'filters-foot' }, o.visao === 'planilha' ? h('button', { class: 'linkbtn', type: 'button', onclick: () => { Object.assign(o, { busca: '', sub: '', nivel: '', gestor: '', regime: '', tipo: 'todos' }); render(); } }, 'Limpar filtros') : h('span', { class: 'hint', text: 'A busca localiza e destaca a pessoa no organograma.' }))),
+    S.colabIndisponivel ? h('div', { class: 'err', id: 'org-indisponivel', style: 'margin:12px 0', text: 'O banco de dados ainda não tem as colunas desta aba (horários, regime, vagas e gestor por pessoa). Rode o arquivo atualizacao_05_colaboradores.sql no Supabase (veja o README) e recarregue a página.' }) : null,
+    ui.org);
+}
+
+function atualizarOrg(forcar) {
+  if (!ui.org || !document.body.contains(ui.org)) return;
+  if (!forcar && document.querySelector('.cel-edit')) return;   // não derruba uma edição em andamento
+  const o = S.org;
+  const listas = h('div', { class: 'hidden' }, ['cargo', 'subsetor', 'nivel', 'regime'].map(k => h('datalist', { id: 'dl-org-' + k }, unicosOrg(k).map(x => h('option', { value: x })))),
+    h('datalist', { id: 'dl-org-horario' }, [...new Set([...unicosOrg('horario_trabalho'), ...unicosOrg('horario_almoco')])].map(x => h('option', { value: x }))));
+  subst(ui.org, listas, o.visao === 'planilha' ? tabelaOrg() : organograma());
+  if (o.visao === 'organograma' && o.rolarPara) { const el = $(`.org-no[data-no="${o.rolarPara}"]`); if (el) el.scrollIntoView({ block: 'center', inline: 'center', behavior: 'smooth' }); o.rolarPara = null; }
+}
+
+function tabelaOrg() {
+  const o = S.org, adm = ehAdmin(), lista = filtrarOrg();
+  const nPessoas = S.funcionarios.filter(f => !f.vaga).length, nVagas = S.funcionarios.length - nPessoas;
+  const seta = k => o.sort.col === k ? (o.sort.dir === 1 ? ' ▲' : ' ▼') : '';
+  const cab = COLS_ORG.map(c => h('th', { class: 'th-ord', 'data-col': c.k, 'aria-sort': o.sort.col === c.k ? (o.sort.dir === 1 ? 'ascending' : 'descending') : 'none' },
+    h('button', { type: 'button', class: 'ord', onclick: () => { o.sort = { col: c.k, dir: o.sort.col === c.k ? -o.sort.dir : 1 }; atualizarOrg(true); } }, c.t + seta(c.k))));
+  if (adm) cab.push(h('th', { class: 'th-acoes', text: '' }));
+  const linhas = lista.map(f => {
+    const cels = COLS_ORG.map(c => {
+      const txt = valorOrg(f, c.k);
+      const td = h('td', { class: 'cel cel-' + c.k + (adm ? ' edit' : ''), 'data-col': c.k, tabindex: adm ? '0' : null, title: adm ? 'Clique para editar' : null,
+        onclick: adm ? () => iniciarEdicao(td, f, c) : null, onkeydown: adm ? e => { if (e.key === 'Enter' && e.target === td) { e.preventDefault(); iniciarEdicao(td, f, c); } } : null }, txt || h('span', { class: 'vazio', text: '—' }));
+      return td;
+    });
+    if (adm) cels.push(h('td', { class: 'col-acoes' }, h('span', { class: 'acoes' },
+      f.vaga ? h('button', { class: 'btn sm', 'data-acao': 'preencher', onclick: () => abrirFormColab({ modo: 'preencher', f }) }, 'Preencher') : null,
+      f.vaga ? h('button', { class: 'btn sm', 'data-acao': 'duplicar', onclick: () => acao(async () => { await api.criarFuncionario({ ...f, id: undefined, nome: 'Vaga aberta', vaga: true, matricula: null, admissao: null }); await atualizarDepois(); }, 'Vaga duplicada.') }, 'Duplicar') : null,
+      h('button', { class: 'btn sm danger', 'data-acao': 'excluir-colab', onclick: () => excluirColab(f) }, 'Excluir'))));
+    return h('tr', { class: f.vaga ? 'linha-vaga' : '', 'data-id': f.id }, cels);
+  });
+  return h('div', {},
+    h('p', { class: 'meta-line', id: 'org-total', text: `${lista.length} ${lista.length === 1 ? 'linha' : 'linhas'}${lista.length !== S.funcionarios.length ? ` (de ${S.funcionarios.length})` : ''} · ${nPessoas} colaboradores e ${nVagas} ${nVagas === 1 ? 'vaga' : 'vagas'}` }),
+    lista.length ? h('div', { class: 'table-wrap org-tabela' }, h('table', { id: 'org-tabela' }, h('thead', {}, h('tr', {}, cab)), h('tbody', {}, linhas))) : h('div', { class: 'empty', text: 'Nenhuma linha com esses filtros.' }));
+}
+
+/* ----- organograma ----- */
+function arvoreOrg() {
+  const por = new Map(S.funcionarios.map(f => [f.id, f])), filhos = new Map(), ext = new Map(), raizes = [];
+  const no = f => ({ id: f.id, f, nome: f.nome, filhos: [] }); const nos = new Map(S.funcionarios.map(f => [f.id, no(f)]));
+  S.funcionarios.forEach(f => {
+    const n = nos.get(f.id);
+    if (f.superior_id != null && por.has(f.superior_id)) nos.get(f.superior_id).filhos.push(n);
+    else if (f.gestor_nome && f.gestor_nome.trim() && f.gestor_nome.trim() !== '-') {
+      const k = norm(f.gestor_nome); if (!ext.has(k)) ext.set(k, { id: 'ext:' + k, f: null, nome: f.gestor_nome.trim(), filhos: [] }); ext.get(k).filhos.push(n);
+    } else raizes.push(n);
+  });
+  const rank = { 'Head': 0, 'Coordenação': 1, 'Supervisão': 2, 'Ponto Focal': 3, 'Especialista': 4 };
+  const tam = n => 1 + n.filhos.reduce((a, c) => a + tam(c), 0);
+  const ordena = n => { n.filhos.sort((a, b) => ((b.filhos.length > 0) - (a.filhos.length > 0)) || (tam(b) - tam(a)) || ((rank[a.f && a.f.nivel] ?? 9) - (rank[b.f && b.f.nivel] ?? 9)) || ((a.f && a.f.vaga) - (b.f && b.f.vaga)) || norm(a.nome).localeCompare(norm(b.nome))); n.filhos.forEach(ordena); };
+  const topo = [...ext.values(), ...raizes]; topo.forEach(ordena);
+  topo.sort((a, b) => (tam(b) - tam(a)));
+  return topo;
+}
+function percorrer(nos, fn, pai = null) { nos.forEach(n => { fn(n, pai); percorrer(n.filhos, fn, n); }); }
+function expandirPadrao(topo) {
+  const s = new Set(); percorrer(topo, n => { if (n.filhos.length && n.filhos.some(c => c.filhos.length)) s.add(n.id); if (!n.f && n.filhos.length) s.add(n.id); }); return s;
+}
+function organograma() {
+  const o = S.org, adm = ehAdmin(), topo = arvoreOrg();
+  if (!o.aberto) o.aberto = expandirPadrao(topo);
+  const nTotal = S.funcionarios.length;
+  const barra = h('div', { class: 'org-barra' },
+    h('button', { class: 'btn sm', id: 'org-expandir', type: 'button', onclick: () => { const s = new Set(); percorrer(topo, n => { if (n.filhos.length) s.add(n.id); }); o.aberto = s; atualizarOrg(true); } }, 'Expandir tudo'),
+    h('button', { class: 'btn sm', id: 'org-recolher', type: 'button', onclick: () => { o.aberto = expandirPadrao(topo); atualizarOrg(true); } }, 'Recolher equipes'),
+    h('span', { class: 'org-zoom-ctl' }, h('button', { class: 'btn sm', id: 'org-zoom-menos', type: 'button', 'aria-label': 'Diminuir', onclick: () => { o.zoom = Math.max(0.4, +(o.zoom - 0.1).toFixed(2)); atualizarOrg(true); } }, '−'),
+      h('span', { id: 'org-zoom-val', text: Math.round(o.zoom * 100) + '%' }), h('button', { class: 'btn sm', id: 'org-zoom-mais', type: 'button', 'aria-label': 'Aumentar', onclick: () => { o.zoom = Math.min(1.6, +(o.zoom + 0.1).toFixed(2)); atualizarOrg(true); } }, '+')),
+    adm ? h('span', { class: 'hint', text: 'Arraste uma pessoa sobre o gestor dela para mudar a hierarquia. Clique para editar.' }) : h('span', { class: 'hint', text: 'Clique em uma pessoa para ver os dados.' }));
+  const lista = nos => h('ul', {}, nos.map(n => h('li', {}, caixaOrg(n), n.filhos.length && o.aberto.has(n.id) ? filhosOrg(n) : null)));
+  const filhosOrg = n => { const folhas = n.filhos.every(c => !c.filhos.length); return h('ul', { class: folhas ? 'vertical' : '' }, n.filhos.map(c => h('li', {}, caixaOrg(c), c.filhos.length && o.aberto.has(c.id) ? filhosOrg(c) : null))); };
+  return h('div', {}, barra, h('p', { class: 'meta-line', id: 'org-resumo', text: `${nTotal} posições no organograma (${S.funcionarios.filter(f => f.vaga).length} vagas)` }),
+    h('div', { class: 'org-wrap' }, h('div', { class: 'org', id: 'organograma', style: `zoom:${o.zoom}` }, lista(topo))));
+}
+function caixaOrg(n) {
+  const o = S.org, adm = ehAdmin(), f = n.f, ext = !f, aberto = o.aberto && o.aberto.has(n.id), arrasta = !ext && adm;
+  const cor = f ? corSetorMapa(f.subsetor) : '#64748b';
+  const box = h('div', { class: 'org-no' + (ext ? ' ext' : '') + (f && f.vaga ? ' vaga' : '') + (o.achados && o.achados.has(n.id) ? ' achado' : ''), 'data-no': String(n.id), style: `--cor:${cor}`, tabindex: '0', role: 'button',
+    draggable: arrasta ? 'true' : null, title: ext ? `${n.nome} (gestor fora da planilha)` : [f.vaga ? 'Vaga aberta' : f.nome, f.cargo, f.horario_trabalho && f.horario_trabalho !== '-' ? 'Horário: ' + f.horario_trabalho : '', f.regime && f.regime !== '-' ? f.regime : ''].filter(Boolean).join(' · '),
+    onclick: () => { if (ext) abrirExterno(n); else if (adm) abrirFormColab({ modo: 'editar', f }); else abrirFicha(f); },
+    onkeydown: e => { if (e.key === 'Enter' && e.target === box) { e.preventDefault(); box.click(); } } },
+    h('div', { class: 'org-nome', text: ext ? n.nome : (f.vaga ? 'Vaga aberta' : nomeExibicao(f)) }),
+    h('div', { class: 'org-meta', text: ext ? 'Fora da planilha' : [f.nivel, f.subsetor].filter(Boolean).join(' · ') || '—' }),
+    f && f.vaga ? h('div', { class: 'org-meta', text: cargoCurto(f.cargo) }) : null,
+    n.filhos.length ? h('button', { class: 'org-toggle', type: 'button', 'aria-expanded': String(!!aberto), 'aria-label': aberto ? 'Recolher equipe' : `Mostrar ${n.filhos.length} subordinados`,
+      onclick: e => { e.stopPropagation(); if (aberto) o.aberto.delete(n.id); else o.aberto.add(n.id); atualizarOrg(true); } }, aberto ? '−' : `+${n.filhos.length}`) : null);
+  if (arrasta) box.addEventListener('dragstart', e => { o.arrasto = { id: n.id, proibidos: new Set([n.id, ...subordinadosDe(n.id)]) }; e.dataTransfer.effectAllowed = 'move'; try { e.dataTransfer.setData('text/plain', String(n.id)); } catch { /* ok */ } box.classList.add('arrastando'); });
+  if (arrasta) box.addEventListener('dragend', () => { o.arrasto = null; box.classList.remove('arrastando'); document.querySelectorAll('.org-no.alvo').forEach(x => x.classList.remove('alvo')); });
+  if (adm) {
+    box.addEventListener('dragover', e => { const a = o.arrasto; if (!a || (typeof n.id === 'number' && a.proibidos.has(n.id)) || (f && f.vaga)) return; e.preventDefault(); box.classList.add('alvo'); });
+    box.addEventListener('dragleave', () => box.classList.remove('alvo'));
+    box.addEventListener('drop', e => { e.preventDefault(); box.classList.remove('alvo'); const a = o.arrasto; if (a) moverNo(a.id, n); });
+  }
+  return box;
+}
+async function moverNo(id, alvo) {
+  const f = S.funcionarios.find(x => x.id === id); if (!f) return;
+  const ext = !alvo.f, destino = ext ? alvo.nome : alvo.f.nome;
+  if (!ext && alvo.f.id === f.superior_id) return;
+  if (!confirm(`Mover ${f.vaga ? 'a vaga' : f.nome} para ficar sob ${destino}?`)) return;
+  const patch = ext ? { superior_id: null, gestor_nome: alvo.nome } : { superior_id: alvo.f.id, gestor_nome: nomeExibicao(alvo.f) };
+  await acao(async () => { await api.atualizarFuncionario(id, patch); await atualizarDepois(); }, 'Organograma atualizado.');
+}
+function abrirExterno(n) {
+  const adm = ehAdmin();
+  const corpo = h('div', {}, h('p', { text: `${n.nome} aparece como gestor de ${n.filhos.length} ${n.filhos.length === 1 ? 'pessoa' : 'pessoas'}, mas não está na planilha de colaboradores.` }),
+    adm ? h('p', { class: 'hint', text: 'Para editar essa pessoa no organograma, cadastre-a na planilha. Quem a tem como gestor passa a ficar ligado a ela.' }) : null);
+  const dlg = modal({ titulo: n.nome, corpo, rodape: adm ? [h('button', { class: 'btn', type: 'button', onclick: () => dlg.close() }, 'Fechar'), h('button', { class: 'btn primary', id: 'org-cadastrar-ext', type: 'button', onclick: async () => {
+    const ok = await acao(async () => { const id = await api.criarFuncionario({ nome: n.nome, cargo: null, subsetor: null }); await recarregar(); for (const c of n.filhos) await api.atualizarFuncionario(c.id, { superior_id: id, gestor_nome: n.nome }); await atualizarDepois(); }, `${n.nome} cadastrado(a) na planilha.`);
+    if (ok) dlg.close();
+  } }, 'Cadastrar na planilha')] : null });
+}
+function buscarNoOrganograma() {
+  const o = S.org, t = norm(o.busca); o.achados = new Set();
+  if (t) {
+    const topo = arvoreOrg(); const ach = [];
+    percorrer(topo, (n, pai) => { if (norm(`${n.nome} ${n.f ? n.f.cargo || '' : ''}`).includes(t)) ach.push([n, pai]); });
+    const paiDe = new Map(); percorrer(topo, (n, pai) => paiDe.set(n.id, pai));
+    if (!o.aberto) o.aberto = expandirPadrao(topo);
+    ach.forEach(([n]) => { o.achados.add(n.id); let p = paiDe.get(n.id); while (p) { o.aberto.add(p.id); p = paiDe.get(p.id); } });
+    if (ach.length) o.rolarPara = String(ach[0][0].id);
+  }
+  atualizarOrg(true);
+}
+
 /* ================= ADMINISTRAÇÃO ================= */
 let dlgAdmin = null, corpoAdmin = null;
 function abrirAdmin(aba) {
@@ -1178,8 +1555,8 @@ function abrirAdmin(aba) {
 function desenharAdmin() {
   if (!corpoAdmin) return;
   const sub = (id, rot) => h('button', { class: 'subtab', role: 'tab', id: 'sub-' + id, 'aria-selected': String(S.painelAdmin === id), onclick: () => { S.painelAdmin = id; desenharAdmin(); } }, rot);
-  subst(corpoAdmin, h('div', { class: 'subtabs', role: 'tablist' }, sub('gestores', 'Gestores'), sub('naturezas', 'Natureza dos avisos'), sub('funcionarios', 'Funcionários')),
-    S.painelAdmin === 'gestores' ? painelGestores() : S.painelAdmin === 'naturezas' ? painelNaturezas() : painelFuncionarios());
+  subst(corpoAdmin, h('div', { class: 'subtabs', role: 'tablist' }, sub('gestores', 'Gestores'), sub('naturezas', 'Natureza dos avisos')),
+    S.painelAdmin === 'naturezas' ? painelNaturezas() : painelGestores());
 }
 async function adminAcao(fn, msg) { const ok = await acao(fn, msg); if (ok) { await recarregar(); desenharAdmin(); } return ok; }
 
@@ -1200,7 +1577,7 @@ function painelGestores() {
   const nome = h('input', { id: 'g-nome', type: 'text', placeholder: 'Nome completo', required: true });
   const email = h('input', { id: 'g-email', type: 'email', placeholder: 'nome.sobrenome@empresa.com.br', required: true });
   const papel = h('select', { id: 'g-papel' }, h('option', { value: 'supervisor' }, 'Supervisor'), h('option', { value: 'admin' }, 'Administrador'));
-  const func = h('select', { id: 'g-func' }, h('option', { value: '' }, 'Nenhum / não está na lista'), S.funcionarios.slice().sort(byNome).map(f => h('option', { value: f.id }, `${f.nome}${f.subsetor ? ' · ' + f.subsetor : ''}`)));
+  const func = h('select', { id: 'g-func' }, h('option', { value: '' }, 'Nenhum / não está na lista'), pessoas().sort(byNome).map(f => h('option', { value: f.id }, `${f.nome}${f.subsetor ? ' · ' + f.subsetor : ''}`)));
   const form = h('form', { novalidate: true, id: 'form-gestor', onsubmit: async ev => {
     ev.preventDefault();
     if (!nome.value.trim() || !email.value.trim()) return toast('Informe nome e e-mail.', true);
@@ -1218,7 +1595,7 @@ function painelGestores() {
       h('td', {}, p.nome, eu ? h('span', { class: 'pill', style: 'margin-left:6px', text: 'você' }) : null), h('td', { text: p.email }),
       h('td', { text: p.papel === 'admin' ? 'Administrador' : 'Supervisor' }),
       h('td', {}, p.user_id ? h('span', { class: 'chip aprovado', text: 'Ativo' }) : h('span', { class: 'chip pendente', text: 'Aguardando primeiro acesso' })),
-      h('td', { text: S.funcionarios.filter(f => f.gestor_id === p.id).length }),
+      h('td', { text: pessoas().filter(f => f.gestor_id === p.id).length }),
       h('td', {}, h('span', { class: 'acoes', style: 'display:flex;gap:6px;flex-wrap:wrap' },
         !p.user_id ? h('button', { class: 'btn sm', 'data-acao': 'novo-codigo', onclick: async () => { let cod; const ok = await acao(async () => { cod = await api.novoCodigo(p.id); }); if (ok) { S.ultimoConvite = { nome: p.nome, email: p.email, codigo: cod, reativado: false }; desenharAdmin(); } } }, 'Novo código') : null,
         h('button', { class: 'btn sm danger', 'data-acao': 'excluir-gestor', disabled: eu, title: eu ? 'Você não pode excluir o seu próprio perfil' : '', onclick: () => {
@@ -1244,40 +1621,6 @@ function painelNaturezas() {
     h('td', {}, h('button', { class: 'btn sm danger', 'data-acao': 'excluir-nat', onclick: () => { if (!confirm(`Remover a opção "${n.nome}" da lista? Avisos já criados continuam como estão.`)) return; adminAcao(() => api.excluirNatureza(n.id), 'Opção removida.'); } }, 'Remover'))));
   return h('div', {}, h('p', { class: 'hint', text: 'Estas são as opções da lista "Natureza do aviso". Remover uma opção não altera os avisos já criados.' }), form,
     h('div', { class: 'table-wrap' }, h('table', { class: 'mini-table' }, h('thead', {}, h('tr', {}, h('th', { text: 'Opção' }), h('th', { text: '' }))), h('tbody', {}, linhas))));
-}
-
-function painelFuncionarios() {
-  const gestorSel = (valor, id, onchange) => { const s = h('select', { id, onchange }, h('option', { value: '' }, 'Sem gestor'), S.perfis.slice().sort(byNome).map(p => h('option', { value: String(p.id) }, p.nome))); s.value = valor == null ? '' : String(valor); return s; };
-  const nome = h('input', { id: 'f-nome', type: 'text', placeholder: 'Nome completo' });
-  const cargo = h('input', { id: 'f-cargo', type: 'text' });
-  const setor = h('input', { id: 'f-setor', type: 'text', list: 'dl-setores' });
-  const gest = gestorSel(null, 'f-gestor');
-  const setores = [...new Set(S.funcionarios.map(f => f.subsetor).filter(Boolean))].sort();
-  const form = h('form', { novalidate: true, id: 'form-func', onsubmit: ev => {
-    ev.preventDefault(); if (!nome.value.trim()) return toast('Informe o nome.', true);
-    adminAcao(() => api.criarFuncionario({ nome: nome.value, cargo: cargo.value.trim(), subsetor: setor.value.trim(), gestor_id: gest.value ? Number(gest.value) : null }), 'Funcionário adicionado.');
-  } }, h('div', { class: 'form-grid' },
-    h('div', { class: 'field' }, h('label', { for: 'f-nome', text: 'Nome' }), nome), h('div', { class: 'field' }, h('label', { for: 'f-cargo', text: 'Cargo' }), cargo),
-    h('div', { class: 'field' }, h('label', { for: 'f-setor', text: 'Setor' }), setor, h('datalist', { id: 'dl-setores' }, setores.map(s => h('option', { value: s })))),
-    h('div', { class: 'field' }, h('label', { for: 'f-gestor', text: 'Gestor' }), gest)),
-    h('div', { class: 'right' }, h('button', { class: 'btn primary', type: 'submit', id: 'f-add' }, 'Adicionar funcionário')));
-  const corpo = h('tbody');
-  const busca = h('input', { id: 'f-busca', type: 'search', placeholder: 'Buscar por nome, cargo ou setor', value: S.buscaFunc, oninput: e => { S.buscaFunc = e.target.value; linhas(); } });
-  function linhas() {
-    const t = norm(S.buscaFunc);
-    const arr = S.funcionarios.filter(f => !t || norm(`${f.nome} ${f.cargo || ''} ${f.subsetor || ''}`).includes(t)).sort(byNome);
-    subst(corpo, ...arr.map(f => h('tr', { 'data-func': f.id },
-      h('td', { text: f.nome }), h('td', { text: f.cargo || '' }), h('td', { text: f.subsetor || '' }),
-      h('td', {}, gestorSel(f.gestor_id, 'gs-' + f.id, e => adminAcao(() => api.atualizarFuncionario(f.id, { gestor_id: e.target.value ? Number(e.target.value) : null }), 'Gestor atualizado.'))),
-      h('td', {}, h('button', { class: 'btn sm danger', 'data-acao': 'excluir-func', onclick: () => { if (!confirm(`Excluir ${f.nome} da lista de funcionários? Avisos já criados continuam no quadro.`)) return; adminAcao(() => api.excluirFuncionario(f.id), 'Funcionário excluído.'); } }, 'Excluir')))));
-    const t2 = $('#f-total'); if (t2) t2.textContent = `${arr.length} de ${S.funcionarios.length} funcionários`;
-  }
-  const raiz = h('div', {}, h('h3', { style: 'margin:0 0 10px', text: 'Adicionar funcionário' }), form,
-    h('h3', { style: 'margin:22px 0 10px', text: 'Equipes' }), h('p', { class: 'hint', text: 'O gestor escolhido define quem aparece para cada supervisor ao criar avisos. Alterar aqui vale a partir de agora.' }),
-    h('div', { class: 'field', style: 'max-width:420px;margin-bottom:10px' }, busca), h('div', { class: 'hint', id: 'f-total', style: 'margin-bottom:8px' }),
-    h('div', { class: 'table-wrap' }, h('table', { class: 'mini-table' }, h('thead', {}, h('tr', {}, ['Nome', 'Cargo', 'Setor', 'Gestor', ''].map(c => h('th', { text: c })))), corpo)));
-  setTimeout(linhas, 0);
-  return raiz;
 }
 
 /* ================= início ================= */
