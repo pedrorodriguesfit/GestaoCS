@@ -8,8 +8,19 @@ const CFG = window.GESTAO_CS_CONFIG || {};
 const SUPABASE_JS = 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.118.0/dist/umd/supabase.js';
 const MODO = (CFG.supabaseUrl && CFG.supabaseAnonKey) ? 'supabase' : 'demo';
 const LOGO_FIT = 'data:image/png;base64,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'; // logo FIT Energia (versão para fundo escuro), embutido para não depender de outro arquivo
-const VERSAO = '2026.11.13-c';   // aparece no rodapé: serve para conferir se a versão nova está no ar
+const VERSAO = '2026.11.13-d';   // aparece no rodapé: serve para conferir se a versão nova está no ar
 const CANAIS = ['Hubspot', 'BlipDesk', '3CX'];
+/* Aba "Gerência & Coordenação" (só administradores): temas dos tópicos e limites dos anexos */
+const TEMAS = [
+  { nome: 'Gestão de pessoas', cor: '#0e7490' },
+  { nome: 'Inteligência', cor: '#7e3ff2' },
+  { nome: 'Metas', cor: '#c2410c' },
+  { nome: 'Estratégia', cor: '#4d7c0f' }
+];
+const BUCKET_GERENCIA = 'gerencia-anexos';
+const MAX_ARQUIVO = 10 * 1024 * 1024;   // 10 MB por arquivo (o mesmo limite está no bucket do Supabase)
+const MAX_ARQUIVOS = 10;                // arquivos por envio
+const MAX_ARQUIVO_DEMO = 400 * 1024;    // no modo demonstração os arquivos ficam no navegador, que tem pouco espaço
 const POLL_MS = 60000;
 
 /* ================= utilidades ================= */
@@ -69,6 +80,8 @@ function erroAmigavel(e) {
   if (/User already registered/i.test(m)) return 'Este e-mail já tem acesso. Use a aba "Entrar" (ou "Esqueci minha senha").';
   if (/Database error saving new user|convite_invalido/i.test(m)) return 'Não foi possível criar o acesso. Confira se o e-mail é o mesmo que o administrador cadastrou e se o código está correto e dentro do prazo (7 dias).';
   if (/Could not find the .* column|column .* does not exist/i.test(m)) return 'O banco de dados ainda não tem as colunas novas. Rode a atualização do Supabase indicada no README (atualizacao_05_colaboradores.sql) e recarregue a página.';
+  if (/exceeded the maximum allowed size|payload too large|entity too large/i.test(m)) return 'O arquivo é maior que 10 MB.';
+  if (/Bucket not found/i.test(m)) return 'O espaço de arquivos da aba Gerência & Coordenação ainda não foi criado. Rode o arquivo atualizacao_07_gerencia.sql no Supabase (veja o README) e recarregue a página.';
   if (/row-level security|permission denied|insufficient/i.test(m)) return 'Você não tem permissão para esta ação.';
   if (/Password should be at least/i.test(m)) return 'A senha precisa ter pelo menos 8 caracteres.';
   if (/rate limit|too many/i.test(m)) return 'Muitas tentativas seguidas. Aguarde alguns minutos e tente de novo.';
@@ -112,7 +125,25 @@ function criarApiDemo() {
   const hoje = new Date();
   const dia = n => { const d = new Date(hoje); d.setDate(d.getDate() + n); return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`; };
 
+  function seedGerencia() {
+    const agora = n => new Date(hoje.getTime() - n * 3600000).toISOString();
+    const T = (id, titulo, tema, descricao, h0, h1) => ({ id, titulo, tema, descricao, concluido: false, concluido_em: null, concluido_por: null, concluido_por_nome: null, criado_por: 1, criado_por_nome: 'Admin Demo', criado_em: agora(h0), atualizado_em: agora(h1) });
+    const topicos = [
+      T(1, 'Plano de metas do próximo trimestre', 'Metas', 'Definir as metas de TMA e CSAT por subsetor e o que entra na remuneração variável.', 72, 5),
+      T(2, 'Reorganização dos turnos do N1', 'Gestão de pessoas', 'Avaliar a cobertura nos horários de pico e a possibilidade de escala 5x2.', 48, 30),
+      T(3, 'Painel de indicadores semanais', 'Inteligência', 'Alinhar quais indicadores entram no painel da gerência.', 120, 100),
+      T(4, 'Revisão do fluxo de inadimplência', 'Estratégia', 'Mapear gargalos entre N3 e Inadimplência.', 200, 150)
+    ];
+    topicos[3].concluido = true; topicos[3].concluido_em = agora(150); topicos[3].concluido_por = 1; topicos[3].concluido_por_nome = 'Admin Demo';
+    const comentarios = [
+      { id: 1, topico_id: 1, texto: 'Sugiro partir do histórico dos últimos 3 meses antes de fechar os números.', criado_por: 1, criado_por_nome: 'Admin Demo', criado_em: agora(5) },
+      { id: 2, topico_id: 2, texto: 'Levantamento de demanda por faixa de horário fica pronto até sexta.', criado_por: 1, criado_por_nome: 'Admin Demo', criado_em: agora(30) }
+    ];
+    return { topicos, comentarios, anexos: [], seqGer: { topico: 4, comentario: 2, anexo: 0 } };
+  }
+
   function seed() {
+    const gerSeed = seedGerencia();
     const F = (id, nome, cargo, subsetor, nivel, adm, sup, hor, alm, reg, extra = {}) => ({ id, matricula: String(1000 + id), nome, cargo, subsetor, nivel, admissao: adm,
       superior_id: sup, gestor_id: sup && sup <= 3 ? sup : null, gestor_nome: null, apelido: null, cor_equipe: null, horario_trabalho: hor, horario_almoco: alm, regime: reg, vaga: false, ...extra });
     const funcionarios = [
@@ -140,7 +171,7 @@ function criarApiDemo() {
         criado_em: new Date(hoje.getTime() - id * 3600000).toISOString(), decidido_por: status === 'aprovado' ? 1 : null, decidido_em: null };
     };
     return {
-      seq: { aviso: 20, analise: 10, func: 30, perfil: 10, nat: 10 },
+      seq: { aviso: 20, analise: 10, func: 30, perfil: 10, nat: 10, ...gerSeed.seqGer },
       perfis, funcionarios,
       naturezas: ['Férias', 'Atestado', 'Ausência Temporária', 'Folga', 'Day Off'].map((nome, i) => ({ id: i + 1, nome, ordem: i + 1 })),
       avisos: [
@@ -161,12 +192,17 @@ function criarApiDemo() {
         ...Array.from({ length: 6 }, (_, i) => ({ lugar: 'I3-' + pad(i + 1), tipo: 'setor', setor: 'Atendimento N3', funcionario_id: null, funcionario_nome: null })),
         { lugar: 'I3-12', tipo: 'pessoa', setor: 'Inadimplência', funcionario_id: 9, funcionario_nome: 'Heitor Dias' }
       ],
+      topicos: gerSeed.topicos, comentarios: gerSeed.comentarios, anexos: gerSeed.anexos,
       convites: [], contas: { 'admin@demo.com': 'demo', 'ana@demo.com': 'demo', 'bruno@demo.com': 'demo' }
     };
   }
   let db;
   const salvar = () => localStorage.setItem(KEY, JSON.stringify(db));
-  const carregar = () => { try { db = JSON.parse(localStorage.getItem(KEY)); } catch { db = null; } if (!db) { db = seed(); salvar(); } };
+  const carregar = () => {
+    try { db = JSON.parse(localStorage.getItem(KEY)); } catch { db = null; }
+    if (!db) { db = seed(); salvar(); }
+    if (!db.topicos) { const g = seedGerencia(); db.topicos = g.topicos; db.comentarios = g.comentarios; db.anexos = g.anexos; Object.assign(db.seq, { topico: g.seqGer.topico, comentario: g.seqGer.comentario, anexo: g.seqGer.anexo }); try { salvar(); } catch { /* sem espaço */ } }
+  };
   carregar();
   const clone = x => JSON.parse(JSON.stringify(x));
   const eu = () => { const u = sessionStorage.getItem(SESS); return db.perfis.find(p => p.user_id === u) || null; };
@@ -184,6 +220,21 @@ function criarApiDemo() {
   const gerarCodigo = () => Array.from(crypto.getRandomValues(new Uint8Array(6)), b => b.toString(16).padStart(2, '0')).join('').toUpperCase().slice(0, 12);
   const limpaCod = c => String(c || '').replace(/[^A-Za-z0-9]/g, '').toUpperCase();
   const wait = async v => { await new Promise(r => setTimeout(r, 40)); return v; };
+  const lerDataUrl = f => new Promise((ok, falha) => { const r = new FileReader(); r.onload = () => ok(r.result); r.onerror = () => falha(new Error('Não foi possível ler o arquivo.')); r.readAsDataURL(f); });
+  async function anexarDemo(topico_id, comentario_id, arquivos, p) {
+    const falhas = [];
+    for (const f of (arquivos || [])) {
+      if (f.size > MAX_ARQUIVO_DEMO) { falhas.push(`${f.name}: na demonstração só cabem arquivos de até 400 KB`); continue; }
+      let novo = null;
+      try {
+        const dados = await lerDataUrl(f);
+        novo = { id: ++db.seq.anexo, topico_id, comentario_id, nome: f.name, caminho: 'demo/' + db.seq.anexo, tamanho: f.size, tipo: f.type || null, dados, criado_por: p.id, criado_por_nome: p.nome, criado_em: new Date().toISOString() };
+        db.anexos.push(novo); salvar();
+      } catch (e) { if (novo) db.anexos = db.anexos.filter(x => x !== novo); falhas.push(`${f.name}: não foi possível guardar o arquivo no navegador`); }
+    }
+    const t = db.topicos.find(x => x.id === topico_id); if (t) { t.atualizado_em = new Date().toISOString(); try { salvar(); } catch { /* ok */ } }
+    return falhas;
+  }
 
   return {
     modo: 'demo',
@@ -214,7 +265,9 @@ function criarApiDemo() {
       const avisos = db.avisos.filter(a => p.papel === 'admin' || a.status === 'aprovado' || a.criado_por === p.id);
       const analises = db.analises.filter(a => p.papel === 'admin' || a.gestor_id === p.id);
       if (!db.lugares) db.lugares = [];
-      return clone({ perfis: db.perfis, funcionarios: db.funcionarios, naturezas: db.naturezas, avisos, analises, lugares: db.lugares });
+      const adm = p.papel === 'admin';
+      return clone({ perfis: db.perfis, funcionarios: db.funcionarios, naturezas: db.naturezas, avisos, analises, lugares: db.lugares,
+        topicos: adm ? db.topicos : [], comentarios: adm ? db.comentarios : [], anexos: adm ? db.anexos.map(({ dados, ...resto }) => resto) : [] });
     },
     async criarAviso(d) {
       const p = exigir();
@@ -299,6 +352,55 @@ function criarApiDemo() {
       }
       db.lugares = copia; salvar(); return wait(itens.length);
     },
+    /* ----- Gerência & Coordenação (demo): só administrador ----- */
+    async criarTopico(d, arquivos) {
+      const p = admin(); const titulo = String(d.titulo || '').trim();
+      if (!titulo) throw new Error('Informe o título do tópico.');
+      if (!TEMAS.some(t => t.nome === d.tema)) throw new Error('Escolha o tema do tópico.');
+      const agora = new Date().toISOString(); const id = ++db.seq.topico;
+      db.topicos.push({ id, titulo, tema: d.tema, descricao: String(d.descricao || '').trim() || null, concluido: false, concluido_em: null, concluido_por: null, concluido_por_nome: null, criado_por: p.id, criado_por_nome: p.nome, criado_em: agora, atualizado_em: agora });
+      salvar();
+      return { id, falhas: await anexarDemo(id, null, arquivos, p) };
+    },
+    async editarTopico(id, d) {
+      const p = admin(); const t = db.topicos.find(x => x.id === id); if (!t) throw new Error('Tópico não encontrado.');
+      if (t.criado_por != null && t.criado_por !== p.id) throw new Error('Só quem criou o tópico pode editá-lo');
+      const titulo = String(d.titulo || '').trim(); if (!titulo) throw new Error('Informe o título do tópico.');
+      if (!TEMAS.some(x => x.nome === d.tema)) throw new Error('Escolha o tema do tópico.');
+      Object.assign(t, { titulo, tema: d.tema, descricao: String(d.descricao || '').trim() || null, atualizado_em: new Date().toISOString() });
+      salvar(); return wait();
+    },
+    async concluirTopico(id, concluido) {
+      const p = admin(); const t = db.topicos.find(x => x.id === id); if (!t) throw new Error('Tópico não encontrado.');
+      Object.assign(t, concluido ? { concluido: true, concluido_em: new Date().toISOString(), concluido_por: p.id, concluido_por_nome: p.nome } : { concluido: false, concluido_em: null, concluido_por: null, concluido_por_nome: null });
+      t.atualizado_em = new Date().toISOString(); salvar(); return wait();
+    },
+    async excluirTopico(id) {
+      const p = admin(); const t = db.topicos.find(x => x.id === id); if (!t) throw new Error('Tópico não encontrado.');
+      if (t.criado_por != null && t.criado_por !== p.id) throw new Error('Só quem criou o tópico pode excluí-lo.');
+      db.topicos = db.topicos.filter(x => x.id !== id); db.comentarios = db.comentarios.filter(c => c.topico_id !== id); db.anexos = db.anexos.filter(a => a.topico_id !== id);
+      salvar(); return wait();
+    },
+    async criarComentario(topico_id, texto, arquivos) {
+      const p = admin(); const t = db.topicos.find(x => x.id === topico_id); if (!t) throw new Error('Tópico não encontrado.');
+      texto = String(texto || '').trim(); if (!texto && !(arquivos && arquivos.length)) throw new Error('Escreva um comentário ou anexe um arquivo.');
+      const id = ++db.seq.comentario;
+      db.comentarios.push({ id, topico_id, texto: texto || null, criado_por: p.id, criado_por_nome: p.nome, criado_em: new Date().toISOString() });
+      t.atualizado_em = new Date().toISOString(); salvar();
+      return { id, falhas: await anexarDemo(topico_id, id, arquivos, p) };
+    },
+    async excluirComentario(id) {
+      const p = admin(); const c = db.comentarios.find(x => x.id === id); if (!c) throw new Error('Comentário não encontrado.');
+      if (c.criado_por != null && c.criado_por !== p.id) throw new Error('Você não tem permissão para esta ação.');
+      db.comentarios = db.comentarios.filter(x => x.id !== id); db.anexos = db.anexos.filter(a => a.comentario_id !== id); salvar(); return wait();
+    },
+    async anexarAoTopico(topico_id, arquivos) { const p = admin(); if (!db.topicos.some(t => t.id === topico_id)) throw new Error('Tópico não encontrado.'); return anexarDemo(topico_id, null, arquivos, p); },
+    async excluirAnexo(a) {
+      const p = admin(); const x = db.anexos.find(y => y.id === a.id); if (!x) throw new Error('Anexo não encontrado.');
+      if (x.criado_por != null && x.criado_por !== p.id) throw new Error('Você não tem permissão para esta ação.');
+      db.anexos = db.anexos.filter(y => y.id !== a.id); salvar(); return wait();
+    },
+    async urlAnexo(a) { admin(); const x = db.anexos.find(y => y.id === a.id); if (!x) throw new Error('Anexo não encontrado.'); return URL.createObjectURL(await (await fetch(x.dados)).blob()); },
     async excluirNatureza(id) { admin(); db.naturezas = db.naturezas.filter(n => n.id !== id); salvar(); return wait(); },
     async criarGestor(nome, email, papel, funcionario_id) {
       admin(); email = String(email).trim().toLowerCase();
@@ -372,6 +474,22 @@ function criarApiSupabase(sb) {
     const dados = ok(await q.select('id'));
     if (!dados || dados.length === 0) throw new Error(msg);
   }
+  /* Envia cada arquivo ao espaço privado e registra o anexo. Devolve a lista de falhas (vazia se tudo certo). */
+  async function enviarArquivos(topico_id, comentario_id, arquivos) {
+    const falhas = [];
+    for (const f of (arquivos || [])) {
+      const ext = (f.name.match(/\.[A-Za-z0-9]{1,8}$/) || [''])[0].toLowerCase();
+      const caminho = `topicos/${topico_id}/${crypto.randomUUID()}${ext}`;
+      try {
+        if (f.size > MAX_ARQUIVO) throw new Error('O arquivo é maior que 10 MB.');
+        const up = await sb.storage.from(BUCKET_GERENCIA).upload(caminho, f, { contentType: f.type || 'application/octet-stream', upsert: false });
+        if (up.error) throw up.error;
+        const ins = await sb.from('topico_anexos').insert({ topico_id, comentario_id, nome: f.name, caminho, tamanho: f.size, tipo: f.type || null });
+        if (ins.error) { try { await sb.storage.from(BUCKET_GERENCIA).remove([caminho]); } catch { /* ok */ } throw ins.error; }
+      } catch (e) { falhas.push(`${f.name}: ${erroAmigavel(e)}`); }
+    }
+    return falhas;
+  }
   const COL_PERFIL = 'id,user_id,email,nome,papel,funcionario_id';
   return {
     modo: 'supabase',
@@ -393,8 +511,14 @@ function criarApiSupabase(sb) {
       const { data: s } = await sb.auth.getSession(); const uid = s.session && s.session.user.id; if (!uid) return null;
       return ok(await sb.from('perfis').select(COL_PERFIL).eq('user_id', uid).maybeSingle());
     },
-    async carregarTudo() {
+    async carregarTudo(adm) {
       let lugaresIndisponivel = false;
+      /* Gerência & Coordenação: só o administrador carrega (o banco também recusa para os demais) */
+      const gerP = adm ? Promise.all([
+        paginado(() => sb.from('topicos').select('*').order('atualizado_em', { ascending: false }).order('id', { ascending: false })),
+        paginado(() => sb.from('topico_comentarios').select('*').order('criado_em').order('id')),
+        paginado(() => sb.from('topico_anexos').select('*').order('criado_em').order('id'))
+      ]).catch(e => ({ erro: e })) : Promise.resolve([[], [], []]);
       const lugaresP = paginado(() => sb.from('lugares').select('*').order('lugar')).catch(() => { lugaresIndisponivel = true; return []; });
       const [perfis, funcionarios, naturezas, avisos, analises] = await Promise.all([
         paginado(() => sb.from('perfis').select(COL_PERFIL).order('nome')),
@@ -404,7 +528,10 @@ function criarApiSupabase(sb) {
         paginado(() => sb.from('analises').select('*').order('data_atendimento', { ascending: false }).order('id', { ascending: false }))
       ]);
       const lugares = await lugaresP;
-      return { perfis, funcionarios, naturezas, avisos, analises, lugares, lugaresIndisponivel };
+      const ger = await gerP; let gerIndisponivel = false, topicos = [], comentarios = [], anexos = [];
+      if (ger.erro) { if (/does not exist|Could not find the table|schema cache|42P01/i.test(String(ger.erro.message || ger.erro))) gerIndisponivel = true; else throw ger.erro; }
+      else [topicos, comentarios, anexos] = ger;
+      return { perfis, funcionarios, naturezas, avisos, analises, lugares, lugaresIndisponivel, topicos, comentarios, anexos, gerIndisponivel };
     },
     async criarAviso(d) { ok(await sb.from('avisos').insert({ funcionario_id: d.funcionario_id, natureza: d.natureza, data_inicio: d.data_inicio, data_fim: d.data_fim, observacao: d.observacao || null })); },
     async decidirAviso(id, status, motivo) {
@@ -424,6 +551,44 @@ function criarApiSupabase(sb) {
     async excluirAnalise(id) { await removido(sb.from('analises').delete().eq('id', id)); },
     async criarNatureza(nome) { ok(await sb.from('naturezas').insert({ nome: String(nome).trim(), ordem: 100 })); },
     async excluirNatureza(id) { await removido(sb.from('naturezas').delete().eq('id', id)); },
+    /* ----- Gerência & Coordenação: só administrador (as regras estão no banco) ----- */
+    async criarTopico(d, arquivos) {
+      const r = ok(await sb.from('topicos').insert({ titulo: String(d.titulo).trim(), descricao: String(d.descricao || '').trim() || null, tema: d.tema }).select('id'));
+      const id = r && r[0] ? r[0].id : null; if (!id) throw new Error('Você não tem permissão para esta ação.');
+      return { id, falhas: await enviarArquivos(id, null, arquivos) };
+    },
+    async editarTopico(id, d) {
+      const dados = ok(await sb.from('topicos').update({ titulo: String(d.titulo).trim(), descricao: String(d.descricao || '').trim() || null, tema: d.tema }).eq('id', id).select('id'));
+      if (!dados || !dados.length) throw new Error('Você não tem permissão para esta ação.');
+    },
+    async concluirTopico(id, concluido) {
+      const dados = ok(await sb.from('topicos').update({ concluido: !!concluido }).eq('id', id).select('id'));
+      if (!dados || !dados.length) throw new Error('Você não tem permissão para esta ação.');
+    },
+    async excluirTopico(id) {
+      const caminhos = ok(await sb.from('topico_anexos').select('caminho').eq('topico_id', id)).map(a => a.caminho);
+      await removido(sb.from('topicos').delete().eq('id', id), 'Só quem criou o tópico pode excluí-lo.');
+      if (caminhos.length) { try { await sb.storage.from(BUCKET_GERENCIA).remove(caminhos); } catch { /* arquivo órfão não aparece para ninguém */ } }
+    },
+    async criarComentario(topico_id, texto, arquivos) {
+      const r = ok(await sb.from('topico_comentarios').insert({ topico_id, texto: String(texto || '').trim() || null }).select('id'));
+      const id = r && r[0] ? r[0].id : null; if (!id) throw new Error('Você não tem permissão para esta ação.');
+      return { id, falhas: await enviarArquivos(topico_id, id, arquivos) };
+    },
+    async excluirComentario(id) {
+      const caminhos = ok(await sb.from('topico_anexos').select('caminho').eq('comentario_id', id)).map(a => a.caminho);
+      await removido(sb.from('topico_comentarios').delete().eq('id', id));
+      if (caminhos.length) { try { await sb.storage.from(BUCKET_GERENCIA).remove(caminhos); } catch { /* idem */ } }
+    },
+    async anexarAoTopico(topico_id, arquivos) { return enviarArquivos(topico_id, null, arquivos); },
+    async excluirAnexo(a) {
+      await removido(sb.from('topico_anexos').delete().eq('id', a.id));
+      try { await sb.storage.from(BUCKET_GERENCIA).remove([a.caminho]); } catch { /* idem */ }
+    },
+    async urlAnexo(a, baixar) {
+      const r = await sb.storage.from(BUCKET_GERENCIA).createSignedUrl(a.caminho, 120, baixar ? { download: a.nome } : undefined);
+      if (r.error) throw r.error; return r.data.signedUrl;
+    },
     async salvarLugares(itens) { return ok(await sb.rpc('salvar_lugares', { p_itens: itens })); },
     async criarGestor(nome, email, papel, funcionario_id) {
       return ok(await sb.rpc('criar_gestor', { p_nome: nome, p_email: email, p_papel: papel, p_funcionario_id: funcionario_id || null }));
@@ -453,6 +618,7 @@ const S = {
   fAn: { id: '', atendente: '', resumo: '', avaliacao: '', pontos: '', canal: '', de: '', ate: '', gestor: '' },
   anLimite: 200,
   lugares: [], lugaresIndisponivel: false, colabIndisponivel: false, mapa: { modo: 'lugar', sel: null },
+  topicos: [], comentarios: [], anexos: [], gerIndisponivel: false, ger: { estado: 'abertos', tema: '', autor: '', busca: '' },
   org: { visao: 'planilha', busca: '', sub: '', nivel: '', gestor: '', regime: '', tipo: 'todos', sort: { col: 'nome', dir: 1 }, aberto: null, achados: null, zoom: 1, arrasto: null, rolarPara: null, foco: null, autoAjuste: true },
   visao: 'cartoes', cal: { ano: new Date().getFullYear(), mes: new Date().getMonth() }, calPend: false
 };
@@ -473,9 +639,10 @@ function carregarScript(src) {
 }
 
 async function recarregar() {
-  const d = await api.carregarTudo();
+  const d = await api.carregarTudo(ehAdmin());
   S.perfis = d.perfis; S.funcionarios = d.funcionarios; S.naturezas = d.naturezas; S.avisos = d.avisos; S.analises = d.analises;
   S.lugares = d.lugares || []; S.lugaresIndisponivel = !!d.lugaresIndisponivel;
+  S.topicos = d.topicos || []; S.comentarios = d.comentarios || []; S.anexos = d.anexos || []; S.gerIndisponivel = !!d.gerIndisponivel;
   S.colabIndisponivel = S.funcionarios.length > 0 && !('vaga' in S.funcionarios[0]);
   S.carregadoEm = Date.now();
 }
@@ -483,7 +650,7 @@ async function acao(fn, okMsg) {
   try { await fn(); if (okMsg) toast(okMsg); return true; }
   catch (e) { toast(erroAmigavel(e), true); return false; }
 }
-async function atualizarDepois() { await recarregar(); atualizarAvisos(); atualizarAnalises(); atualizarBadge(); if (typeof preencherDia === 'function') preencherDia(); if (typeof atualizarMapa === 'function') atualizarMapa(); if (typeof atualizarOrg === 'function') atualizarOrg(); }
+async function atualizarDepois() { await recarregar(); atualizarAvisos(); atualizarAnalises(); atualizarBadge(); if (typeof preencherDia === 'function') preencherDia(); if (typeof atualizarMapa === 'function') atualizarMapa(); if (typeof atualizarOrg === 'function') atualizarOrg(); atualizarGerencia(); desenharTopico(); }
 
 /* ================= modal ================= */
 function modal({ titulo, corpo, rodape, largo }) {
@@ -614,13 +781,13 @@ async function entrarNoApp() {
 }
 async function silencioso() {
   if (!S.perfil || document.visibilityState !== 'visible' || document.querySelector('dialog[open]')) return;
-  try { await recarregar(); atualizarAvisos(); atualizarAnalises(); atualizarBadge(); atualizarMapa(); atualizarOrg(); } catch { /* tenta de novo no próximo ciclo */ }
+  try { await recarregar(); atualizarAvisos(); atualizarAnalises(); atualizarBadge(); atualizarMapa(); atualizarOrg(); atualizarGerencia(); } catch { /* tenta de novo no próximo ciclo */ }
 }
 document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible' && S.perfil && Date.now() - S.carregadoEm > POLL_MS) silencioso(); });
 
 async function sair() {
   clearInterval(timer); await api.sair();
-  Object.assign(S, { perfil: null, perfis: [], funcionarios: [], naturezas: [], avisos: [], analises: [], lugares: [], lugaresIndisponivel: false, mapa: { modo: 'lugar', sel: null }, org: { visao: 'planilha', busca: '', sub: '', nivel: '', gestor: '', regime: '', tipo: 'todos', sort: { col: 'nome', dir: 1 }, aberto: null, achados: null, zoom: 1, arrasto: null, rolarPara: null, foco: null, autoAjuste: true }, aba: 'avisos', anLimite: 200, ultimoConvite: null, buscaFunc: '', visao: 'cartoes', calPend: false,
+  Object.assign(S, { perfil: null, perfis: [], funcionarios: [], naturezas: [], avisos: [], analises: [], lugares: [], lugaresIndisponivel: false, topicos: [], comentarios: [], anexos: [], gerIndisponivel: false, ger: { estado: 'abertos', tema: '', autor: '', busca: '' }, mapa: { modo: 'lugar', sel: null }, org: { visao: 'planilha', busca: '', sub: '', nivel: '', gestor: '', regime: '', tipo: 'todos', sort: { col: 'nome', dir: 1 }, aberto: null, achados: null, zoom: 1, arrasto: null, rolarPara: null, foco: null, autoAjuste: true }, aba: 'avisos', anLimite: 200, ultimoConvite: null, buscaFunc: '', visao: 'cartoes', calPend: false,
     fAv: { gestor: '', func: '', setor: '', de: '', ate: '', encerrados: false },
     fAn: { id: '', atendente: '', resumo: '', avaliacao: '', pontos: '', canal: '', de: '', ate: '', gestor: '' } });
   renderLogin();
@@ -628,8 +795,9 @@ async function sair() {
 
 /* ================= estrutura principal ================= */
 function render() {
-  subst($('#app'), demoBanner(), cabecalho(), h('main', { class: S.aba === 'org' ? 'largo' : '' }, S.aba === 'avisos' ? viewAvisos() : S.aba === 'analises' ? viewAnalises() : S.aba === 'mapa' ? viewMapa() : viewOrg()), h('footer', { class: 'rodape', id: 'rodape-versao', text: `Gestão CS · versão ${VERSAO}` }));
-  atualizarAvisos(); atualizarAnalises(); atualizarMapa(); atualizarOrg(true);
+  if (S.aba === 'gerencia' && !ehAdmin()) S.aba = 'avisos';   // a aba é só de administradores
+  subst($('#app'), demoBanner(), cabecalho(), h('main', { class: S.aba === 'org' ? 'largo' : '' }, S.aba === 'avisos' ? viewAvisos() : S.aba === 'analises' ? viewAnalises() : S.aba === 'mapa' ? viewMapa() : S.aba === 'gerencia' ? viewGerencia() : viewOrg()), h('footer', { class: 'rodape', id: 'rodape-versao', text: `Gestão CS · versão ${VERSAO}` }));
+  atualizarAvisos(); atualizarAnalises(); atualizarMapa(); atualizarOrg(true); atualizarGerencia();
   const abaAtiva = $('.tab[aria-selected="true"]'); if (abaAtiva && abaAtiva.scrollIntoView) abaAtiva.scrollIntoView({ inline: 'center', block: 'nearest' });
 }
 function pendentesN() { return ehAdmin() ? S.avisos.filter(a => a.status === 'pendente').length : 0; }
@@ -641,9 +809,9 @@ function cabecalho() {
   const p = S.perfil;
   ui.badge = h('span', { class: 'badge-n hidden', title: 'Avisos aguardando aprovação' });
   const aba = (id, rotulo, extra) => h('button', { class: 'tab', role: 'tab', id: 'tab-' + id, 'aria-selected': String(S.aba === id), onclick: () => { S.aba = id; render(); } }, rotulo, extra || null);
-  const head = h('header', { class: 'topbar' }, h('div', { class: 'topbar-in' },
+  const head = h('header', { class: 'topbar' + (ehAdmin() ? ' cinco-abas' : '') }, h('div', { class: 'topbar-in' },
     h('div', { class: 'brand' }, h('img', { class: 'brand-logo', src: LOGO_FIT, alt: 'FIT Energia', width: '134', height: '40', style: 'height:40px;width:auto' }), h('span', { class: 'brand-sep', 'aria-hidden': 'true' }), h('span', { class: 'brand-nome', text: 'Gestão CS' })),
-    h('nav', { class: 'tabs', role: 'tablist' }, aba('avisos', 'Quadro de avisos', ehAdmin() ? ui.badge : null), aba('analises', 'Análise de atendimentos'), aba('mapa', 'Mapa de lugares'), aba('org', 'Colaboradores e Organização')),
+    h('nav', { class: 'tabs', role: 'tablist' }, aba('avisos', 'Quadro de avisos', ehAdmin() ? ui.badge : null), aba('analises', 'Análise de atendimentos'), aba('mapa', 'Mapa de lugares'), aba('org', 'Colaboradores e Organização'), ehAdmin() ? aba('gerencia', 'Gerência & Coordenação') : null),
     h('div', { class: 'user' },
       ehAdmin() ? h('button', { class: 'btn sm ghost-light', id: 'btn-admin', onclick: () => abrirAdmin() }, 'Administração') : null,
       h('div', { class: 'who' }, p.nome, h('small', {}, p.papel === 'admin' ? 'Administrador' : 'Supervisor')),
@@ -1596,6 +1764,253 @@ function buscarNoOrganograma() {
     if (ach.length) o.rolarPara = String(ach[0][0].id);
   }
   atualizarOrg(true);
+}
+
+/* ================= GERÊNCIA & COORDENAÇÃO (só administradores) ================= */
+const corTema = nome => (TEMAS.find(t => t.nome === nome) || { cor: '#64748b' }).cor;
+const fmtDH = ts => { if (!ts) return ''; const d = new Date(ts); return `${pad(d.getDate())}/${pad(d.getMonth() + 1)}/${d.getFullYear()} ${pad(d.getHours())}:${pad(d.getMinutes())}`; };
+const fmtTamanho = n => { n = Number(n) || 0; return n < 1024 ? `${n} B` : n < 1048576 ? `${(n / 1024).toFixed(n < 10240 ? 1 : 0).replace('.', ',')} KB` : `${(n / 1048576).toFixed(1).replace('.', ',')} MB`; };
+const plural = (n, um, varios) => `${n} ${n === 1 ? um : varios}`;
+const comentariosDe = id => S.comentarios.filter(c => c.topico_id === id);
+const anexosDe = (id, comentarioId = null) => S.anexos.filter(a => a.topico_id === id && (a.comentario_id ?? null) === comentarioId);
+const nAnexosDe = id => S.anexos.filter(a => a.topico_id === id).length;
+const souAutor = x => x.criado_por == null || x.criado_por === S.perfil.id;   // mesma regra do banco: autor (ou autor já removido)
+
+/* Escolha de arquivos: lista o que foi escolhido, barra o que passa de 10 MB e limita a quantidade */
+function seletorArquivos(rotulo, onMudou) {
+  const lista = [];
+  const caixa = h('div', { class: 'arq-escolhidos' });
+  const input = h('input', { type: 'file', multiple: true, class: 'sr-only', tabindex: '-1', 'aria-hidden': 'true', onchange: () => { adicionar([...input.files]); input.value = ''; } });
+  function desenhar() {
+    subst(caixa, lista.map((f, i) => h('span', { class: 'arq-chip' }, h('span', { class: 'arq-nome', text: f.name }), h('small', { text: fmtTamanho(f.size) }),
+      h('button', { type: 'button', class: 'arq-x', 'aria-label': `Remover ${f.name}`, onclick: () => { lista.splice(i, 1); desenhar(); } }, '×'))));
+    if (onMudou) onMudou(lista.length);
+  }
+  function adicionar(novos) {
+    for (const f of novos) {
+      if (f.size > MAX_ARQUIVO) { toast(`"${f.name}" passa de 10 MB e não foi anexado.`, true); continue; }
+      if (lista.length >= MAX_ARQUIVOS) { toast(`Máximo de ${MAX_ARQUIVOS} arquivos por envio.`, true); break; }
+      lista.push(f);
+    }
+    desenhar();
+  }
+  const botao = h('button', { type: 'button', class: 'btn sm', 'data-acao': 'anexar', onclick: () => input.click() }, rotulo);
+  return { el: h('div', { class: 'anexar' }, h('div', { class: 'anexar-linha' }, botao, h('small', { class: 'hint', text: `Até ${MAX_ARQUIVOS} arquivos, 10 MB cada.` })), input, caixa), input, arquivos: () => lista.slice(), limpar: () => { lista.length = 0; desenhar(); } };
+}
+
+async function abrirAnexo(a) {
+  try {
+    const previa = /^image\/|^application\/pdf$/.test(a.tipo || '');   // imagem e PDF abrem numa nova aba; o resto baixa
+    const url = await api.urlAnexo(a, !previa);
+    const l = h('a', { href: url, target: '_blank', rel: 'noopener', download: previa ? null : a.nome });
+    document.body.append(l); l.click(); l.remove();
+  } catch (e) { toast(erroAmigavel(e), true); }
+}
+async function refrescarGerencia() {
+  try { await recarregar(); } catch (e) { toast(erroAmigavel(e), true); return; }
+  atualizarGerencia(); desenharTopico();
+}
+
+function linhaAnexo(a) {
+  return h('li', { class: 'anexo', 'data-anexo': a.id },
+    h('button', { type: 'button', class: 'anexo-nome', title: 'Abrir ou baixar', onclick: () => abrirAnexo(a) }, a.nome),
+    h('small', { text: `${fmtTamanho(a.tamanho)} · ${a.criado_por_nome || '—'}` }),
+    souAutor(a) ? h('button', { type: 'button', class: 'linkbtn danger-link', 'data-acao': 'excluir-anexo', onclick: async () => {
+      if (!confirm(`Remover o anexo "${a.nome}"? Não é possível desfazer.`)) return;
+      if (await acao(() => api.excluirAnexo(a), 'Anexo removido.')) await refrescarGerencia();
+    } }, 'Remover') : null);
+}
+
+/* ---- tela principal da aba ---- */
+function viewGerencia() {
+  const g = S.ger;
+  const alternar = v => () => { if (g.estado !== v) { g.estado = v; render(); } };
+  ui.gerBtnAbertos = h('button', { type: 'button', id: 'ger-v-abertos', 'aria-pressed': String(g.estado === 'abertos'), onclick: alternar('abertos') }, 'Abertos');
+  ui.gerBtnHist = h('button', { type: 'button', id: 'ger-v-historico', 'aria-pressed': String(g.estado === 'historico'), onclick: alternar('historico') }, 'Histórico');
+  const autores = [...new Set(S.topicos.map(t => t.criado_por_nome).filter(Boolean))].sort((a, b) => a.localeCompare(b, 'pt-BR'));
+  const selAutor = h('select', { id: 'gf-autor', onchange: e => { g.autor = e.target.value; atualizarGerencia(); } }, h('option', { value: '' }, 'Todos'), autores.map(n => h('option', { value: n }, n)));
+  selAutor.value = g.autor;
+  ui.gerTemas = h('div', { class: 'subtabs temas', id: 'ger-temas', role: 'group', 'aria-label': 'Filtrar por tema' });
+  ui.gerLista = h('div', { id: 'ger-lista' });
+  return h('div', {},
+    h('div', { class: 'page-head' },
+      h('div', {}, h('h1', { text: 'Gerência & Coordenação' }), h('p', { text: 'Espaço exclusivo dos administradores para discutir pautas de gestão. Cada tópico aceita anexos e comentários; ao concluir, ele vai para o Histórico.' })),
+      h('div', { class: 'head-acoes' },
+        h('div', { class: 'seg seg-btn', role: 'group', 'aria-label': 'Tópicos abertos ou histórico' }, ui.gerBtnAbertos, ui.gerBtnHist),
+        h('button', { class: 'btn primary', id: 'ger-novo', disabled: S.gerIndisponivel, onclick: () => abrirFormTopico(null) }, '+ Novo tópico'))),
+    S.gerIndisponivel ? h('div', { class: 'err', id: 'ger-indisponivel', style: 'margin:0 0 14px', text: 'O banco de dados ainda não tem as tabelas desta aba. Rode o arquivo atualizacao_07_gerencia.sql no Supabase (veja o README) e recarregue a página.' }) : null,
+    h('div', { class: 'card panel' },
+      h('div', { class: 'filters' },
+        h('div', { class: 'field' }, h('label', { for: 'gf-busca', text: 'Buscar' }),
+          h('input', { id: 'gf-busca', type: 'search', placeholder: 'Título, descrição ou comentário...', autocomplete: 'off', value: g.busca, oninput: e => { g.busca = e.target.value; atualizarGerencia(); } })),
+        h('div', { class: 'field' }, h('label', { for: 'gf-autor', text: 'Aberto por' }), selAutor)),
+      h('div', { class: 'filters-foot' }, ui.gerTemas,
+        h('button', { class: 'linkbtn', type: 'button', onclick: () => { Object.assign(g, { tema: '', autor: '', busca: '' }); render(); } }, 'Limpar filtros'))),
+    ui.gerLista);
+}
+
+function atualizarGerencia() {
+  if (!ui.gerLista || !document.body.contains(ui.gerLista)) return;
+  const g = S.ger, hist = g.estado === 'historico';
+  const nAb = S.topicos.filter(t => !t.concluido).length, nHi = S.topicos.length - nAb;
+  ui.gerBtnAbertos.textContent = `Abertos (${nAb})`; ui.gerBtnHist.textContent = `Histórico (${nHi})`;
+  const base = S.topicos.filter(t => !!t.concluido === hist);
+  const busca = norm(g.busca);
+  const texto = t => norm([t.titulo, t.descricao, ...comentariosDe(t.id).map(c => c.texto), ...S.anexos.filter(a => a.topico_id === t.id).map(a => a.nome)].filter(Boolean).join(' '));
+  const passa = (t, comTema) => (!comTema || !g.tema || t.tema === g.tema) && (!g.autor || t.criado_por_nome === g.autor) && (!busca || texto(t).includes(busca));
+  const pilula = (valor, rotulo, n) => h('button', { type: 'button', class: 'subtab tema' + (valor ? '' : ' todos'), style: `--cor:${valor ? corTema(valor) : 'var(--brand)'}`, 'data-tema': valor, 'aria-pressed': String(g.tema === valor),
+    onclick: () => { g.tema = valor; atualizarGerencia(); } }, valor ? h('span', { class: 'dot', 'aria-hidden': 'true' }) : null, `${rotulo} (${n})`);
+  subst(ui.gerTemas, pilula('', 'Todos os temas', base.filter(t => passa(t, false)).length), TEMAS.map(t => pilula(t.nome, t.nome, base.filter(x => x.tema === t.nome && passa(x, false)).length)));
+  const lista = base.filter(t => passa(t, true)).sort(hist
+    ? (a, b) => (b.concluido_em || '').localeCompare(a.concluido_em || '') || b.id - a.id
+    : (a, b) => b.atualizado_em.localeCompare(a.atualizado_em) || b.id - a.id);
+  const filtrando = !!(g.tema || g.autor || busca);
+  subst(ui.gerLista, secao(hist ? 'Tópicos concluídos' : 'Tópicos em aberto', lista.length),
+    lista.length ? h('div', { class: 'grid' }, lista.map(cardTopico))
+      : h('div', { class: 'empty', text: filtrando ? 'Nenhum tópico encontrado com esses filtros.' : hist ? 'Nenhum tópico concluído ainda. Quando você marcar um tópico como concluído, ele aparece aqui.' : 'Nenhum tópico em aberto. Use "+ Novo tópico" para abrir uma discussão.' }));
+}
+
+function cardTopico(t) {
+  const nc = comentariosDe(t.id).length, na = nAnexosDe(t.id);
+  const check = h('button', { type: 'button', class: 'topico-check' + (t.concluido ? ' on' : ''), 'data-acao': 'concluir', 'aria-pressed': String(!!t.concluido),
+    'aria-label': t.concluido ? `Reabrir o tópico ${t.titulo}` : `Marcar como concluído o tópico ${t.titulo}`, title: t.concluido ? 'Reabrir tópico' : 'Marcar como concluído',
+    onclick: ev => { ev.stopPropagation(); alternarConcluido(t); } }, t.concluido ? '✓' : '');
+  return h('article', { class: 'aviso topico' + (t.concluido ? ' feito' : ''), style: `--cor:${corTema(t.tema)}`, 'data-id': t.id, onclick: ev => { if (!ev.target.closest('button')) abrirTopico(t.id); } },
+    h('div', { class: 'topo' },
+      h('div', { class: 'topico-tit' }, check, h('h3', {}, h('button', { type: 'button', class: 'topico-titulo', 'data-acao': 'abrir', onclick: () => abrirTopico(t.id), text: t.titulo }))),
+      h('span', { class: 'tag', text: t.tema })),
+    h('div', { class: 'meta', text: `Aberto por ${t.criado_por_nome || '—'} em ${fmtDH(t.criado_em).slice(0, 10)}` }),
+    t.descricao ? h('div', { class: 'topico-resumo', text: t.descricao }) : null,
+    h('div', { class: 'foot' },
+      h('span', { class: 'topico-cont', text: [plural(nc, 'comentário', 'comentários'), na ? plural(na, 'anexo', 'anexos') : null].filter(Boolean).join(' · ') }),
+      h('span', { text: t.concluido ? `Concluído em ${fmtDH(t.concluido_em).slice(0, 10)}` : `Última atividade ${fmtDH(t.atualizado_em)}` })));
+}
+
+async function alternarConcluido(t) {
+  const concluir = !t.concluido;
+  const ok = await acao(() => api.concluirTopico(t.id, concluir), concluir ? 'Tópico concluído e movido para o Histórico.' : 'Tópico reaberto e devolvido para os abertos.');
+  if (ok) { try { await recarregar(); } catch (e) { toast(erroAmigavel(e), true); } atualizarGerencia(); }
+}
+
+/* ---- novo tópico / editar tópico ---- */
+function abrirFormTopico(existente) {
+  const editando = !!existente;
+  const titulo = h('input', { id: 'nt-titulo', type: 'text', maxlength: '140', required: true, placeholder: 'Ex.: Plano de metas do próximo trimestre', value: editando ? existente.titulo : '' });
+  const tema = h('select', { id: 'nt-tema', required: true }, h('option', { value: '' }, 'Selecione...'), TEMAS.map(t => h('option', { value: t.nome }, t.nome)));
+  if (editando) tema.value = existente.tema;
+  const desc = h('textarea', { id: 'nt-desc', maxlength: '4000', placeholder: 'Contexto, pontos a decidir, próximos passos...', value: editando ? (existente.descricao || '') : '' });
+  const arqs = editando ? null : seletorArquivos('Anexar arquivos');
+  const erro = h('div', { class: 'err hidden', role: 'alert' });
+  const form = h('form', { id: 'form-topico', novalidate: true, onsubmit: async ev => {
+    ev.preventDefault(); erro.classList.add('hidden');
+    const d = { titulo: titulo.value.trim(), tema: tema.value, descricao: desc.value.trim() };
+    const m = !d.titulo ? 'Informe o título do tópico.' : !d.tema ? 'Escolha o tema do tópico.' : '';
+    if (m) { erro.textContent = m; erro.classList.remove('hidden'); return; }
+    const btn = $('#nt-salvar'); btn.disabled = true;
+    let res = null;
+    const ok = await acao(async () => { if (editando) await api.editarTopico(existente.id, d); else res = await api.criarTopico(d, arqs.arquivos()); }, editando ? 'Tópico atualizado.' : null);
+    if (!ok) { btn.disabled = false; return; }
+    dlg.close();
+    if (!editando) {
+      if (res && res.falhas && res.falhas.length) toast('Tópico criado, mas alguns anexos falharam: ' + res.falhas.join(' · '), true); else toast('Tópico criado.');
+      if (S.ger.estado !== 'abertos') { S.ger.estado = 'abertos'; await refrescarGerencia(); render(); return; }
+    }
+    await refrescarGerencia();
+  } },
+    h('div', { class: 'form-grid' },
+      h('div', { class: 'field span-all' }, h('label', { for: 'nt-titulo', text: 'Título' }), titulo),
+      h('div', { class: 'field' }, h('label', { for: 'nt-tema', text: 'Tema' }), tema),
+      h('div', { class: 'field span-all' }, h('label', { for: 'nt-desc', text: 'Descrição' }), desc),
+      editando ? null : h('div', { class: 'field span-all' }, h('label', { text: 'Anexos' }), arqs.el),
+      erro));
+  const dlg = modal({ titulo: editando ? 'Editar tópico' : 'Novo tópico', corpo: form,
+    rodape: [h('button', { class: 'btn', type: 'button', onclick: () => dlg.close() }, 'Cancelar'), h('button', { class: 'btn primary', id: 'nt-salvar', type: 'submit', form: 'form-topico' }, editando ? 'Salvar alterações' : 'Criar tópico')] });
+  titulo.focus();
+}
+
+/* ---- discussão de um tópico (detalhe, anexos e comentários) ---- */
+let dlgTopico = null, corpoTopico = null, topicoAbertoId = null;
+function abrirTopico(id) {
+  topicoAbertoId = id;
+  ui.detA = h('div', { id: 'det-a' }); ui.detB = h('div', { id: 'det-b' });
+
+  const btnEnviarT = h('button', { class: 'btn sm primary hidden', type: 'button', id: 'det-enviar-anexos', onclick: async () => {
+    const arqs = selTopico.arquivos(); if (!arqs.length) return;
+    btnEnviarT.disabled = true; let falhas = [];
+    const ok = await acao(async () => { falhas = await api.anexarAoTopico(topicoAbertoId, arqs); }, null);
+    btnEnviarT.disabled = false; if (!ok) return;
+    selTopico.limpar();
+    if (falhas.length) toast('Alguns anexos falharam: ' + falhas.join(' · '), true); else toast('Anexos enviados.');
+    await refrescarGerencia();
+  } }, 'Enviar anexos');
+  const selTopico = seletorArquivos('Anexar ao tópico', n => btnEnviarT.classList.toggle('hidden', n === 0));
+
+  const txt = h('textarea', { id: 'com-texto', maxlength: '4000', placeholder: 'Escreva um comentário... (Ctrl+Enter para enviar)', 'aria-label': 'Novo comentário' });
+  const btnCom = h('button', { class: 'btn primary', type: 'button', id: 'com-enviar', onclick: enviarComentario }, 'Comentar');
+  const selCom = seletorArquivos('Anexar arquivos');
+  txt.addEventListener('keydown', e => { if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) { e.preventDefault(); enviarComentario(); } });
+  async function enviarComentario() {
+    const texto = txt.value.trim(), arqs = selCom.arquivos();
+    if (!texto && !arqs.length) { toast('Escreva um comentário ou anexe um arquivo.', true); return; }
+    btnCom.disabled = true; let res = null;
+    const ok = await acao(async () => { res = await api.criarComentario(topicoAbertoId, texto, arqs); }, null);
+    btnCom.disabled = false; if (!ok) return;
+    txt.value = ''; selCom.limpar();
+    if (res && res.falhas && res.falhas.length) toast('Comentário publicado, mas alguns anexos falharam: ' + res.falhas.join(' · '), true); else toast('Comentário publicado.');
+    await refrescarGerencia();
+    const corpo = corpoTopico && corpoTopico.closest('.dlg-body'); if (corpo) corpo.scrollTop = corpo.scrollHeight;
+  }
+
+  corpoTopico = h('div', { id: 'topico-detalhe' }, ui.detA,
+    h('div', { class: 'det-anexar' }, selTopico.el, btnEnviarT),
+    ui.detB,
+    h('div', { class: 'coment-form' }, txt, h('div', { class: 'coment-form-foot' }, selCom.el, btnCom)));
+  dlgTopico = modal({ titulo: 'Tópico de discussão', corpo: corpoTopico, largo: true });
+  dlgTopico.addEventListener('close', () => { dlgTopico = null; corpoTopico = null; topicoAbertoId = null; ui.detA = ui.detB = null; atualizarGerencia(); });
+  desenharTopico();
+}
+
+function desenharTopico() {
+  if (!dlgTopico || !ui.detA || !ui.detB) return;
+  const t = S.topicos.find(x => x.id === topicoAbertoId);
+  if (!t) { dlgTopico.close(); return; }
+  const anexosT = anexosDe(t.id), coments = comentariosDe(t.id).slice().sort((a, b) => a.criado_em.localeCompare(b.criado_em) || a.id - b.id);
+  const meu = souAutor(t);
+  subst(ui.detA,
+    h('div', { class: 'det-head', style: `--cor:${corTema(t.tema)}` },
+      h('div', { class: 'det-tags' }, h('span', { class: 'tag', text: t.tema }), h('span', { class: 'chip ' + (t.concluido ? 'aprovado' : 'pendente'), text: t.concluido ? 'Concluído' : 'Em aberto' })),
+      h('h3', { class: 'det-titulo', text: t.titulo }),
+      h('div', { class: 'meta', text: `Aberto por ${t.criado_por_nome || '—'} em ${fmtDH(t.criado_em)}` + (t.concluido ? ` · Concluído por ${t.concluido_por_nome || '—'} em ${fmtDH(t.concluido_em)}` : '') })),
+    t.descricao ? h('div', { class: 'obs det-desc', text: t.descricao }) : h('div', { class: 'hint', text: 'Sem descrição.' }),
+    h('div', { class: 'det-acoes' },
+      h('button', { class: 'btn sm ' + (t.concluido ? '' : 'ok'), type: 'button', 'data-acao': 'concluir-detalhe', onclick: async () => {
+        const concluir = !t.concluido;
+        if (await acao(() => api.concluirTopico(t.id, concluir), concluir ? 'Tópico concluído e movido para o Histórico.' : 'Tópico reaberto e devolvido para os abertos.')) {
+          try { await recarregar(); } catch (e) { toast(erroAmigavel(e), true); }
+          if (dlgTopico) dlgTopico.close();
+        }
+      } }, t.concluido ? 'Reabrir tópico' : 'Concluir tópico'),
+      meu ? h('button', { class: 'btn sm', type: 'button', 'data-acao': 'editar-topico', onclick: () => abrirFormTopico(t) }, 'Editar') : null,
+      meu ? h('button', { class: 'btn sm danger', type: 'button', 'data-acao': 'excluir-topico', onclick: async () => {
+        const nc = coments.length, na = nAnexosDe(t.id);
+        if (!confirm(`Excluir o tópico "${t.titulo}" com ${plural(nc, 'comentário', 'comentários')} e ${plural(na, 'anexo', 'anexos')}? Não é possível desfazer. Para só tirá-lo da lista de abertos, use "Concluir tópico".`)) return;
+        if (await acao(() => api.excluirTopico(t.id), 'Tópico excluído.')) { try { await recarregar(); } catch (e) { toast(erroAmigavel(e), true); } if (dlgTopico) dlgTopico.close(); }
+      } }, 'Excluir') : null),
+    h('h4', { class: 'det-sub', text: `Anexos do tópico (${anexosT.length})` }),
+    anexosT.length ? h('ul', { class: 'anexos' }, anexosT.map(linhaAnexo)) : h('div', { class: 'hint', text: 'Nenhum arquivo anexado ao tópico.' }));
+  subst(ui.detB,
+    h('h4', { class: 'det-sub', text: `Comentários (${coments.length})` }),
+    coments.length ? h('ul', { class: 'coments' }, coments.map(c => {
+      const ax = anexosDe(t.id, c.id);
+      return h('li', { class: 'coment', 'data-coment': c.id },
+        h('div', { class: 'coment-head' }, h('strong', { text: c.criado_por_nome || '—' }), h('small', { text: fmtDH(c.criado_em) }),
+          souAutor(c) ? h('button', { type: 'button', class: 'linkbtn danger-link', 'data-acao': 'excluir-comentario', onclick: async () => {
+            if (!confirm('Excluir este comentário e os anexos dele? Não é possível desfazer.')) return;
+            if (await acao(() => api.excluirComentario(c.id), 'Comentário excluído.')) await refrescarGerencia();
+          } }, 'Excluir') : null),
+        c.texto ? h('div', { class: 'coment-texto', text: c.texto }) : null,
+        ax.length ? h('ul', { class: 'anexos' }, ax.map(linhaAnexo)) : null);
+    })) : h('div', { class: 'hint', text: 'Ainda não há comentários. Seja o primeiro a comentar.' }));
 }
 
 /* ================= ADMINISTRAÇÃO ================= */
