@@ -281,3 +281,84 @@ details.card summary{cursor:pointer;font-weight:700}
 #analises-lista tr:hover td.col-acoes{background:#fafdfd}
 
 #analises-lista td.col-acoes .acoes{flex-direction:column;align-items:stretch;gap:6px}
+
+/* Colaboradores e Organização */
+.tab{padding:18px 11px 15px;font-size:14.5px}
+.tabs{gap:2px}
+#org-tabela{min-width:1280px;font-size:13.5px}
+.org-tabela{max-height:calc(100vh - 150px);min-height:280px;overflow:auto}
+#org-tabela th{position:sticky;top:0;z-index:2}
+#org-tabela th.th-acoes,#org-tabela td.col-acoes{position:sticky;right:0;background:#fff;box-shadow:-8px 0 8px -8px rgba(15,38,43,.25);z-index:1}
+#org-tabela th.th-acoes{background:#eef4f4;z-index:3}
+#org-tabela td.col-acoes{min-width:88px;white-space:nowrap}
+#org-tabela td.col-acoes .acoes{flex-direction:column;align-items:stretch;gap:6px}
+#org-tabela td{padding:7px 8px;white-space:nowrap}
+#org-tabela th{padding:8px;white-space:normal;vertical-align:bottom}
+#org-tabela td.cel-nome,#org-tabela td.cel-cargo{white-space:normal;min-width:160px}
+#org-tabela td.cel-cargo{min-width:190px}
+#org-tabela td.cel-gestor{min-width:120px}
+#org-tabela td.cel-matricula{min-width:78px}
+#org-tabela td.cel-regime{min-width:112px}
+#org-tabela td.cel-subsetor{min-width:105px}
+#org-tabela td.cel-nivel{min-width:100px}
+#org-tabela td.cel-admissao{min-width:92px}
+#org-tabela td.cel-horario_trabalho,#org-tabela td.cel-horario_almoco{min-width:118px}
+#org-tabela td.edit{cursor:cell}
+#org-tabela td.edit:hover{background:#f1f9f8;outline:1px dashed #7fbcb5;outline-offset:-2px}
+#org-tabela td.edit:focus-visible{outline:2px solid #5eead4;outline-offset:-2px}
+#org-tabela td.editando{padding:3px;background:#fffbea;outline:2px solid #f59e0b;outline-offset:-2px}
+.cel-edit{width:100%;min-width:130px;border:1px solid #c5d3d6;border-radius:6px;padding:6px 8px;background:#fff}
+tr.linha-vaga td{background:#fffaf0}
+tr.linha-vaga td.cel-nome{font-style:italic;color:#8a5a00}
+.vazio{color:#a3b1b5}
+button.ord{background:none;border:0;font:inherit;text-transform:inherit;letter-spacing:inherit;color:inherit;font-weight:700;cursor:pointer;padding:0;white-space:nowrap}
+button.ord:hover{color:var(--brand-dark)}
+dl.ficha{display:grid;grid-template-columns:170px 1fr;gap:8px 16px;margin:0}
+dl.ficha dt{color:var(--muted);font-weight:700;font-size:13px;text-transform:uppercase;letter-spacing:.3px}
+dl.ficha dd{margin:0}
+/* organograma */
+.org-barra{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:8px}
+.org-zoom-ctl{display:inline-flex;align-items:center;gap:6px;margin-left:6px}
+.org-zoom-ctl span{min-width:44px;text-align:center;font-weight:700}
+.org-wrap{overflow:auto;background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:20px 14px 28px;max-height:78vh;box-shadow:var(--shadow)}
+.org{display:inline-block;min-width:100%}
+.org ul{list-style:none;margin:0;padding:22px 0 0;display:flex;justify-content:center;position:relative}
+.org > ul{padding-top:0}
+.org ul ul::before{content:'';position:absolute;top:0;left:50%;border-left:2px solid #b8c8cb;height:22px}
+.org li{position:relative;display:flex;flex-direction:column;align-items:center;padding:22px 6px 0}
+.org > ul > li{padding-top:0}
+.org li::before,.org li::after{content:'';position:absolute;top:0;right:50%;width:50%;height:22px;border-top:2px solid #b8c8cb}
+.org li::after{right:auto;left:50%;border-left:2px solid #b8c8cb}
+.org li:only-child::before,.org li:only-child::after{display:none}
+.org li:only-child{padding-top:22px}
+.org > ul > li::before,.org > ul > li::after{display:none}
+.org li:first-child::before,.org li:last-child::after{border:0 none}
+.org li:last-child::before{border-right:2px solid #b8c8cb;border-radius:0 8px 0 0}
+.org li:first-child::after{border-radius:8px 0 0 0}
+.org ul.vertical{flex-direction:column;align-items:center;gap:8px;padding-top:18px}
+.org ul.vertical::before{height:18px}
+.org ul.vertical > li{padding:0}
+.org ul.vertical > li::before,.org ul.vertical > li::after{display:none}
+.org-no{position:relative;width:178px;background:#fff;border:1px solid #d3dfe1;border-left:6px solid var(--cor,#64748b);border-radius:10px;padding:7px 28px 7px 10px;text-align:left;cursor:pointer;box-shadow:0 1px 3px rgba(15,38,43,.1)}
+.org-no:hover{box-shadow:0 3px 10px rgba(15,38,43,.18)}
+.org-no:focus-visible{outline:3px solid #5eead4}
+.org-no.vaga{border-style:dashed;border-left-style:solid;background:#fffaf0}
+.org-no.ext{background:#f1f5f9;border-left-color:#64748b}
+.org-no.achado{box-shadow:0 0 0 3px #f59e0b,0 3px 10px rgba(245,158,11,.4)}
+.org-no.arrastando{opacity:.45}
+.org-no.alvo{box-shadow:0 0 0 3px #16a34a;background:#e9f8ee}
+.org-nome{font-weight:700;font-size:13.5px;line-height:1.25;overflow-wrap:anywhere}
+.org-meta{font-size:12px;color:var(--muted);line-height:1.25}
+.org-toggle{position:absolute;right:5px;top:50%;transform:translateY(-50%);min-width:24px;height:24px;border-radius:12px;border:1px solid #b8c8cb;background:#fff;font-size:12px;font-weight:700;cursor:pointer;padding:0 5px;color:var(--brand-dark)}
+.org-toggle:hover{background:var(--brand-soft)}
+@media (max-width:640px){#org-tabela{min-width:1300px}dl.ficha{grid-template-columns:1fr}}
+
+/* Faixa superior com 4 abas: no celular e em telas médias as abas ficam numa linha própria, rolando para o lado */
+@media (max-width:1100px){
+  .topbar-in{row-gap:0}
+  .tabs{order:3;flex:1 1 100%;min-width:0;overflow-x:auto;scrollbar-width:none}
+  .tabs::-webkit-scrollbar{display:none}
+  .tab{white-space:nowrap;padding:12px 12px 10px;flex:none}
+  .user{margin-left:auto}
+}
+html,body{overflow-x:hidden}
