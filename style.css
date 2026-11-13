@@ -375,3 +375,6 @@ html,body{overflow-x:hidden}
 .org-busca{min-width:260px}
 .org-busca input{width:100%;border:1px solid #c5d3d6;border-radius:9px;padding:8px 10px;background:#fff}
 .sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
+.rodape{text-align:center;color:var(--muted);font-size:12px;padding:6px 0 22px}
+@media print{.rodape{display:none}}
