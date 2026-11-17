@@ -8,7 +8,7 @@ const CFG = window.GESTAO_CS_CONFIG || {};
 const SUPABASE_JS = 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.118.0/dist/umd/supabase.js';
 const MODO = (CFG.supabaseUrl && CFG.supabaseAnonKey) ? 'supabase' : 'demo';
 const LOGO_FIT = 'data:image/png;base64,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'; // logo FIT Energia (versão para fundo escuro), embutido para não depender de outro arquivo
-const VERSAO = '2026.11.13-d';   // aparece no rodapé: serve para conferir se a versão nova está no ar
+const VERSAO = '2026.11.17-a';   // aparece no rodapé: serve para conferir se a versão nova está no ar
 const CANAIS = ['Hubspot', 'BlipDesk', '3CX'];
 /* Aba "Gerência & Coordenação" (só administradores): temas dos tópicos e limites dos anexos */
 const TEMAS = [
@@ -22,6 +22,29 @@ const MAX_ARQUIVO = 10 * 1024 * 1024;   // 10 MB por arquivo (o mesmo limite est
 const MAX_ARQUIVOS = 10;                // arquivos por envio
 const MAX_ARQUIVO_DEMO = 400 * 1024;    // no modo demonstração os arquivos ficam no navegador, que tem pouco espaço
 const POLL_MS = 60000;
+/* Gestão de Demandas, Notificações e avisos por horário */
+const BUCKET_DEMANDAS = 'demandas-anexos';
+const LISTAS_DEM = { time: 'Time', status: 'Status', prioridade: 'Prioridade', setor: 'Setores envolvidos' };
+const COR_PADRAO_DEM = {
+  status: { 'A iniciar': '#64748b', 'Em andamento': '#2563eb', 'Concluída': '#16a34a', 'Rejeitada': '#dc2626' },
+  prioridade: { 'Baixa': '#4d7c0f', 'Média': '#d97706', 'Alta': '#ea580c' }
+};
+const TABELA_AUSENTE = /does not exist|Could not find the table|schema cache|42P01/i;
+function filtrosDemVazios() { return { demanda: '', time: '', responsavel: '', status: '', prioridade: '', ini_de: '', ini_ate: '', fim_de: '', fim_ate: '', dur_min: '', dur_max: '', prev_de: '', prev_ate: '', setor: '', andamento: '', anexo: '', links: '' }; }
+function estadoDemNotif() {
+  return { demandas: [], demOpcoes: [], demAndamento: [], demAnexos: [], demIndisponivel: false, notifs: [], notifIndisponivel: false, dem: { f: filtrosDemVazios() }, notif: { filtro: 'todas' } };
+}
+const hhmm = t => String(t || '').slice(0, 5);
+const diaInteiro = a => a.dia_inteiro !== false;
+const textoHorario = a => diaInteiro(a) ? 'Dia inteiro' : `${hhmm(a.hora_inicio)} às ${hhmm(a.hora_fim)}`;
+/* Dois avisos só "batem" se algum deles for de dia inteiro ou se os horários se cruzarem */
+function horariosConflitam(a, b) { if (diaInteiro(a) || diaInteiro(b)) return true; return hhmm(a.hora_inicio) < hhmm(b.hora_fim) && hhmm(b.hora_inicio) < hhmm(a.hora_fim); }
+/* Só manda as colunas de horário quando precisam mudar (assim o site continua funcionando antes da atualização do banco) */
+function horarioAviso(d, anterior) {
+  if (d.dia_inteiro === false) return { dia_inteiro: false, hora_inicio: d.hora_inicio, hora_fim: d.hora_fim };
+  if (anterior && anterior.dia_inteiro === false) return { dia_inteiro: true, hora_inicio: null, hora_fim: null };
+  return {};
+}
 
 /* ================= utilidades ================= */
 const pad = n => String(n).padStart(2, '0');
@@ -79,9 +102,12 @@ function erroAmigavel(e) {
   if (/Email not confirmed/i.test(m)) return 'O e-mail ainda não foi confirmado. Peça ao administrador para conferir a configuração do Supabase (veja o README).';
   if (/User already registered/i.test(m)) return 'Este e-mail já tem acesso. Use a aba "Entrar" (ou "Esqueci minha senha").';
   if (/Database error saving new user|convite_invalido/i.test(m)) return 'Não foi possível criar o acesso. Confira se o e-mail é o mesmo que o administrador cadastrou e se o código está correto e dentro do prazo (7 dias).';
+  if (/dia_inteiro|hora_inicio|hora_fim/i.test(m) && !/avisos_horario_ck/.test(m)) return 'O banco de dados ainda não tem as colunas de horário do aviso. Rode o arquivo atualizacao_08_demandas_notificacoes.sql no Supabase e recarregue a página.';
+  if (/avisos_horario_ck/.test(m)) return 'Informe a hora inicial e a final (a final precisa ser depois da inicial) ou marque "Dia inteiro".';
+  if (/duplicate key|unique constraint/i.test(m)) return 'Essa opção já existe.';
   if (/Could not find the .* column|column .* does not exist/i.test(m)) return 'O banco de dados ainda não tem as colunas novas. Rode a atualização do Supabase indicada no README (atualizacao_05_colaboradores.sql) e recarregue a página.';
   if (/exceeded the maximum allowed size|payload too large|entity too large/i.test(m)) return 'O arquivo é maior que 10 MB.';
-  if (/Bucket not found/i.test(m)) return 'O espaço de arquivos da aba Gerência & Coordenação ainda não foi criado. Rode o arquivo atualizacao_07_gerencia.sql no Supabase (veja o README) e recarregue a página.';
+  if (/Bucket not found/i.test(m)) return 'O espaço de arquivos ainda não foi criado. Rode no Supabase o arquivo atualizacao_07_gerencia.sql (Gerência & Coordenação) ou atualizacao_08_demandas_notificacoes.sql (Gestão de Demandas) e recarregue a página.';
   if (/row-level security|permission denied|insufficient/i.test(m)) return 'Você não tem permissão para esta ação.';
   if (/Password should be at least/i.test(m)) return 'A senha precisa ter pelo menos 8 caracteres.';
   if (/rate limit|too many/i.test(m)) return 'Muitas tentativas seguidas. Aguarde alguns minutos e tente de novo.';
@@ -142,6 +168,28 @@ function criarApiDemo() {
     return { topicos, comentarios, anexos: [], seqGer: { topico: 4, comentario: 2, anexo: 0 } };
   }
 
+  function seedDemandas() {
+    const O = (id, lista, nome, ordem, cor = null) => ({ id, lista, nome, ordem, cor });
+    const demOpcoes = [
+      ...['Atendimento', 'Ativação', 'BackOffice', 'Estratégicos', 'Gestão', 'Inadimplência', 'Melhoria Contínua', 'Qualidade'].map((n, i) => O(1 + i, 'time', n, i + 1)),
+      O(11, 'status', 'A iniciar', 1, '#64748b'), O(12, 'status', 'Em andamento', 2, '#2563eb'), O(13, 'status', 'Concluída', 3, '#16a34a'), O(14, 'status', 'Rejeitada', 4, '#dc2626'),
+      O(21, 'prioridade', 'Baixa', 1, '#4d7c0f'), O(22, 'prioridade', 'Média', 2, '#d97706'), O(23, 'prioridade', 'Alta', 3, '#ea580c'),
+      ...['RC', 'Jurídico', 'Regulatório', 'Financeiro', 'Faturamento', 'Geradores', 'Balanço', 'Tech', 'Dados'].map((n, i) => O(31 + i, 'setor', n, i + 1))
+    ];
+    const agora = n => new Date(hoje.getTime() - n * 3600000).toISOString();
+    const D = (id, demanda, time_nome, resp, respNome, status, prioridade, ini, fim, prev, setores, links, h0) => ({ id, demanda, time_nome, responsavel_id: resp, responsavel_nome: respNome, status, prioridade, data_inicio: ini, data_conclusao: fim, previsao_atualizacao: prev, setores, links, criado_por: 1, criado_por_nome: 'Admin Demo', criado_em: agora(h0), atualizado_em: agora(h0 - 2) });
+    const demandas = [
+      D(1, 'Mapeamento da jornada do associado', 'Qualidade', 2, 'Ana Souza', 'Em andamento', 'Alta', dia(-20), dia(60), dia(7), ['Tech', 'Dados'], 'https://exemplo.com/jornada', 120),
+      D(2, 'Revisão do fluxo de cobrança', 'Inadimplência', 3, 'Bruno Lima', 'A iniciar', 'Média', dia(5), dia(40), null, ['Financeiro', 'Faturamento'], null, 60),
+      D(3, 'Plano de capacitação do N1', 'Gestão', 1, 'Admin Demo', 'Concluída', 'Baixa', dia(-60), dia(-10), null, [], null, 300)
+    ];
+    const demAndamento = [
+      { id: 1, demanda_id: 1, texto: 'Levantamento inicial das etapas concluído.', marco: true, criado_por: 1, criado_por_nome: 'Admin Demo', criado_em: agora(100) },
+      { id: 2, demanda_id: 1, texto: 'Entrevistas com o N1 agendadas para a próxima semana.', marco: false, criado_por: 2, criado_por_nome: 'Ana Souza', criado_em: agora(30) }
+    ];
+    return { demOpcoes, demandas, demAndamento, demAnexos: [], notificacoes: [] };
+  }
+
   function seed() {
     const gerSeed = seedGerencia();
     const F = (id, nome, cargo, subsetor, nivel, adm, sup, hor, alm, reg, extra = {}) => ({ id, matricula: String(1000 + id), nome, cargo, subsetor, nivel, admissao: adm,
@@ -197,10 +245,16 @@ function criarApiDemo() {
     };
   }
   let db;
+  function completarDemo() {
+    if (db.demOpcoes) return;
+    Object.assign(db, seedDemandas());
+    db.seq = Object.assign(db.seq || {}, { notif: 0, dem: 3, opc: 100, and: 2, danx: 0 });
+  }
   const salvar = () => localStorage.setItem(KEY, JSON.stringify(db));
   const carregar = () => {
     try { db = JSON.parse(localStorage.getItem(KEY)); } catch { db = null; }
-    if (!db) { db = seed(); salvar(); }
+    if (!db) { db = seed(); }
+    completarDemo(); try { salvar(); } catch { /* ok */ }
     if (!db.topicos) { const g = seedGerencia(); db.topicos = g.topicos; db.comentarios = g.comentarios; db.anexos = g.anexos; Object.assign(db.seq, { topico: g.seqGer.topico, comentario: g.seqGer.comentario, anexo: g.seqGer.anexo }); try { salvar(); } catch { /* sem espaço */ } }
   };
   carregar();
@@ -236,6 +290,43 @@ function criarApiDemo() {
     return falhas;
   }
 
+  /* ----- notificações e regras novas (demo) ----- */
+  const notificar = (perfil_id, tipo, titulo, mensagem, dados = {}) => {
+    const p = eu();
+    if (perfil_id == null || (p && p.id === perfil_id) || !db.perfis.some(x => x.id === perfil_id)) return;
+    db.notificacoes.push({ id: ++db.seq.notif, perfil_id, tipo, titulo, mensagem, dados, lida: false, criada_em: new Date().toISOString() });
+  };
+  const excerto = t => { const x = textoPlano(t).replace(/\s+/g, ' ').trim(); return x.length > 140 ? x.slice(0, 137) + '...' : x; };
+  const mencionados = texto => [...new Set([...String(texto || '').matchAll(/@\[([^\]|]+)\|(\d+)\]/g)].map(m => Number(m[2])))];
+  const validarHorario = d => { if (d && d.dia_inteiro === false && !(d.hora_inicio && d.hora_fim && d.hora_fim > d.hora_inicio)) throw new Error('Informe a hora inicial e a final (a final precisa ser depois da inicial) ou marque "Dia inteiro".'); };
+  const podeVerDem = (p, dm) => !!dm && (p.papel === 'admin' || (dm.responsavel_id != null && dm.responsavel_id === p.id));
+  /* novo colaborador na gestão / gestor alterado */
+  function notificarGestao(f, gAntes, eraVaga, atualizacao) {
+    if (f.vaga) return;
+    const mudou = atualizacao && f.gestor_id !== gAntes;
+    if (f.gestor_id != null && (!atualizacao || mudou || eraVaga)) notificar(f.gestor_id, 'colaborador_novo', 'Novo colaborador na sua gestão', `${f.nome} foi adicionado(a) à sua gestão.`, { funcionario_id: f.id });
+    if (mudou) {
+      const pessoa = db.perfis.find(x => x.funcionario_id === f.id);
+      if (pessoa) {
+        const g = db.perfis.find(x => x.id === f.gestor_id), nomeG = g ? g.nome : (f.gestor_nome || null);
+        notificar(pessoa.id, 'gestor_alterado', 'Seu gestor foi alterado', nomeG ? `Seu novo gestor é ${nomeG}.` : 'Você ficou sem gestor definido.', { funcionario_id: f.id });
+      }
+    }
+  }
+  async function anexarDemandaDemo(demanda_id, arquivos, p) {
+    const falhas = [];
+    for (const f of (arquivos || [])) {
+      if (f.size > MAX_ARQUIVO_DEMO) { falhas.push(`${f.name}: na demonstração só cabem arquivos de até 400 KB`); continue; }
+      let novo = null;
+      try {
+        const dados = await lerDataUrl(f);
+        novo = { id: ++db.seq.danx, demanda_id, nome: f.name, caminho: 'demo/dem/' + db.seq.danx, tamanho: f.size, tipo: f.type || null, dados, criado_por: p.id, criado_por_nome: p.nome, criado_em: new Date().toISOString() };
+        db.demAnexos.push(novo); salvar();
+      } catch (e) { if (novo) db.demAnexos = db.demAnexos.filter(x => x !== novo); falhas.push(`${f.name}: não foi possível guardar o arquivo no navegador`); }
+    }
+    return falhas;
+  }
+
   return {
     modo: 'demo',
     async init(onRecovery) { carregar(); },
@@ -266,11 +357,15 @@ function criarApiDemo() {
       const analises = db.analises.filter(a => p.papel === 'admin' || a.gestor_id === p.id);
       if (!db.lugares) db.lugares = [];
       const adm = p.papel === 'admin';
+      const demandas = db.demandas.filter(x => podeVerDem(p, x)), idsDem = new Set(demandas.map(x => x.id));
       return clone({ perfis: db.perfis, funcionarios: db.funcionarios, naturezas: db.naturezas, avisos, analises, lugares: db.lugares,
-        topicos: adm ? db.topicos : [], comentarios: adm ? db.comentarios : [], anexos: adm ? db.anexos.map(({ dados, ...resto }) => resto) : [] });
+        topicos: adm ? db.topicos : [], comentarios: adm ? db.comentarios : [], anexos: adm ? db.anexos.map(({ dados, ...resto }) => resto) : [],
+        demandas, demOpcoes: db.demOpcoes, demAndamento: db.demAndamento.filter(a => idsDem.has(a.demanda_id)),
+        demAnexos: db.demAnexos.filter(a => idsDem.has(a.demanda_id)).map(({ dados, ...resto }) => resto),
+        notificacoes: db.notificacoes.filter(n => n.perfil_id === p.id).sort((a, b) => b.criada_em.localeCompare(a.criada_em) || b.id - a.id).slice(0, 300) });
     },
     async criarAviso(d) {
-      const p = exigir();
+      validarHorario(d); const p = exigir();
       if (!podeCriarPara(d.funcionario_id)) throw new Error('Você não tem permissão para esta ação.');
       const fu = db.funcionarios.find(f => f.id === d.funcionario_id);
       if (!fu) throw new Error('Funcionário não encontrado');
@@ -278,16 +373,24 @@ function criarApiDemo() {
       const adm = p.papel === 'admin';
       db.avisos.push({ id: ++db.seq.aviso, funcionario_id: fu.id, funcionario_nome: fu.nome, setor: fu.subsetor,
         gestor_id: adm ? fu.gestor_id : p.id, natureza: d.natureza, data_inicio: d.data_inicio, data_fim: d.data_fim,
-        observacao: d.observacao || null, status: adm ? 'aprovado' : 'pendente', motivo_recusa: null,
+        observacao: d.observacao || null, dia_inteiro: d.dia_inteiro !== false, hora_inicio: d.dia_inteiro === false ? d.hora_inicio : null, hora_fim: d.dia_inteiro === false ? d.hora_fim : null, status: adm ? 'aprovado' : 'pendente', motivo_recusa: null,
         criado_por: p.id, criado_por_nome: p.nome, criado_em: new Date().toISOString(), decidido_por: adm ? p.id : null, decidido_em: null });
       salvar(); return wait();
     },
     async decidirAviso(id, status, motivo) {
       admin(); const a = db.avisos.find(x => x.id === id); if (!a) throw new Error('Aviso não encontrado');
-      a.status = status; a.motivo_recusa = status === 'recusado' ? (motivo || null) : null; salvar(); return wait();
+      const antes = a.status;
+      a.status = status; a.motivo_recusa = status === 'recusado' ? (motivo || null) : null;
+      if (status !== antes && (status === 'aprovado' || status === 'recusado') && a.criado_por != null) {
+        const quando = a.data_inicio === a.data_fim ? fmtData(a.data_inicio) : `${fmtCurta(a.data_inicio)} a ${fmtData(a.data_fim)}`;
+        const txt = `Aviso de ${a.funcionario_nome} (${a.natureza}, ${quando})`;
+        if (status === 'aprovado') notificar(a.criado_por, 'aviso_aprovado', 'Seu aviso foi aprovado', `${txt} foi aprovado e já aparece no quadro.`, { aviso_id: a.id });
+        else notificar(a.criado_por, 'aviso_recusado', 'Seu aviso foi reprovado', `${txt} foi reprovado.${a.motivo_recusa ? ' Motivo: ' + a.motivo_recusa : ''}`, { aviso_id: a.id });
+      }
+      salvar(); return wait();
     },
     async editarAviso(id, d) {
-      const p = exigir(); const a = db.avisos.find(x => x.id === id);
+      validarHorario(d); const p = exigir(); const a = db.avisos.find(x => x.id === id);
       const visivel = a && (p.papel === 'admin' || a.status === 'aprovado' || a.criado_por === p.id);
       if (!visivel || !(p.papel === 'admin' || a.criado_por === p.id)) throw new Error('Você não tem permissão para esta ação.');
       if (d.data_fim < d.data_inicio) throw new Error('A data final não pode ser anterior à inicial.');
@@ -298,7 +401,7 @@ function criarApiDemo() {
         a.funcionario_id = fu.id; a.funcionario_nome = fu.nome; a.setor = fu.subsetor;
         if (criador && criador.papel === 'admin') a.gestor_id = fu.gestor_id;
       }
-      Object.assign(a, { natureza: d.natureza, data_inicio: d.data_inicio, data_fim: d.data_fim, observacao: d.observacao || null });
+      Object.assign(a, { natureza: d.natureza, data_inicio: d.data_inicio, data_fim: d.data_fim, observacao: d.observacao || null, dia_inteiro: d.dia_inteiro !== false, hora_inicio: d.dia_inteiro === false ? d.hora_inicio : null, hora_fim: d.dia_inteiro === false ? d.hora_fim : null });
       if (p.papel !== 'admin') { a.status = 'pendente'; a.motivo_recusa = null; a.decidido_por = null; a.decidido_em = null; }
       salvar(); return wait();
     },
@@ -322,9 +425,14 @@ function criarApiDemo() {
       if (!CANAIS.includes(d.canal)) throw new Error('Canal inválido');
       if (!String(d.atendente || '').trim()) throw new Error('Informe o atendente.');
       Object.assign(a, { atendente: d.atendente, id_atendimento: d.id_atendimento, resumo: d.resumo, avaliacao: d.avaliacao, pontos_melhoria: d.pontos_melhoria, canal: d.canal, data_atendimento: d.data_atendimento });
+      if (p.papel === 'admin' && a.gestor_id != null) notificar(a.gestor_id, 'analise_editada', 'Uma análise sua foi editada', `Um administrador editou o registro do atendimento ${a.id_atendimento}${a.atendente ? ' (' + a.atendente + ')' : ''}.`, { analise_id: a.id });
       salvar(); return wait();
     },
-    async excluirAnalise(id) { admin(); db.analises = db.analises.filter(a => a.id !== id); salvar(); return wait(); },
+    async excluirAnalise(id) {
+      admin(); const a = db.analises.find(x => x.id === id);
+      if (a && a.gestor_id != null) notificar(a.gestor_id, 'analise_excluida', 'Uma análise sua foi excluída', `Um administrador excluiu o registro do atendimento ${a.id_atendimento}${a.atendente ? ' (' + a.atendente + ')' : ''}.`, { id_atendimento: a.id_atendimento });
+      db.analises = db.analises.filter(x => x.id !== id); salvar(); return wait();
+    },
     async criarNatureza(nome) {
       admin(); nome = String(nome).trim(); if (!nome) throw new Error('Informe o nome da opção.');
       if (db.naturezas.some(n => norm(n.nome) === norm(nome))) throw new Error('Essa opção já existe.');
@@ -350,6 +458,14 @@ function criarApiDemo() {
           const i = copia.findIndex(l => l.lugar === it.lugar); if (i >= 0) copia[i] = novo; else copia.push(novo);
         } else throw new Error('Tipo inválido');
       }
+      const posicao = lista => { const m = {}; lista.forEach(l => { if (l.funcionario_id != null) m[l.funcionario_id] = l.lugar; }); return m; };
+      const antes = posicao(db.lugares), depois = posicao(copia);
+      new Set([...Object.keys(antes), ...Object.keys(depois)]).forEach(fid => {
+        if (antes[fid] === depois[fid]) return;
+        const perf = db.perfis.find(x => x.funcionario_id === Number(fid)); if (!perf) return;
+        notificar(perf.id, 'lugar', 'Seu lugar no mapa mudou', depois[fid] ? 'Você foi designado a um novo lugar no mapa.' : 'Você deixou o seu lugar anterior no mapa.',
+          { acao: depois[fid] ? 'novo' : 'liberado', lugar: depois[fid] || antes[fid], de: depois[fid] ? (antes[fid] || null) : null });
+      });
       db.lugares = copia; salvar(); return wait(itens.length);
     },
     /* ----- Gerência & Coordenação (demo): só administrador ----- */
@@ -386,6 +502,7 @@ function criarApiDemo() {
       texto = String(texto || '').trim(); if (!texto && !(arquivos && arquivos.length)) throw new Error('Escreva um comentário ou anexe um arquivo.');
       const id = ++db.seq.comentario;
       db.comentarios.push({ id, topico_id, texto: texto || null, criado_por: p.id, criado_por_nome: p.nome, criado_em: new Date().toISOString() });
+      mencionados(texto).forEach(mid => { const alvo = db.perfis.find(x => x.id === mid); if (alvo && alvo.papel === 'admin') notificar(mid, 'mencao_topico', 'Você foi mencionado(a) em um tópico', `${p.nome} em "${t.titulo}": ${excerto(texto)}`, { topico_id, comentario_id: id }); });
       t.atualizado_em = new Date().toISOString(); salvar();
       return { id, falhas: await anexarDemo(topico_id, id, arquivos, p) };
     },
@@ -432,9 +549,10 @@ function criarApiDemo() {
     async atualizarFuncionario(id, patch) {
       admin(); const f = db.funcionarios.find(x => x.id === id); if (!f) throw new Error('Funcionário não encontrado');
       validarFuncionario(f, patch);
-      const nomeAntes = f.nome, setorAntes = f.subsetor, supAntes = f.superior_id;
+      const nomeAntes = f.nome, setorAntes = f.subsetor, supAntes = f.superior_id, gAntes = f.gestor_id, eraVaga = f.vaga;
       Object.assign(f, patch);
       if ('superior_id' in patch && patch.superior_id !== supAntes) f.gestor_id = gestorDoSite(f.superior_id);
+      notificarGestao(f, gAntes, eraVaga, true);
       if (f.nome !== nomeAntes || f.subsetor !== setorAntes) {
         db.avisos.forEach(a => { if (a.funcionario_id === f.id) { a.funcionario_nome = f.nome; a.setor = f.subsetor; } });
         (db.lugares || []).forEach(l => { if (l.funcionario_id === f.id) { l.funcionario_nome = f.nome; l.setor = f.subsetor; } });
@@ -445,6 +563,7 @@ function criarApiDemo() {
       admin(); if (!String(d.nome || '').trim()) throw new Error('Informe o nome');
       const novo = { matricula: null, cargo: null, subsetor: null, nivel: null, admissao: null, horario_trabalho: null, horario_almoco: null, regime: null, vaga: false, superior_id: null, gestor_id: null, gestor_nome: null, apelido: null, cor_equipe: null, ...d, id: ++db.seq.func, nome: d.nome.trim() };
       if (novo.superior_id != null) novo.gestor_id = gestorDoSite(novo.superior_id);
+      notificarGestao(novo, null, false, false);
       db.funcionarios.push(novo); salvar(); return wait(novo.id);
     },
     async excluirFuncionario(id) {
@@ -454,7 +573,70 @@ function criarApiDemo() {
       db.avisos.forEach(a => { if (a.funcionario_id === id) a.funcionario_id = null; });
       db.lugares = (db.lugares || []).filter(l => l.funcionario_id !== id); salvar(); return wait();
     },
-    resetarDemo() { db = seed(); salvar(); sessionStorage.removeItem(SESS); },
+    /* ----- Gestão de Demandas (demo): o admin altera; o gestor só consulta e registra andamento ----- */
+    async criarDemanda(d, arquivos) {
+      const p = admin(); const dm = String(d.demanda || '').trim();
+      if (!dm) throw new Error('Informe a demanda.');
+      if (d.data_inicio && d.data_conclusao && d.data_conclusao < d.data_inicio) throw new Error('A data de conclusão não pode ser anterior à de início.');
+      const resp = db.perfis.find(x => x.id === d.responsavel_id), agora = new Date().toISOString(), id = ++db.seq.dem;
+      db.demandas.push({ id, demanda: dm, time_nome: d.time_nome || null, responsavel_id: resp ? resp.id : null, responsavel_nome: resp ? resp.nome : null, status: d.status || 'A iniciar', prioridade: d.prioridade || 'Média',
+        data_inicio: d.data_inicio || null, data_conclusao: d.data_conclusao || null, previsao_atualizacao: d.previsao_atualizacao || null, setores: d.setores || [], links: String(d.links || '').trim() || null,
+        criado_por: p.id, criado_por_nome: p.nome, criado_em: agora, atualizado_em: agora });
+      salvar(); return { id, falhas: await anexarDemandaDemo(id, arquivos, p) };
+    },
+    async editarDemanda(id, d) {
+      admin(); const x = db.demandas.find(y => y.id === id); if (!x) throw new Error('Você não tem permissão para esta ação.');
+      if (!String(d.demanda || '').trim()) throw new Error('Informe a demanda.');
+      if (d.data_inicio && d.data_conclusao && d.data_conclusao < d.data_inicio) throw new Error('A data de conclusão não pode ser anterior à de início.');
+      const resp = db.perfis.find(y => y.id === d.responsavel_id);
+      Object.assign(x, { demanda: String(d.demanda).trim(), time_nome: d.time_nome || null, responsavel_id: resp ? resp.id : null, responsavel_nome: resp ? resp.nome : null, status: d.status, prioridade: d.prioridade,
+        data_inicio: d.data_inicio || null, data_conclusao: d.data_conclusao || null, previsao_atualizacao: d.previsao_atualizacao || null, setores: d.setores || [], links: String(d.links || '').trim() || null, atualizado_em: new Date().toISOString() });
+      salvar(); return wait();
+    },
+    async excluirDemanda(id) {
+      admin(); if (!db.demandas.some(x => x.id === id)) throw new Error('Você não tem permissão para esta ação.');
+      db.demandas = db.demandas.filter(x => x.id !== id); db.demAndamento = db.demAndamento.filter(a => a.demanda_id !== id); db.demAnexos = db.demAnexos.filter(a => a.demanda_id !== id);
+      salvar(); return wait();
+    },
+    async criarOpcao(lista, nome) {
+      admin(); nome = String(nome || '').trim();
+      if (!LISTAS_DEM[lista]) throw new Error('Lista inválida.');
+      if (!nome) throw new Error('Informe o nome da opção.');
+      if (db.demOpcoes.some(o => o.lista === lista && norm(o.nome) === norm(nome))) throw new Error('Essa opção já existe.');
+      db.demOpcoes.push({ id: ++db.seq.opc, lista, nome, ordem: 100, cor: (lista === 'status' || lista === 'prioridade') ? corNatureza(nome) : null }); salvar(); return wait();
+    },
+    async atualizarOpcao(id, patch) {
+      admin(); const o = db.demOpcoes.find(x => x.id === id); if (!o) throw new Error('Você não tem permissão para esta ação.');
+      if ('cor' in patch) o.cor = patch.cor || null; salvar(); return wait();
+    },
+    async excluirOpcao(id) { admin(); db.demOpcoes = db.demOpcoes.filter(o => o.id !== id); salvar(); return wait(); },
+    async criarAndamento(demanda_id, texto, marco) {
+      const p = exigir(); const dm = db.demandas.find(x => x.id === demanda_id);
+      if (!podeVerDem(p, dm)) throw new Error('Você não tem permissão para esta ação.');
+      texto = String(texto || '').trim(); if (!texto) throw new Error('Escreva o tópico do andamento.');
+      const id = ++db.seq.and;
+      db.demAndamento.push({ id, demanda_id, texto, marco: !!marco, criado_por: p.id, criado_por_nome: p.nome, criado_em: new Date().toISOString() });
+      dm.atualizado_em = new Date().toISOString();
+      mencionados(texto).forEach(mid => { const alvo = db.perfis.find(x => x.id === mid); if (alvo && (alvo.papel === 'admin' || alvo.id === dm.responsavel_id)) notificar(mid, 'mencao_demanda', 'Você foi mencionado(a) em uma demanda', `${p.nome} em "${dm.demanda}": ${excerto(texto)}`, { demanda_id, andamento_id: id }); });
+      salvar(); return wait();
+    },
+    async excluirAndamento(id) {
+      const p = exigir(); const a = db.demAndamento.find(x => x.id === id);
+      if (!a || !podeVerDem(p, db.demandas.find(x => x.id === a.demanda_id)) || !(p.papel === 'admin' || a.criado_por === p.id)) throw new Error('Você não tem permissão para esta ação.');
+      db.demAndamento = db.demAndamento.filter(x => x.id !== id); salvar(); return wait();
+    },
+    async anexarADemanda(id, arquivos) { const p = admin(); if (!db.demandas.some(x => x.id === id)) throw new Error('Demanda não encontrada.'); return anexarDemandaDemo(id, arquivos, p); },
+    async excluirAnexoDemanda(a) { admin(); db.demAnexos = db.demAnexos.filter(x => x.id !== a.id); salvar(); return wait(); },
+    async urlAnexoDemanda(a) {
+      const p = exigir(); const x = db.demAnexos.find(y => y.id === a.id);
+      if (!x || !podeVerDem(p, db.demandas.find(d => d.id === x.demanda_id))) throw new Error('Anexo não encontrado.');
+      return URL.createObjectURL(await (await fetch(x.dados)).blob());
+    },
+    /* ----- Notificações (demo) ----- */
+    async marcarNotificacao(id) { const p = exigir(); const n = db.notificacoes.find(x => x.id === id && x.perfil_id === p.id); if (n) { n.lida = true; salvar(); } return wait(); },
+    async marcarTodasNotificacoes() { const p = exigir(); db.notificacoes.forEach(n => { if (n.perfil_id === p.id) n.lida = true; }); salvar(); return wait(); },
+    async limparNotificacoes() { const p = exigir(); db.notificacoes = db.notificacoes.filter(n => !(n.perfil_id === p.id && n.lida)); salvar(); return wait(); },
+    resetarDemo() { db = seed(); completarDemo(); salvar(); sessionStorage.removeItem(SESS); },
     contasDemo: [['Administrador', 'admin@demo.com'], ['Supervisora Ana', 'ana@demo.com'], ['Supervisor Bruno', 'bruno@demo.com']]
   };
 }
@@ -490,6 +672,23 @@ function criarApiSupabase(sb) {
     }
     return falhas;
   }
+  async function enviarArquivosDemanda(demanda_id, arquivos) {
+    const falhas = [];
+    for (const f of (arquivos || [])) {
+      const ext = (f.name.match(/\.[A-Za-z0-9]{1,8}$/) || [''])[0].toLowerCase();
+      const caminho = `demandas/${demanda_id}/${crypto.randomUUID()}${ext}`;
+      try {
+        if (f.size > MAX_ARQUIVO) throw new Error('O arquivo é maior que 10 MB.');
+        const up = await sb.storage.from(BUCKET_DEMANDAS).upload(caminho, f, { contentType: f.type || 'application/octet-stream', upsert: false });
+        if (up.error) throw up.error;
+        const ins = await sb.from('demanda_anexos').insert({ demanda_id, nome: f.name, caminho, tamanho: f.size, tipo: f.type || null });
+        if (ins.error) { try { await sb.storage.from(BUCKET_DEMANDAS).remove([caminho]); } catch { /* ok */ } throw ins.error; }
+      } catch (e) { falhas.push(`${f.name}: ${erroAmigavel(e)}`); }
+    }
+    return falhas;
+  }
+  const registroDemanda = d => ({ demanda: String(d.demanda).trim(), time_nome: d.time_nome || null, responsavel_id: d.responsavel_id, status: d.status, prioridade: d.prioridade,
+    data_inicio: d.data_inicio || null, data_conclusao: d.data_conclusao || null, previsao_atualizacao: d.previsao_atualizacao || null, setores: d.setores || [], links: String(d.links || '').trim() || null });
   const COL_PERFIL = 'id,user_id,email,nome,papel,funcionario_id';
   return {
     modo: 'supabase',
@@ -520,6 +719,14 @@ function criarApiSupabase(sb) {
         paginado(() => sb.from('topico_anexos').select('*').order('criado_em').order('id'))
       ]).catch(e => ({ erro: e })) : Promise.resolve([[], [], []]);
       const lugaresP = paginado(() => sb.from('lugares').select('*').order('lugar')).catch(() => { lugaresIndisponivel = true; return []; });
+      /* Gestão de Demandas (o banco só entrega ao gestor as demandas dele) e Notificações (só as do próprio perfil) */
+      const demP = Promise.all([
+        paginado(() => sb.from('demandas').select('*').order('id', { ascending: false })),
+        paginado(() => sb.from('demanda_opcoes').select('*').order('lista').order('ordem').order('nome')),
+        paginado(() => sb.from('demanda_andamento').select('*').order('criado_em').order('id')),
+        paginado(() => sb.from('demanda_anexos').select('*').order('criado_em').order('id'))
+      ]).catch(e => ({ erro: e }));
+      const notP = Promise.resolve(sb.from('notificacoes').select('*').order('criada_em', { ascending: false }).limit(300)).catch(e => ({ error: e }));
       const [perfis, funcionarios, naturezas, avisos, analises] = await Promise.all([
         paginado(() => sb.from('perfis').select(COL_PERFIL).order('nome')),
         paginado(() => sb.from('funcionarios').select('*').order('nome')),
@@ -531,15 +738,21 @@ function criarApiSupabase(sb) {
       const ger = await gerP; let gerIndisponivel = false, topicos = [], comentarios = [], anexos = [];
       if (ger.erro) { if (/does not exist|Could not find the table|schema cache|42P01/i.test(String(ger.erro.message || ger.erro))) gerIndisponivel = true; else throw ger.erro; }
       else [topicos, comentarios, anexos] = ger;
-      return { perfis, funcionarios, naturezas, avisos, analises, lugares, lugaresIndisponivel, topicos, comentarios, anexos, gerIndisponivel };
+      const dem = await demP; let demIndisponivel = false, demandas = [], demOpcoes = [], demAndamento = [], demAnexos = [];
+      if (dem.erro) { if (TABELA_AUSENTE.test(String(dem.erro.message || dem.erro))) demIndisponivel = true; else throw dem.erro; }
+      else [demandas, demOpcoes, demAndamento, demAnexos] = dem;
+      const nt = await notP; let notificacoes = [], notifIndisponivel = false;
+      if (nt.error) { if (TABELA_AUSENTE.test(String(nt.error.message || nt.error))) notifIndisponivel = true; else throw nt.error; }
+      else notificacoes = nt.data || [];
+      return { perfis, funcionarios, naturezas, avisos, analises, lugares, lugaresIndisponivel, topicos, comentarios, anexos, gerIndisponivel, demandas, demOpcoes, demAndamento, demAnexos, demIndisponivel, notificacoes, notifIndisponivel };
     },
-    async criarAviso(d) { ok(await sb.from('avisos').insert({ funcionario_id: d.funcionario_id, natureza: d.natureza, data_inicio: d.data_inicio, data_fim: d.data_fim, observacao: d.observacao || null })); },
+    async criarAviso(d) { ok(await sb.from('avisos').insert({ funcionario_id: d.funcionario_id, natureza: d.natureza, data_inicio: d.data_inicio, data_fim: d.data_fim, observacao: d.observacao || null, ...horarioAviso(d) })); },
     async decidirAviso(id, status, motivo) {
       const dados = ok(await sb.from('avisos').update({ status, motivo_recusa: status === 'recusado' ? (motivo || null) : null }).eq('id', id).select('id'));
       if (!dados.length) throw new Error('Você não tem permissão para esta ação.');
     },
     async editarAviso(id, d) {
-      const dados = ok(await sb.from('avisos').update({ funcionario_id: d.funcionario_id, natureza: d.natureza, data_inicio: d.data_inicio, data_fim: d.data_fim, observacao: d.observacao || null }).eq('id', id).select('id'));
+      const dados = ok(await sb.from('avisos').update({ funcionario_id: d.funcionario_id, natureza: d.natureza, data_inicio: d.data_inicio, data_fim: d.data_fim, observacao: d.observacao || null, ...horarioAviso(d, S.avisos.find(x => x.id === id)) }).eq('id', id).select('id'));
       if (!dados || !dados.length) throw new Error('Você não tem permissão para esta ação.');
     },
     async excluirAviso(id) { await removido(sb.from('avisos').delete().eq('id', id)); },
@@ -589,6 +802,45 @@ function criarApiSupabase(sb) {
       const r = await sb.storage.from(BUCKET_GERENCIA).createSignedUrl(a.caminho, 120, baixar ? { download: a.nome } : undefined);
       if (r.error) throw r.error; return r.data.signedUrl;
     },
+    /* ----- Gestão de Demandas: o admin altera; o gestor só consulta e registra andamento (as regras estão no banco) ----- */
+    async criarDemanda(d, arquivos) {
+      const r = ok(await sb.from('demandas').insert(registroDemanda(d)).select('id'));
+      const id = r && r[0] ? r[0].id : null; if (!id) throw new Error('Você não tem permissão para esta ação.');
+      return { id, falhas: await enviarArquivosDemanda(id, arquivos) };
+    },
+    async editarDemanda(id, d) {
+      const dados = ok(await sb.from('demandas').update(registroDemanda(d)).eq('id', id).select('id'));
+      if (!dados || !dados.length) throw new Error('Você não tem permissão para esta ação.');
+    },
+    async excluirDemanda(id) {
+      const caminhos = ok(await sb.from('demanda_anexos').select('caminho').eq('demanda_id', id)).map(a => a.caminho);
+      await removido(sb.from('demandas').delete().eq('id', id));
+      if (caminhos.length) { try { await sb.storage.from(BUCKET_DEMANDAS).remove(caminhos); } catch { /* arquivo órfão não aparece para ninguém */ } }
+    },
+    async criarOpcao(lista, nome) {
+      const n = String(nome).trim();
+      ok(await sb.from('demanda_opcoes').insert({ lista, nome: n, cor: (lista === 'status' || lista === 'prioridade') ? corNatureza(n) : null, ordem: 100 }));
+    },
+    async atualizarOpcao(id, patch) {
+      const dados = ok(await sb.from('demanda_opcoes').update(patch).eq('id', id).select('id'));
+      if (!dados || !dados.length) throw new Error('Você não tem permissão para esta ação.');
+    },
+    async excluirOpcao(id) { await removido(sb.from('demanda_opcoes').delete().eq('id', id)); },
+    async criarAndamento(demanda_id, texto, marco) { ok(await sb.from('demanda_andamento').insert({ demanda_id, texto: String(texto).trim(), marco: !!marco })); },
+    async excluirAndamento(id) { await removido(sb.from('demanda_andamento').delete().eq('id', id)); },
+    async anexarADemanda(id, arquivos) { return enviarArquivosDemanda(id, arquivos); },
+    async excluirAnexoDemanda(a) {
+      await removido(sb.from('demanda_anexos').delete().eq('id', a.id));
+      try { await sb.storage.from(BUCKET_DEMANDAS).remove([a.caminho]); } catch { /* idem */ }
+    },
+    async urlAnexoDemanda(a, baixar) {
+      const r = await sb.storage.from(BUCKET_DEMANDAS).createSignedUrl(a.caminho, 120, baixar ? { download: a.nome } : undefined);
+      if (r.error) throw r.error; return r.data.signedUrl;
+    },
+    /* ----- Notificações: cada perfil só enxerga as suas ----- */
+    async marcarNotificacao(id) { ok(await sb.from('notificacoes').update({ lida: true }).eq('id', id)); },
+    async marcarTodasNotificacoes() { ok(await sb.from('notificacoes').update({ lida: true }).eq('lida', false)); },
+    async limparNotificacoes() { ok(await sb.from('notificacoes').delete().eq('lida', true)); },
     async salvarLugares(itens) { return ok(await sb.rpc('salvar_lugares', { p_itens: itens })); },
     async criarGestor(nome, email, papel, funcionario_id) {
       return ok(await sb.rpc('criar_gestor', { p_nome: nome, p_email: email, p_papel: papel, p_funcionario_id: funcionario_id || null }));
@@ -619,6 +871,7 @@ const S = {
   anLimite: 200,
   lugares: [], lugaresIndisponivel: false, colabIndisponivel: false, mapa: { modo: 'lugar', sel: null },
   topicos: [], comentarios: [], anexos: [], gerIndisponivel: false, ger: { estado: 'abertos', tema: '', autor: '', busca: '' },
+  ...estadoDemNotif(),
   org: { visao: 'planilha', busca: '', sub: '', nivel: '', gestor: '', regime: '', tipo: 'todos', sort: { col: 'nome', dir: 1 }, aberto: null, achados: null, zoom: 1, arrasto: null, rolarPara: null, foco: null, autoAjuste: true },
   visao: 'cartoes', cal: { ano: new Date().getFullYear(), mes: new Date().getMonth() }, calPend: false
 };
@@ -643,6 +896,8 @@ async function recarregar() {
   S.perfis = d.perfis; S.funcionarios = d.funcionarios; S.naturezas = d.naturezas; S.avisos = d.avisos; S.analises = d.analises;
   S.lugares = d.lugares || []; S.lugaresIndisponivel = !!d.lugaresIndisponivel;
   S.topicos = d.topicos || []; S.comentarios = d.comentarios || []; S.anexos = d.anexos || []; S.gerIndisponivel = !!d.gerIndisponivel;
+  S.demandas = d.demandas || []; S.demOpcoes = d.demOpcoes || []; S.demAndamento = d.demAndamento || []; S.demAnexos = d.demAnexos || []; S.demIndisponivel = !!d.demIndisponivel;
+  S.notifs = d.notificacoes || []; S.notifIndisponivel = !!d.notifIndisponivel;
   S.colabIndisponivel = S.funcionarios.length > 0 && !('vaga' in S.funcionarios[0]);
   S.carregadoEm = Date.now();
 }
@@ -650,7 +905,7 @@ async function acao(fn, okMsg) {
   try { await fn(); if (okMsg) toast(okMsg); return true; }
   catch (e) { toast(erroAmigavel(e), true); return false; }
 }
-async function atualizarDepois() { await recarregar(); atualizarAvisos(); atualizarAnalises(); atualizarBadge(); if (typeof preencherDia === 'function') preencherDia(); if (typeof atualizarMapa === 'function') atualizarMapa(); if (typeof atualizarOrg === 'function') atualizarOrg(); atualizarGerencia(); desenharTopico(); }
+async function atualizarDepois() { await recarregar(); atualizarAvisos(); atualizarAnalises(); atualizarBadge(); if (typeof preencherDia === 'function') preencherDia(); if (typeof atualizarMapa === 'function') atualizarMapa(); if (typeof atualizarOrg === 'function') atualizarOrg(); atualizarGerencia(); desenharTopico(); atualizarDemandas(); desenharDemanda(); atualizarNotificacoes(); }
 
 /* ================= modal ================= */
 function modal({ titulo, corpo, rodape, largo }) {
@@ -777,17 +1032,22 @@ async function entrarNoApp() {
   try { await recarregar(); }
   catch (e) { subst($('#app'), centro(h('h2', { text: 'Erro ao carregar os dados' }), h('p', { text: erroAmigavel(e) }), h('button', { class: 'btn', onclick: () => entrarNoApp() }, 'Tentar de novo'))); return; }
   S.aba = 'avisos'; render();
+  if (naoLidas()) toast(naoLidas() === 1 ? 'Você tem 1 notificação não lida.' : `Você tem ${naoLidas()} notificações não lidas.`);
   clearInterval(timer); timer = setInterval(silencioso, POLL_MS);
 }
 async function silencioso() {
   if (!S.perfil || document.visibilityState !== 'visible' || document.querySelector('dialog[open]')) return;
-  try { await recarregar(); atualizarAvisos(); atualizarAnalises(); atualizarBadge(); atualizarMapa(); atualizarOrg(); atualizarGerencia(); } catch { /* tenta de novo no próximo ciclo */ }
+  try {
+    const maiorAntes = maiorNotifId();
+    await recarregar(); atualizarAvisos(); atualizarAnalises(); atualizarBadge(); atualizarMapa(); atualizarOrg(); atualizarGerencia(); atualizarDemandas(); atualizarNotificacoes();
+    avisarNovasNotificacoes(maiorAntes);
+  } catch { /* tenta de novo no próximo ciclo */ }
 }
 document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible' && S.perfil && Date.now() - S.carregadoEm > POLL_MS) silencioso(); });
 
 async function sair() {
   clearInterval(timer); await api.sair();
-  Object.assign(S, { perfil: null, perfis: [], funcionarios: [], naturezas: [], avisos: [], analises: [], lugares: [], lugaresIndisponivel: false, topicos: [], comentarios: [], anexos: [], gerIndisponivel: false, ger: { estado: 'abertos', tema: '', autor: '', busca: '' }, mapa: { modo: 'lugar', sel: null }, org: { visao: 'planilha', busca: '', sub: '', nivel: '', gestor: '', regime: '', tipo: 'todos', sort: { col: 'nome', dir: 1 }, aberto: null, achados: null, zoom: 1, arrasto: null, rolarPara: null, foco: null, autoAjuste: true }, aba: 'avisos', anLimite: 200, ultimoConvite: null, buscaFunc: '', visao: 'cartoes', calPend: false,
+  Object.assign(S, { ...estadoDemNotif(), perfil: null, perfis: [], funcionarios: [], naturezas: [], avisos: [], analises: [], lugares: [], lugaresIndisponivel: false, topicos: [], comentarios: [], anexos: [], gerIndisponivel: false, ger: { estado: 'abertos', tema: '', autor: '', busca: '' }, mapa: { modo: 'lugar', sel: null }, org: { visao: 'planilha', busca: '', sub: '', nivel: '', gestor: '', regime: '', tipo: 'todos', sort: { col: 'nome', dir: 1 }, aberto: null, achados: null, zoom: 1, arrasto: null, rolarPara: null, foco: null, autoAjuste: true }, aba: 'avisos', anLimite: 200, ultimoConvite: null, buscaFunc: '', visao: 'cartoes', calPend: false,
     fAv: { gestor: '', func: '', setor: '', de: '', ate: '', encerrados: false },
     fAn: { id: '', atendente: '', resumo: '', avaliacao: '', pontos: '', canal: '', de: '', ate: '', gestor: '' } });
   renderLogin();
@@ -796,22 +1056,24 @@ async function sair() {
 /* ================= estrutura principal ================= */
 function render() {
   if (S.aba === 'gerencia' && !ehAdmin()) S.aba = 'avisos';   // a aba é só de administradores
-  subst($('#app'), demoBanner(), cabecalho(), h('main', { class: S.aba === 'org' ? 'largo' : '' }, S.aba === 'avisos' ? viewAvisos() : S.aba === 'analises' ? viewAnalises() : S.aba === 'mapa' ? viewMapa() : S.aba === 'gerencia' ? viewGerencia() : viewOrg()), h('footer', { class: 'rodape', id: 'rodape-versao', text: `Gestão CS · versão ${VERSAO}` }));
-  atualizarAvisos(); atualizarAnalises(); atualizarMapa(); atualizarOrg(true); atualizarGerencia();
+  subst($('#app'), demoBanner(), cabecalho(), h('main', { class: (S.aba === 'org' || S.aba === 'demandas') ? 'largo' : '' }, S.aba === 'avisos' ? viewAvisos() : S.aba === 'analises' ? viewAnalises() : S.aba === 'mapa' ? viewMapa() : S.aba === 'gerencia' ? viewGerencia() : S.aba === 'demandas' ? viewDemandas() : S.aba === 'notificacoes' ? viewNotificacoes() : viewOrg()), h('footer', { class: 'rodape', id: 'rodape-versao', text: `Gestão CS · versão ${VERSAO}` }));
+  atualizarAvisos(); atualizarAnalises(); atualizarMapa(); atualizarOrg(true); atualizarGerencia(); atualizarDemandas(); atualizarNotificacoes();
   const abaAtiva = $('.tab[aria-selected="true"]'); if (abaAtiva && abaAtiva.scrollIntoView) abaAtiva.scrollIntoView({ inline: 'center', block: 'nearest' });
 }
 function pendentesN() { return ehAdmin() ? S.avisos.filter(a => a.status === 'pendente').length : 0; }
 function atualizarBadge() {
   if (!ui.badge) return; const n = pendentesN();
   ui.badge.textContent = n; ui.badge.classList.toggle('hidden', n === 0);
+  if (ui.badgeNotif) { const k = naoLidas(); ui.badgeNotif.textContent = k; ui.badgeNotif.classList.toggle('hidden', k === 0); }
 }
 function cabecalho() {
   const p = S.perfil;
   ui.badge = h('span', { class: 'badge-n hidden', title: 'Avisos aguardando aprovação' });
+  ui.badgeNotif = h('span', { class: 'badge-n hidden', id: 'badge-notif', title: 'Notificações não lidas' });
   const aba = (id, rotulo, extra) => h('button', { class: 'tab', role: 'tab', id: 'tab-' + id, 'aria-selected': String(S.aba === id), onclick: () => { S.aba = id; render(); } }, rotulo, extra || null);
-  const head = h('header', { class: 'topbar' + (ehAdmin() ? ' cinco-abas' : '') }, h('div', { class: 'topbar-in' },
+  const head = h('header', { class: 'topbar cinco-abas' }, h('div', { class: 'topbar-in' },
     h('div', { class: 'brand' }, h('img', { class: 'brand-logo', src: LOGO_FIT, alt: 'FIT Energia', width: '134', height: '40', style: 'height:40px;width:auto' }), h('span', { class: 'brand-sep', 'aria-hidden': 'true' }), h('span', { class: 'brand-nome', text: 'Gestão CS' })),
-    h('nav', { class: 'tabs', role: 'tablist' }, aba('avisos', 'Quadro de avisos', ehAdmin() ? ui.badge : null), aba('analises', 'Análise de atendimentos'), aba('mapa', 'Mapa de lugares'), aba('org', 'Colaboradores e Organização'), ehAdmin() ? aba('gerencia', 'Gerência & Coordenação') : null),
+    h('nav', { class: 'tabs', role: 'tablist' }, aba('avisos', 'Quadro de avisos', ehAdmin() ? ui.badge : null), aba('analises', 'Análise de atendimentos'), aba('mapa', 'Mapa de lugares'), aba('org', 'Colaboradores e Organização'), ehAdmin() ? aba('gerencia', 'Gerência & Coordenação') : null, aba('demandas', 'Gestão de Demandas'), aba('notificacoes', 'Notificações', ui.badgeNotif)),
     h('div', { class: 'user' },
       ehAdmin() ? h('button', { class: 'btn sm ghost-light', id: 'btn-admin', onclick: () => abrirAdmin() }, 'Administração') : null,
       h('div', { class: 'who' }, p.nome, h('small', {}, p.papel === 'admin' ? 'Administrador' : 'Supervisor')),
@@ -909,6 +1171,7 @@ function cardAviso(a, { decidir = false } = {}) {
     h('div', { class: 'topo' }, h('h3', { text: a.funcionario_nome }), h('span', { class: 'tag', text: a.natureza })),
     h('div', { class: 'meta' }, [a.setor, 'Gestor: ' + gestor].filter(Boolean).join(' · ')),
     h('div', { class: 'when' }, h('span', { text: quando }), unico ? null : h('small', { text: `${diasEntre(a.data_inicio, a.data_fim)} dias` }),
+      h('span', { class: 'chip ' + (diaInteiro(a) ? 'dia-todo' : 'horario'), 'data-horario': diaInteiro(a) ? 'dia' : 'periodo', text: textoHorario(a) }),
       a.status !== 'aprovado' ? h('span', { class: 'chip ' + a.status, text: a.status === 'pendente' ? 'Aguardando aprovação' : 'Recusado' }) : null),
     a.observacao ? h('div', { class: 'obs', text: a.observacao }) : null,
     a.status === 'pendente' ? avisoSobreposicao(a) : null,
@@ -989,12 +1252,20 @@ function abrirFormAviso(existente) {
   } }), rot_);
   const obs = h('textarea', { id: 'na-obs', maxlength: '1000', value: editando ? (existente.observacao || '') : '', placeholder: 'Opcional: detalhes que o time precisa saber (horário de saída, retorno, cobertura...)' });
   const erro = h('div', { class: 'err hidden', role: 'alert' });
+  const chkDia = h('input', { id: 'na-dia', type: 'checkbox', checked: editando ? diaInteiro(existente) : true });
+  const hIni = h('input', { id: 'na-hini', type: 'time', value: editando && !diaInteiro(existente) ? hhmm(existente.hora_inicio) : '' });
+  const hFim = h('input', { id: 'na-hfim', type: 'time', value: editando && !diaInteiro(existente) ? hhmm(existente.hora_fim) : '' });
+  const boxHoras = h('div', { class: 'field span-all' + (chkDia.checked ? ' hidden' : ''), id: 'na-horas-box' },
+    h('div', { class: 'form-grid' }, h('div', { class: 'field' }, h('label', { for: 'na-hini', text: 'Das' }), hIni), h('div', { class: 'field' }, h('label', { for: 'na-hfim', text: 'Até' }), hFim)),
+    h('small', { text: 'Informe de que hora até que hora o aviso vale (em cada dia do período).' }));
+  chkDia.addEventListener('change', () => { boxHoras.classList.toggle('hidden', chkDia.checked); hIni.required = hFim.required = !chkDia.checked; });
+  hIni.required = hFim.required = !chkDia.checked;
   const adm = ehAdmin();
   const form = h('form', { id: 'form-aviso', novalidate: true, onsubmit: async ev => {
     ev.preventDefault(); erro.classList.add('hidden');
     const multi = $('input[name=na-tipo]:checked', form).value === 'multi';
-    const d = { funcionario_id: Number(selFunc.value), natureza: selNat.value, data_inicio: dIni.value, data_fim: multi ? dFim.value : dIni.value, observacao: obs.value.trim() };
-    const m = !selFunc.value ? 'Escolha o funcionário.' : !d.natureza ? 'Escolha a natureza do aviso.' : !d.data_inicio ? 'Informe a data.' : !d.data_fim ? 'Informe a data final.' : d.data_fim < d.data_inicio ? 'A data final não pode ser anterior à inicial.' : '';
+    const d = { funcionario_id: Number(selFunc.value), natureza: selNat.value, data_inicio: dIni.value, data_fim: multi ? dFim.value : dIni.value, observacao: obs.value.trim(), dia_inteiro: chkDia.checked, hora_inicio: chkDia.checked ? null : (hIni.value || null), hora_fim: chkDia.checked ? null : (hFim.value || null) };
+    const m = !selFunc.value ? 'Escolha o funcionário.' : !d.natureza ? 'Escolha a natureza do aviso.' : !d.data_inicio ? 'Informe a data.' : !d.data_fim ? 'Informe a data final.' : d.data_fim < d.data_inicio ? 'A data final não pode ser anterior à inicial.' : (!d.dia_inteiro && !d.hora_inicio) ? 'Informe a hora inicial ou marque "Dia inteiro".' : (!d.dia_inteiro && !d.hora_fim) ? 'Informe a hora final.' : (!d.dia_inteiro && d.hora_fim <= d.hora_inicio) ? 'A hora final precisa ser depois da inicial.' : '';
     if (m) { erro.textContent = m; erro.classList.remove('hidden'); return; }
     const btn = $('#na-enviar'); btn.disabled = true;
     const voltaParaAprovacao = editando && !adm;
@@ -1011,6 +1282,8 @@ function abrirFormAviso(existente) {
       h('div', { class: 'field' }, h('label', { for: 'na-nat', text: 'Natureza do aviso' }), selNat),
       h('div', { class: 'field' }, h('label', { text: 'Período' }), h('div', { class: 'seg', role: 'radiogroup' }, radio('uno', 'Um único dia', !multiInicial), radio('multi', 'Mais de um dia', multiInicial))),
       h('div', { class: 'field' }, lblIni, dIni), boxFim,
+      h('div', { class: 'field span-all' }, h('label', { class: 'check', for: 'na-dia' }, chkDia, 'Dia inteiro'), h('small', { text: 'Desmarque se o aviso vale só para parte do dia e informe o horário.' })),
+      boxHoras,
       h('div', { class: 'field span-all' }, h('label', { for: 'na-obs', text: 'Observações' }), obs, h('small', { text: 'Não registre diagnóstico, CID ou outros dados de saúde. Informe apenas o que o time precisa saber para se organizar.' })), erro));
   const dlg = modal({ titulo: editando ? 'Editar aviso' : 'Novo aviso', corpo: form,
     rodape: [h('button', { class: 'btn', type: 'button', onclick: () => dlg.close() }, 'Cancelar'), h('button', { class: 'btn primary', id: 'na-enviar', type: 'submit', form: 'form-aviso' }, editando ? (adm || existente.status === 'pendente' ? 'Salvar alterações' : 'Salvar e enviar para aprovação') : (adm ? 'Publicar aviso' : 'Enviar para aprovação'))] });
@@ -1027,7 +1300,7 @@ function nomeCurto(nome) { const p = String(nome).trim().split(/\s+/); return p.
 /* Avisos pendentes: mostra se há aprovados do mesmo time no mesmo período */
 function sobreposicoes(a) {
   if (a.gestor_id == null) return [];
-  return S.avisos.filter(b => b.id !== a.id && b.status === 'aprovado' && b.gestor_id === a.gestor_id && b.data_inicio <= a.data_fim && b.data_fim >= a.data_inicio);
+  return S.avisos.filter(b => b.id !== a.id && b.status === 'aprovado' && b.gestor_id === a.gestor_id && b.data_inicio <= a.data_fim && b.data_fim >= a.data_inicio && horariosConflitam(a, b));
 }
 function avisoSobreposicao(a) {
   const lista = sobreposicoes(a); if (!lista.length) return null;
@@ -1038,7 +1311,7 @@ function avisoSobreposicao(a) {
 function avisosDoDia(base, iso) { return base.filter(a => a.data_inicio <= iso && a.data_fim >= iso); }
 function gruposDoMesmoTime(lista) {
   const por = {}; lista.forEach(a => { if (a.gestor_id != null) (por[a.gestor_id] ||= []).push(a); });
-  return Object.values(por).filter(g => g.length >= 2);
+  return Object.values(por).filter(g => g.length >= 2 && g.some((x, i) => g.some((y, j) => j > i && horariosConflitam(x, y))));
 }
 function baseCalendario() {
   const f = { ...S.fAv, de: '', ate: '' };
@@ -1088,7 +1361,7 @@ function calendario() {
       onclick: () => abrirDia(iso), onkeydown: e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); abrirDia(iso); } } },
       h('div', { class: 'cal-topo' }, h('span', { class: 'cal-num', text: d }), n ? h('span', { class: 'cal-n' + (n >= 2 ? ' alto' : ''), title: `${n} ${n === 1 ? 'aviso' : 'avisos'}`, text: n }) : null),
       h('div', { class: 'cal-itens' },
-        mostrar.map(a => h('div', { class: 'cal-item' + (a.status === 'pendente' ? ' pend' : ''), style: `--cor:${corNatureza(a.natureza)}`, title: `${a.funcionario_nome} · ${a.natureza}`, text: `${nomeCurto(a.funcionario_nome)} · ${a.natureza}` })),
+        mostrar.map(a => h('div', { class: 'cal-item' + (a.status === 'pendente' ? ' pend' : ''), style: `--cor:${corNatureza(a.natureza)}`, title: `${a.funcionario_nome} · ${a.natureza} · ${textoHorario(a)}`, text: `${nomeCurto(a.funcionario_nome)} · ${a.natureza}${diaInteiro(a) ? '' : ' · ' + hhmm(a.hora_inicio)}` })),
         extra > 0 ? h('div', { class: 'cal-mais', text: `+${extra} mais` }) : null)));
   }
   return h('div', { class: 'cal', id: 'calendario' }, topo, resumo, legenda, h('div', { class: 'cal-grid' }, cabec, celulas));
@@ -1147,10 +1420,10 @@ function viewAnalises() {
     if (ok) { iId.value = ''; iAtend.value = ''; tResumo.value = ''; tAval.value = ''; tMelhoria.value = ''; selCanal.value = ''; iId.focus(); }
   } },
     h('div', { class: 'form-grid' },
-      campo('an-id', 'ID do atendimento', iId), campo('an-atendente', 'Atendente', iAtend), campo('an-canal', 'Canal do atendimento', selCanal), campo('an-data', 'Data do atendimento', iData),
+      campo('an-id', 'ID do atendimento', iId), campo('an-atendente', 'Atendente', iAtend), campo('an-canal', 'Canal do atendimento', selCanal), campo('an-data', 'Data do atendimento', [iData, h('small', { text: 'Dia em que o seu liderado realizou o atendimento.' })]),
       campo('an-resumo', 'Resumo do atendimento', tResumo, 'span-all'),
       campo('an-aval', 'Avaliação do atendimento', tAval), campo('an-melhoria', 'Pontos de melhoria', tMelhoria)),
-    dlAtend, erro, h('div', { class: 'right' }, h('button', { class: 'btn primary', id: 'an-enviar', type: 'submit' }, 'Registrar atendimento')));
+    dlAtend, erro, h('div', { class: 'right envio-info' }, h('small', { class: 'hint', id: 'an-envio-aviso', text: 'Ao registrar, o sistema guarda automaticamente a data e a hora do envio.' }), h('button', { class: 'btn primary', id: 'an-enviar', type: 'submit' }, 'Registrar atendimento')));
 
   const txt = (id, rot, chave) => h('div', { class: 'field' }, h('label', { for: id, text: rot }), h('input', { id, type: 'search', value: f[chave], autocomplete: 'off', oninput: e => { f[chave] = e.target.value; S.anLimite = 200; atualizarAnalises(); } }));
   const txtLista = (id, rot, chave) => h('div', { class: 'field' }, h('label', { for: id, text: rot }), h('input', { id, type: 'search', value: f[chave], autocomplete: 'off', list: 'dl-atendentes-filtro', placeholder: 'Digite o nome', oninput: e => { f[chave] = e.target.value; S.anLimite = 200; atualizarAnalises(); } }), h('datalist', { id: 'dl-atendentes-filtro' }, nomesAtendentes().map(n => h('option', { value: n }))));
@@ -1181,9 +1454,9 @@ function atualizarAnalises() {
     && (!f.de || a.data_atendimento >= f.de) && (!f.ate || a.data_atendimento <= f.ate))
     .sort((a, b) => b.data_atendimento.localeCompare(a.data_atendimento) || b.id - a.id);
   const vis = arr.slice(0, S.anLimite);
-  const cab = ['Data', 'ID', 'Atendente', 'Canal', adm ? 'Gestor' : null, 'Resumo', 'Avaliação', 'Pontos de melhoria', ''].filter(x => x !== null);
+  const cab = ['Data do atendimento', 'Enviado em', 'ID', 'Atendente', 'Canal', adm ? 'Gestor' : null, 'Resumo', 'Avaliação', 'Pontos de melhoria', ''].filter(x => x !== null);
   const linhas = vis.map(a => h('tr', { 'data-id': a.id },
-    h('td', { class: 'nowrap col-data', text: fmtData(a.data_atendimento) }), h('td', { class: 'nowrap col-id', text: a.id_atendimento }), h('td', { class: 'nome-atend col-atend', text: a.atendente || '—' }), h('td', { class: 'col-canal' }, h('span', { class: 'canal', text: a.canal })),
+    h('td', { class: 'nowrap col-data', text: fmtData(a.data_atendimento) }), h('td', { class: 'nowrap col-envio', 'data-envio': a.criado_em || '', title: 'Data e hora em que o gestor enviou a análise ao sistema', text: a.criado_em ? fmtDH(a.criado_em) : '—' }), h('td', { class: 'nowrap col-id', text: a.id_atendimento }), h('td', { class: 'nome-atend col-atend', text: a.atendente || '—' }), h('td', { class: 'col-canal' }, h('span', { class: 'canal', text: a.canal })),
     adm ? h('td', { class: 'col-gestor', title: a.gestor_nome || nomeGestor(a.gestor_id) || '', text: nomeEnxuto(a.gestor_nome || nomeGestor(a.gestor_id)) || '—' }) : null,
     h('td', { class: 'cell-long', text: a.resumo }), h('td', { class: 'cell-long', text: a.avaliacao }), h('td', { class: 'cell-long', text: a.pontos_melhoria }),
     h('td', { class: 'col-acoes' }, h('span', { class: 'acoes' },
@@ -1856,7 +2129,7 @@ function atualizarGerencia() {
   ui.gerBtnAbertos.textContent = `Abertos (${nAb})`; ui.gerBtnHist.textContent = `Histórico (${nHi})`;
   const base = S.topicos.filter(t => !!t.concluido === hist);
   const busca = norm(g.busca);
-  const texto = t => norm([t.titulo, t.descricao, ...comentariosDe(t.id).map(c => c.texto), ...S.anexos.filter(a => a.topico_id === t.id).map(a => a.nome)].filter(Boolean).join(' '));
+  const texto = t => norm([t.titulo, t.descricao, ...comentariosDe(t.id).map(c => textoPlano(c.texto)), ...S.anexos.filter(a => a.topico_id === t.id).map(a => a.nome)].filter(Boolean).join(' '));
   const passa = (t, comTema) => (!comTema || !g.tema || t.tema === g.tema) && (!g.autor || t.criado_por_nome === g.autor) && (!busca || texto(t).includes(busca));
   const pilula = (valor, rotulo, n) => h('button', { type: 'button', class: 'subtab tema' + (valor ? '' : ' todos'), style: `--cor:${valor ? corTema(valor) : 'var(--brand)'}`, 'data-tema': valor, 'aria-pressed': String(g.tema === valor),
     onclick: () => { g.tema = valor; atualizarGerencia(); } }, valor ? h('span', { class: 'dot', 'aria-hidden': 'true' }) : null, `${rotulo} (${n})`);
@@ -1945,12 +2218,13 @@ function abrirTopico(id) {
   } }, 'Enviar anexos');
   const selTopico = seletorArquivos('Anexar ao tópico', n => btnEnviarT.classList.toggle('hidden', n === 0));
 
-  const txt = h('textarea', { id: 'com-texto', maxlength: '4000', placeholder: 'Escreva um comentário... (Ctrl+Enter para enviar)', 'aria-label': 'Novo comentário' });
+  const mc = campoMencao({ id: 'com-texto', maxlength: '4000', placeholder: 'Escreva um comentário... use @ para mencionar um administrador (Ctrl+Enter para enviar)', 'aria-label': 'Novo comentário' }, candidatosGerencia);
+  const txt = mc.ta;
   const btnCom = h('button', { class: 'btn primary', type: 'button', id: 'com-enviar', onclick: enviarComentario }, 'Comentar');
   const selCom = seletorArquivos('Anexar arquivos');
   txt.addEventListener('keydown', e => { if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) { e.preventDefault(); enviarComentario(); } });
   async function enviarComentario() {
-    const texto = txt.value.trim(), arqs = selCom.arquivos();
+    const texto = mc.valor().trim(), arqs = selCom.arquivos();
     if (!texto && !arqs.length) { toast('Escreva um comentário ou anexe um arquivo.', true); return; }
     btnCom.disabled = true; let res = null;
     const ok = await acao(async () => { res = await api.criarComentario(topicoAbertoId, texto, arqs); }, null);
@@ -1964,7 +2238,7 @@ function abrirTopico(id) {
   corpoTopico = h('div', { id: 'topico-detalhe' }, ui.detA,
     h('div', { class: 'det-anexar' }, selTopico.el, btnEnviarT),
     ui.detB,
-    h('div', { class: 'coment-form' }, txt, h('div', { class: 'coment-form-foot' }, selCom.el, btnCom)));
+    h('div', { class: 'coment-form' }, mc.el, h('div', { class: 'coment-form-foot' }, selCom.el, btnCom)));
   dlgTopico = modal({ titulo: 'Tópico de discussão', corpo: corpoTopico, largo: true });
   dlgTopico.addEventListener('close', () => { dlgTopico = null; corpoTopico = null; topicoAbertoId = null; ui.detA = ui.detB = null; atualizarGerencia(); });
   desenharTopico();
@@ -2008,9 +2282,529 @@ function desenharTopico() {
             if (!confirm('Excluir este comentário e os anexos dele? Não é possível desfazer.')) return;
             if (await acao(() => api.excluirComentario(c.id), 'Comentário excluído.')) await refrescarGerencia();
           } }, 'Excluir') : null),
-        c.texto ? h('div', { class: 'coment-texto', text: c.texto }) : null,
+        c.texto ? h('div', { class: 'coment-texto' }, textoComMencoes(c.texto)) : null,
         ax.length ? h('ul', { class: 'anexos' }, ax.map(linhaAnexo)) : null);
     })) : h('div', { class: 'hint', text: 'Ainda não há comentários. Seja o primeiro a comentar.' }));
+}
+
+/* ================= MENÇÕES (@) ================= */
+/* No texto salvo, a menção vira @[Nome|id]. Na tela aparece como @Nome. O banco lê esse formato e cria a notificação. */
+const RE_MENCAO = /@\[([^\]|]+)\|(\d+)\]/g;
+const textoPlano = t => String(t ?? '').replace(RE_MENCAO, '@$1');
+function textoComMencoes(texto) {
+  const s = String(texto ?? ''), out = []; let ult = 0;
+  for (const m of s.matchAll(RE_MENCAO)) {
+    out.push(s.slice(ult, m.index));
+    out.push(h('span', { class: 'mencao' + (S.perfil && Number(m[2]) === S.perfil.id ? ' eu' : ''), text: '@' + m[1] }));
+    ult = m.index + m[0].length;
+  }
+  out.push(s.slice(ult));
+  return out;
+}
+
+/* Caixa de texto com sugestão de pessoas ao digitar @. candidatos() devolve os perfis que podem ser mencionados. */
+function campoMencao(attrs, candidatos) {
+  const ta = h('textarea', attrs);
+  const lista = h('ul', { class: 'mencao-lista hidden', role: 'listbox', 'aria-label': 'Pessoas para mencionar' });
+  const caixa = h('div', { class: 'mencao-caixa' }, ta, lista);
+  let opcoes = [], ativo = 0, inicio = -1;
+  const fechar = () => { lista.classList.add('hidden'); opcoes = []; inicio = -1; };
+  function desenhar() {
+    subst(lista, opcoes.map((p, i) => h('li', { role: 'option', class: i === ativo ? 'ativo' : '', 'aria-selected': String(i === ativo), 'data-mencao': p.id,
+      onmousedown: e => { e.preventDefault(); escolher(p); } }, h('strong', { text: p.nome }), h('small', { text: p.papel === 'admin' ? 'Administrador' : 'Supervisor' }))));
+    lista.classList.remove('hidden');
+  }
+  function consultar() {
+    const pos = ta.selectionStart, m = /(?:^|\s)@([^\n@]{0,40})$/.exec(ta.value.slice(0, pos));
+    if (!m) return fechar();
+    const q = norm(m[1]); inicio = pos - m[1].length - 1;
+    opcoes = candidatos().filter(p => norm(p.nome).includes(q)).sort(byNome).slice(0, 6);
+    if (!opcoes.length) return fechar();
+    ativo = 0; desenhar();
+  }
+  function escolher(p) {
+    const pos = ta.selectionStart, rotulo = '@' + p.nome;
+    ta.value = ta.value.slice(0, inicio) + rotulo + ' ' + ta.value.slice(pos);
+    const nova = inicio + rotulo.length + 1; ta.setSelectionRange(nova, nova);
+    fechar(); ta.focus();
+  }
+  ta.addEventListener('input', consultar);
+  ta.addEventListener('click', consultar);
+  ta.addEventListener('blur', () => setTimeout(fechar, 150));
+  ta.addEventListener('keydown', e => {
+    if (lista.classList.contains('hidden') || !opcoes.length) return;
+    if (e.key === 'ArrowDown') { e.preventDefault(); ativo = (ativo + 1) % opcoes.length; desenhar(); }
+    else if (e.key === 'ArrowUp') { e.preventDefault(); ativo = (ativo - 1 + opcoes.length) % opcoes.length; desenhar(); }
+    else if (e.key === 'Enter' || e.key === 'Tab') { e.preventDefault(); e.stopPropagation(); escolher(opcoes[ativo]); }
+    else if (e.key === 'Escape') { e.preventDefault(); e.stopPropagation(); fechar(); }
+  }, true);
+  /* Texto para salvar: troca cada "@Nome" (de quem pode ser mencionado) por @[Nome|id] */
+  function valor() {
+    let t = ta.value;
+    candidatos().slice().sort((a, b) => b.nome.length - a.nome.length).forEach(p => { t = t.split('@' + p.nome).join(`@[${p.nome}|${p.id}]`); });
+    return t;
+  }
+  return { el: caixa, ta, valor, limpar: () => { ta.value = ''; fechar(); } };
+}
+const candidatosGerencia = () => S.perfis.filter(p => p.papel === 'admin' && p.id !== S.perfil.id);   // a aba é só de administradores
+const candidatosDem = d => d ? S.perfis.filter(p => p.id !== S.perfil.id && (p.papel === 'admin' || p.id === d.responsavel_id)) : [];
+
+/* ================= NOTIFICAÇÕES ================= */
+const TIPOS_NOTIF = {
+  aviso_aprovado: { cor: '#16a34a', glifo: '✓', aba: 'avisos' },
+  aviso_recusado: { cor: '#dc2626', glifo: '✕', aba: 'avisos' },
+  analise_editada: { cor: '#d97706', glifo: '✎', aba: 'analises' },
+  analise_excluida: { cor: '#dc2626', glifo: '×', aba: 'analises' },
+  lugar: { cor: '#0369a1', glifo: '⌂', aba: 'mapa' },
+  colaborador_novo: { cor: '#0f766e', glifo: '+', aba: 'org' },
+  gestor_alterado: { cor: '#7e3ff2', glifo: '⇄', aba: 'org' },
+  mencao_topico: { cor: '#be185d', glifo: '@', aba: 'gerencia' },
+  mencao_demanda: { cor: '#be185d', glifo: '@', aba: 'demandas' }
+};
+const naoLidas = () => S.notifs.filter(n => !n.lida).length;
+const maiorNotifId = () => S.notifs.reduce((m, n) => Math.max(m, n.id), 0);
+const rotuloLugarSeguro = id => lugarValido(id) ? rotuloLugar(id) : String(id || '');
+function textoNotif(n) {
+  const d = n.dados || {};
+  if (n.tipo === 'lugar') {
+    if (d.acao === 'novo') return `Seu lugar no mapa agora é ${rotuloLugarSeguro(d.lugar)}${d.de ? ` (antes: ${rotuloLugarSeguro(d.de)})` : ''}.`;
+    return `Você deixou o seu lugar no mapa (${rotuloLugarSeguro(d.lugar)}).`;
+  }
+  return n.mensagem || '';
+}
+function avisarNovasNotificacoes(maiorAntes) {
+  const novas = S.notifs.filter(n => !n.lida && n.id > maiorAntes).length;
+  if (novas) toast(novas === 1 ? 'Você tem 1 notificação nova.' : `Você tem ${novas} notificações novas.`);
+}
+
+function viewNotificacoes() {
+  const f = S.notif;
+  const alternar = v => () => { if (f.filtro !== v) { f.filtro = v; render(); } };
+  ui.notifLista = h('div', { id: 'notif-lista' });
+  return h('div', {},
+    h('div', { class: 'page-head' },
+      h('div', {}, h('h1', { text: 'Notificações' }), h('p', { text: 'O que aconteceu com você no site: menções, decisões sobre os seus avisos, mudanças no mapa e na sua gestão.' })),
+      h('div', { class: 'head-acoes' },
+        h('div', { class: 'seg seg-btn', role: 'group', 'aria-label': 'Filtrar notificações' },
+          h('button', { type: 'button', id: 'notif-todas', 'aria-pressed': String(f.filtro === 'todas'), onclick: alternar('todas') }, 'Todas'),
+          h('button', { type: 'button', id: 'notif-nao-lidas', 'aria-pressed': String(f.filtro === 'nao-lidas'), onclick: alternar('nao-lidas') }, 'Não lidas')),
+        h('button', { class: 'btn', id: 'notif-ler-todas', onclick: marcarTodasLidas }, 'Marcar todas como lidas'),
+        h('button', { class: 'btn', id: 'notif-limpar', onclick: limparNotifLidas }, 'Limpar lidas'))),
+    S.notifIndisponivel ? h('div', { class: 'err', id: 'notif-indisponivel', style: 'margin:0 0 14px', text: 'O banco de dados ainda não tem a tabela de notificações. Rode o arquivo atualizacao_08_demandas_notificacoes.sql no Supabase e recarregue a página.' }) : null,
+    ui.notifLista);
+}
+
+function atualizarNotificacoes() {
+  if (!ui.notifLista || !document.body.contains(ui.notifLista)) return;
+  const so = S.notif.filtro === 'nao-lidas';
+  const arr = S.notifs.filter(n => !so || !n.lida).sort((a, b) => b.criada_em.localeCompare(a.criada_em) || b.id - a.id);
+  subst(ui.notifLista,
+    h('p', { class: 'meta-line', id: 'notif-total', text: `${arr.length} ${arr.length === 1 ? 'notificação' : 'notificações'}${naoLidas() ? ` · ${naoLidas()} não ${naoLidas() === 1 ? 'lida' : 'lidas'}` : ''}` }),
+    arr.length ? h('div', { class: 'notif-lista' }, arr.map(itemNotif))
+      : h('div', { class: 'empty', text: so ? 'Nenhuma notificação não lida.' : 'Você ainda não recebeu notificações.' }));
+}
+
+function itemNotif(n) {
+  const t = TIPOS_NOTIF[n.tipo] || { cor: '#64748b', glifo: '•', aba: null };
+  return h('article', { class: 'notif' + (n.lida ? '' : ' nova'), style: `--cor:${t.cor}`, 'data-id': n.id, 'data-tipo': n.tipo },
+    h('span', { class: 'notif-ic', 'aria-hidden': 'true', text: t.glifo }),
+    h('div', { class: 'notif-corpo' },
+      h('div', { class: 'notif-tit', text: n.titulo }),
+      h('div', { class: 'notif-msg', text: textoNotif(n) }),
+      h('small', { class: 'notif-quando', text: fmtDH(n.criada_em) })),
+    h('div', { class: 'acoes' },
+      t.aba ? h('button', { class: 'btn sm', 'data-acao': 'abrir-notif', onclick: () => abrirNotif(n) }, 'Abrir') : null,
+      n.lida ? null : h('button', { class: 'btn sm', 'data-acao': 'ler-notif', onclick: () => marcarLida(n) }, 'Marcar como lida')));
+}
+
+async function marcarLida(n) {
+  if (n.lida) return true;
+  const ok = await acao(() => api.marcarNotificacao(n.id), null);
+  if (ok) { n.lida = true; atualizarBadge(); atualizarNotificacoes(); }
+  return ok;
+}
+async function marcarTodasLidas() {
+  if (!naoLidas()) { toast('Não há notificações não lidas.'); return; }
+  const ok = await acao(() => api.marcarTodasNotificacoes(), 'Todas as notificações foram marcadas como lidas.');
+  if (ok) { S.notifs.forEach(n => { n.lida = true; }); atualizarBadge(); atualizarNotificacoes(); }
+}
+async function limparNotifLidas() {
+  const n = S.notifs.filter(x => x.lida).length;
+  if (!n) { toast('Não há notificações lidas para limpar.'); return; }
+  if (!confirm(`Apagar ${plural(n, 'notificação lida', 'notificações lidas')}? Não é possível desfazer.`)) return;
+  const ok = await acao(() => api.limparNotificacoes(), 'Notificações lidas apagadas.');
+  if (ok) { S.notifs = S.notifs.filter(x => !x.lida); atualizarBadge(); atualizarNotificacoes(); }
+}
+async function abrirNotif(n) {
+  const t = TIPOS_NOTIF[n.tipo]; if (!t || !t.aba) return;
+  await marcarLida(n);
+  const d = n.dados || {};
+  if (t.aba === 'gerencia' && !ehAdmin()) return;
+  S.aba = t.aba; render();
+  if (n.tipo === 'mencao_topico') { if (S.topicos.some(x => x.id === d.topico_id)) abrirTopico(d.topico_id); else toast('Este tópico não está mais disponível.', true); }
+  if (n.tipo === 'mencao_demanda') { if (S.demandas.some(x => x.id === d.demanda_id)) abrirDemanda(d.demanda_id); else toast('Esta demanda não está mais disponível para você.', true); }
+}
+
+/* ================= GESTÃO DE DEMANDAS ================= */
+const opcoesDe = lista => S.demOpcoes.filter(o => o.lista === lista).sort((a, b) => (a.ordem - b.ordem) || a.nome.localeCompare(b.nome, 'pt-BR'));
+const corDem = (lista, nome) => { const o = S.demOpcoes.find(x => x.lista === lista && x.nome === nome); return (o && o.cor) || (COR_PADRAO_DEM[lista] && COR_PADRAO_DEM[lista][nome]) || corNatureza(nome); };
+const andamentoDe = id => S.demAndamento.filter(a => a.demanda_id === id).sort((a, b) => a.criado_em.localeCompare(b.criado_em) || a.id - b.id);
+const anexosDemDe = id => S.demAnexos.filter(a => a.demanda_id === id);
+const nomeResp = d => d.responsavel_nome || nomeGestor(d.responsavel_id) || '—';
+/* Duração = data de conclusão menos data de início, em dias corridos */
+const duracaoDem = d => (d.data_inicio && d.data_conclusao) ? Math.round((Date.parse(d.data_conclusao) - Date.parse(d.data_inicio)) / 86400000) : null;
+function diasUteisDem(d) {
+  if (!d.data_inicio || !d.data_conclusao || d.data_conclusao < d.data_inicio) return null;
+  let n = 0;
+  for (let x = d.data_inicio, i = 0; x <= d.data_conclusao && i < 4000; x = somaDias(x, 1), i++) { const w = new Date(x + 'T12:00:00').getDay(); if (w !== 0 && w !== 6) n++; }
+  return n;
+}
+const textoDuracao = d => { const dur = duracaoDem(d); if (dur == null) return '—'; const u = diasUteisDem(d); return `${dur} ${Math.abs(dur) === 1 ? 'dia' : 'dias'}${u != null ? ` (${u} úteis)` : ''}`; };
+const pilulaDem = (lista, nome) => nome ? h('span', { class: 'pilula-dem', style: `--cor:${corDem(lista, nome)}`, text: nome }) : h('span', { class: 'hint', text: '—' });
+function linksDem(texto) {
+  return String(texto || '').split(/\n+/).filter(l => l.trim()).map(l => h('div', { class: 'dem-link-linha' },
+    l.split(/(https?:\/\/[^\s<>"']+)/i).map(p => /^https?:\/\//i.test(p) ? h('a', { href: p, target: '_blank', rel: 'noopener noreferrer', text: p }) : p)));
+}
+
+function passaFiltroDem(d, f) {
+  const contem = (campo, termo) => !termo || norm(campo).includes(norm(termo));
+  const dur = duracaoDem(d), nAnexos = anexosDemDe(d.id).length;
+  if (!contem(d.demanda, f.demanda)) return false;
+  if (f.time && (f.time === '__vazio' ? !!d.time_nome : d.time_nome !== f.time)) return false;
+  if (f.responsavel && String(d.responsavel_id) !== f.responsavel) return false;
+  if (f.status && d.status !== f.status) return false;
+  if (f.prioridade && d.prioridade !== f.prioridade) return false;
+  const faixa = (v, de, ate) => (!de && !ate) || (!!v && (!de || v >= de) && (!ate || v <= ate));
+  if (!faixa(d.data_inicio, f.ini_de, f.ini_ate) || !faixa(d.data_conclusao, f.fim_de, f.fim_ate) || !faixa(d.previsao_atualizacao, f.prev_de, f.prev_ate)) return false;
+  if (f.dur_min !== '' && !(dur != null && dur >= Number(f.dur_min))) return false;
+  if (f.dur_max !== '' && !(dur != null && dur <= Number(f.dur_max))) return false;
+  if (f.setor) { const s = d.setores || []; if (f.setor === '__vazio' ? s.length > 0 : !s.includes(f.setor)) return false; }
+  if (f.andamento && !andamentoDe(d.id).some(a => norm(textoPlano(a.texto)).includes(norm(f.andamento)))) return false;
+  if (f.anexo === 'com' && !nAnexos) return false;
+  if (f.anexo === 'sem' && nAnexos) return false;
+  if (!contem(d.links, f.links)) return false;
+  return true;
+}
+
+function viewDemandas() {
+  const f = S.dem.f, adm = ehAdmin();
+  const mudou = chave => e => { f[chave] = e.target.value; atualizarDemandas(); };
+  ui.demSel = {};
+  const sel = (chave, rot) => { const s = h('select', { 'aria-label': 'Filtrar por ' + rot, 'data-filtro': chave, onchange: mudou(chave) }); ui.demSel[chave] = s; return s; };
+  const txt = (chave, rot) => h('input', { type: 'search', 'aria-label': 'Filtrar por ' + rot, 'data-filtro': chave, placeholder: 'Buscar', autocomplete: 'off', value: f[chave], oninput: mudou(chave) });
+  const data = (chave, rot) => h('input', { type: 'date', 'aria-label': rot, title: rot, 'data-filtro': chave, value: f[chave], onchange: mudou(chave) });
+  const num = (chave, rot) => h('input', { type: 'number', min: '0', 'aria-label': rot, title: rot, placeholder: rot, 'data-filtro': chave, value: f[chave], oninput: mudou(chave) });
+  const selAnexo = h('select', { 'aria-label': 'Filtrar por anexos', 'data-filtro': 'anexo', onchange: mudou('anexo') },
+    h('option', { value: '' }, 'Todos'), h('option', { value: 'com' }, 'Com anexos'), h('option', { value: 'sem' }, 'Sem anexos'));
+  selAnexo.value = f.anexo;
+  const par = (a, b) => h('div', { class: 'th-par' }, a, b);
+  const cols = [
+    ['Demanda', txt('demanda', 'demanda'), 'col-dem-nome'],
+    ['Time', sel('time', 'time')],
+    ['Responsável', sel('responsavel', 'responsável')],
+    ['Status', sel('status', 'status')],
+    ['Prioridade', sel('prioridade', 'prioridade')],
+    ['Data de início', par(data('ini_de', 'De'), data('ini_ate', 'Até'))],
+    ['Data de conclusão', par(data('fim_de', 'De'), data('fim_ate', 'Até'))],
+    ['Duração (dias)', par(num('dur_min', 'Mín.'), num('dur_max', 'Máx.'))],
+    ['Previsão de atualização', par(data('prev_de', 'De'), data('prev_ate', 'Até'))],
+    ['Setores envolvidos', sel('setor', 'setor')],
+    ['Andamento', txt('andamento', 'andamento'), 'col-dem-and'],
+    ['Anexos', selAnexo],
+    ['Links vinculados', txt('links', 'links'), 'col-dem-links'],
+    ['', null]
+  ];
+  ui.demCorpo = h('tbody', { id: 'dem-corpo' });
+  ui.demTotal = h('p', { class: 'meta-line', id: 'dem-total' });
+  return h('div', {},
+    h('div', { class: 'page-head' },
+      h('div', {}, h('h1', { text: 'Gestão de Demandas' }),
+        h('p', { text: adm ? 'Registre demandas para você e para os gestores, acompanhe o andamento por tópicos e filtre por qualquer coluna.' : 'Demandas que o administrador registrou para você. Você pode consultar tudo e registrar o andamento; só o administrador altera os demais dados.' })),
+      h('div', { class: 'head-acoes' },
+        h('button', { class: 'linkbtn', type: 'button', id: 'dem-limpar', onclick: () => { S.dem.f = filtrosDemVazios(); render(); } }, 'Limpar filtros'),
+        adm ? h('button', { class: 'btn', id: 'dem-listas', disabled: S.demIndisponivel, onclick: abrirListasDemanda }, 'Listas') : null,
+        adm ? h('button', { class: 'btn primary', id: 'dem-nova', disabled: S.demIndisponivel, onclick: () => abrirFormDemanda(null) }, '+ Nova demanda') : null)),
+    S.demIndisponivel ? h('div', { class: 'err', id: 'dem-indisponivel', style: 'margin:0 0 14px', text: 'O banco de dados ainda não tem as tabelas desta aba. Rode o arquivo atualizacao_08_demandas_notificacoes.sql no Supabase e recarregue a página.' }) : null,
+    ui.demTotal,
+    h('div', { class: 'table-wrap dem-wrap' },
+      h('table', { class: 'dem-tabela', id: 'dem-tabela' },
+        h('thead', {}, h('tr', {}, cols.map(([rot, ctl, cls]) => h('th', { class: cls || '' }, rot ? h('div', { class: 'th-rot', text: rot }) : null, ctl)))),
+        ui.demCorpo)));
+}
+
+/* As listas dos filtros acompanham as opções cadastradas (o admin pode criar novas a qualquer momento) */
+function povoarFiltrosDem() {
+  const f = S.dem.f, T = ui.demSel || {};
+  const encher = (chave, opts, comVazias) => {
+    const s = T[chave]; if (!s) return;
+    subst(s, h('option', { value: '' }, 'Todos'), opts.map(o => h('option', { value: o.v }, o.t)), comVazias ? h('option', { value: '__vazio' }, '(Vazias)') : null);
+    s.value = f[chave]; if (s.value !== f[chave]) { f[chave] = ''; s.value = ''; }
+  };
+  const nomes = (lista, campo) => { const base = opcoesDe(lista).map(o => o.nome); S.demandas.forEach(d => (Array.isArray(d[campo]) ? d[campo] : [d[campo]]).forEach(v => { if (v && !base.includes(v)) base.push(v); })); return base.map(n => ({ v: n, t: n })); };
+  encher('time', nomes('time', 'time_nome'), true);
+  encher('status', nomes('status', 'status'));
+  encher('prioridade', nomes('prioridade', 'prioridade'));
+  encher('setor', nomes('setor', 'setores'), true);
+  encher('responsavel', S.perfis.slice().sort(byNome).map(p => ({ v: String(p.id), t: p.nome })));
+}
+
+function atualizarDemandas() {
+  if (!ui.demCorpo || !document.body.contains(ui.demCorpo)) return;
+  povoarFiltrosDem();
+  const f = S.dem.f;
+  const arr = S.demandas.filter(d => passaFiltroDem(d, f)).sort((a, b) => b.id - a.id);
+  ui.demTotal.textContent = `${arr.length} ${arr.length === 1 ? 'demanda' : 'demandas'}${arr.length !== S.demandas.length ? ` (de ${S.demandas.length})` : ''}`;
+  subst(ui.demCorpo, arr.length ? arr.map(linhaDemanda)
+    : h('tr', {}, h('td', { colspan: '14', class: 'empty', id: 'dem-vazio', text: S.demandas.length ? 'Nenhuma demanda com esses filtros.' : (ehAdmin() ? 'Nenhuma demanda registrada ainda. Use "+ Nova demanda".' : 'Nenhuma demanda foi registrada para você até agora.') })));
+}
+
+function linhaDemanda(d) {
+  const adm = ehAdmin(), ands = andamentoDe(d.id), nx = anexosDemDe(d.id).length, dur = duracaoDem(d), u = diasUteisDem(d);
+  return h('tr', { class: 'dem-linha', 'data-id': d.id },
+    h('td', { class: 'dem-nome' }, h('button', { type: 'button', class: 'topico-titulo', 'data-acao': 'abrir', onclick: () => abrirDemanda(d.id), text: d.demanda })),
+    h('td', { text: d.time_nome || '—' }),
+    h('td', { text: nomeResp(d) }),
+    h('td', {}, pilulaDem('status', d.status)),
+    h('td', {}, pilulaDem('prioridade', d.prioridade)),
+    h('td', { class: 'nowrap', text: fmtData(d.data_inicio) || '—' }),
+    h('td', { class: 'nowrap', text: fmtData(d.data_conclusao) || '—' }),
+    h('td', { class: 'c nowrap', title: u != null ? `${u} dias úteis` : null, text: dur == null ? '—' : String(dur) }),
+    h('td', { class: 'nowrap', text: fmtData(d.previsao_atualizacao) || '—' }),
+    h('td', {}, (d.setores || []).length ? h('div', { class: 'dem-setores' }, d.setores.map(s => h('span', { class: 'chip-setor', text: s }))) : h('span', { class: 'hint', text: '—' })),
+    h('td', { class: 'dem-and' }, ands.length
+      ? [h('ul', {}, ands.slice(-3).map(a => h('li', { class: a.marco ? 'marco' : '' }, textoComMencoes(a.texto)))), ands.length > 3 ? h('small', { class: 'hint', text: `+${ands.length - 3} anteriores` }) : null]
+      : h('span', { class: 'hint', text: '—' })),
+    h('td', { class: 'c nowrap', text: nx ? String(nx) : '—' }),
+    h('td', { class: 'dem-links' }, d.links ? linksDem(d.links) : h('span', { class: 'hint', text: '—' })),
+    h('td', { class: 'col-acoes' }, h('span', { class: 'acoes' },
+      h('button', { class: 'btn sm', 'data-acao': 'abrir-demanda', onclick: () => abrirDemanda(d.id) }, 'Abrir'),
+      adm ? h('button', { class: 'btn sm', 'data-acao': 'editar-demanda', onclick: () => abrirFormDemanda(d) }, 'Editar') : null,
+      adm ? h('button', { class: 'btn sm danger', 'data-acao': 'excluir-demanda', onclick: () => excluirDemanda(d) }, 'Excluir') : null)));
+}
+
+function excluirDemanda(d, depois) {
+  if (!confirm(`Excluir a demanda "${d.demanda}" com ${plural(andamentoDe(d.id).length, 'tópico de andamento', 'tópicos de andamento')} e ${plural(anexosDemDe(d.id).length, 'anexo', 'anexos')}? Não é possível desfazer.`)) return;
+  acao(async () => { await api.excluirDemanda(d.id); await atualizarDepois(); }, 'Demanda excluída.').then(ok => { if (ok && depois) depois(); });
+}
+
+async function refrescarDemandas() {
+  try { await recarregar(); } catch (e) { toast(erroAmigavel(e), true); return; }
+  atualizarDemandas(); desenharDemanda(); atualizarBadge();
+}
+
+/* ---- novo / editar (só administrador) ---- */
+function selectLista(id, lista, atual, manterAtual) {
+  const sel = h('select', { id, 'data-lista': lista });
+  let valor = atual || '';
+  const povoar = () => {
+    const ops = opcoesDe(lista);
+    subst(sel, h('option', { value: '' }, 'Selecione...'), ops.map(o => h('option', { value: o.nome }, o.nome)),
+      manterAtual && valor && !ops.some(o => o.nome === valor) ? h('option', { value: valor }, `${valor} (atual)`) : null,
+      h('option', { value: '__nova' }, '+ Nova opção...'));
+    sel.value = valor;
+  };
+  povoar();
+  sel.addEventListener('change', async () => {
+    if (sel.value !== '__nova') { valor = sel.value; return; }
+    const nome = (prompt(`Nome da nova opção de ${LISTAS_DEM[lista]}:`) || '').trim();
+    if (!nome) { sel.value = valor; return; }
+    const ok = await acao(async () => { await api.criarOpcao(lista, nome); await recarregar(); }, 'Opção criada.');
+    const nova = S.demOpcoes.find(o => o.lista === lista && norm(o.nome) === norm(nome));
+    if (ok && nova) valor = nova.nome;
+    povoar();
+  });
+  return sel;
+}
+
+function abrirFormDemanda(existente) {
+  const editando = !!existente, hoje = hojeISO();
+  const campo = (id, rot, el, extra = '') => h('div', { class: 'field ' + extra }, h('label', { for: id, text: rot }), el);
+  const iNome = h('input', { id: 'fd-demanda', type: 'text', maxlength: '300', required: true, autocomplete: 'off', placeholder: 'Ex.: Mapeamento da jornada do associado', value: editando ? existente.demanda : '' });
+  const sTime = selectLista('fd-time', 'time', editando ? existente.time_nome : '', editando);
+  const sStatus = selectLista('fd-status', 'status', editando ? existente.status : 'A iniciar', editando);
+  const sPrio = selectLista('fd-prioridade', 'prioridade', editando ? existente.prioridade : 'Média', editando);
+  const sResp = h('select', { id: 'fd-resp', required: true }, h('option', { value: '' }, 'Selecione...'),
+    S.perfis.slice().sort(byNome).map(p => h('option', { value: String(p.id) }, `${p.nome}${p.papel === 'admin' ? ' (administrador)' : ''}${S.perfil && p.id === S.perfil.id ? ' · eu' : ''}`)));
+  if (editando && existente.responsavel_id != null) sResp.value = String(existente.responsavel_id);
+  const dIni = h('input', { id: 'fd-ini', type: 'date', value: editando ? (existente.data_inicio || '') : hoje });
+  const dFim = h('input', { id: 'fd-fim', type: 'date', value: editando ? (existente.data_conclusao || '') : '' });
+  const dPrev = h('input', { id: 'fd-prev', type: 'date', value: editando ? (existente.previsao_atualizacao || '') : '' });
+  const saidaDur = h('output', { id: 'fd-dur', class: 'dur-calc' });
+  const atualizaDur = () => { saidaDur.textContent = textoDuracao({ data_inicio: dIni.value, data_conclusao: dFim.value }); };
+  [dIni, dFim].forEach(el => { el.addEventListener('change', atualizaDur); el.addEventListener('input', atualizaDur); }); atualizaDur();
+  const setoresSel = new Set(editando ? (existente.setores || []) : []);
+  const caixaSetores = h('div', { class: 'chips-setores', id: 'fd-setores' });
+  function desenharSetores() {
+    const nomes = opcoesDe('setor').map(o => o.nome); setoresSel.forEach(s => { if (!nomes.includes(s)) nomes.push(s); });
+    subst(caixaSetores, nomes.map(n => h('label', { class: 'chip-check' },
+      h('input', { type: 'checkbox', value: n, checked: setoresSel.has(n), onchange: e => { if (e.target.checked) setoresSel.add(n); else setoresSel.delete(n); } }), n)),
+      h('button', { type: 'button', class: 'btn sm', id: 'fd-setor-nova', onclick: async () => {
+        const nome = (prompt('Nome do novo setor envolvido:') || '').trim(); if (!nome) return;
+        const ok = await acao(async () => { await api.criarOpcao('setor', nome); await recarregar(); }, 'Opção criada.');
+        const nova = S.demOpcoes.find(o => o.lista === 'setor' && norm(o.nome) === norm(nome)); if (ok && nova) setoresSel.add(nova.nome);
+        desenharSetores();
+      } }, '+ Nova opção'));
+  }
+  desenharSetores();
+  const tLinks = h('textarea', { id: 'fd-links', maxlength: '2000', placeholder: 'Um link por linha (planilhas, documentos, quadros...)', value: editando ? (existente.links || '') : '' });
+  const arqs = editando ? null : seletorArquivos('Anexar arquivos');
+  const erro = h('div', { class: 'err hidden', role: 'alert' });
+  const form = h('form', { id: 'form-demanda', novalidate: true, onsubmit: async ev => {
+    ev.preventDefault(); erro.classList.add('hidden');
+    const d = { demanda: iNome.value.trim(), time_nome: sTime.value && sTime.value !== '__nova' ? sTime.value : '', responsavel_id: sResp.value ? Number(sResp.value) : null,
+      status: sStatus.value, prioridade: sPrio.value, data_inicio: dIni.value, data_conclusao: dFim.value, previsao_atualizacao: dPrev.value,
+      setores: [...setoresSel], links: tLinks.value.trim() };
+    const m = !d.demanda ? 'Informe a demanda.' : !d.responsavel_id ? 'Escolha o responsável.' : !d.status || d.status === '__nova' ? 'Escolha o status.' : !d.prioridade || d.prioridade === '__nova' ? 'Escolha a prioridade.'
+      : (d.data_inicio && d.data_conclusao && d.data_conclusao < d.data_inicio) ? 'A data de conclusão não pode ser anterior à data de início.' : '';
+    if (m) { erro.textContent = m; erro.classList.remove('hidden'); return; }
+    const btn = $('#fd-salvar'); btn.disabled = true; let res = null;
+    const ok = await acao(async () => { if (editando) await api.editarDemanda(existente.id, d); else res = await api.criarDemanda(d, arqs.arquivos()); await atualizarDepois(); }, editando ? 'Demanda atualizada.' : null);
+    if (!ok) { btn.disabled = false; return; }
+    dlg.close();
+    if (!editando) toast(res && res.falhas && res.falhas.length ? 'Demanda criada, mas alguns anexos falharam: ' + res.falhas.join(' · ') : 'Demanda criada.', !!(res && res.falhas && res.falhas.length));
+  } },
+    h('div', { class: 'form-grid' },
+      campo('fd-demanda', 'Demanda', iNome, 'span-all'),
+      campo('fd-time', 'Time', sTime), campo('fd-resp', 'Responsável', sResp),
+      campo('fd-status', 'Status', sStatus), campo('fd-prioridade', 'Prioridade', sPrio),
+      campo('fd-ini', 'Data de início', dIni), campo('fd-fim', 'Data de conclusão', dFim),
+      campo('fd-dur', 'Duração', saidaDur), campo('fd-prev', 'Previsão de atualização', dPrev),
+      h('div', { class: 'field span-all' }, h('label', { text: 'Setores envolvidos' }), caixaSetores),
+      campo('fd-links', 'Links vinculados', tLinks, 'span-all'),
+      editando ? null : h('div', { class: 'field span-all' }, h('label', { text: 'Anexos' }), arqs.el),
+      h('small', { class: 'span-all hint', text: 'Gestor não está na lista de responsáveis? Cadastre-o em Administração > Gestores. O andamento da demanda é registrado depois, ao abri-la.' }),
+      erro));
+  const dlg = modal({ titulo: editando ? 'Editar demanda' : 'Nova demanda', corpo: form, largo: true,
+    rodape: [h('button', { class: 'btn', type: 'button', onclick: () => dlg.close() }, 'Cancelar'), h('button', { class: 'btn primary', id: 'fd-salvar', type: 'submit', form: 'form-demanda' }, editando ? 'Salvar alterações' : 'Criar demanda')] });
+  iNome.focus();
+}
+
+/* ---- detalhe: dados, anexos e andamento em tópicos ---- */
+let dlgDem = null, demAbertaId = null;
+async function abrirAnexoDem(a) {
+  try {
+    const previa = /^image\/|^application\/pdf$/.test(a.tipo || '');
+    const url = await api.urlAnexoDemanda(a, !previa);
+    const l = h('a', { href: url, target: '_blank', rel: 'noopener', download: previa ? null : a.nome });
+    document.body.append(l); l.click(); l.remove();
+  } catch (e) { toast(erroAmigavel(e), true); }
+}
+function linhaAnexoDem(a) {
+  return h('li', { class: 'anexo', 'data-anexo': a.id },
+    h('button', { type: 'button', class: 'anexo-nome', title: 'Abrir ou baixar', onclick: () => abrirAnexoDem(a) }, a.nome),
+    h('small', { text: `${fmtTamanho(a.tamanho)} · ${a.criado_por_nome || '—'}` }),
+    ehAdmin() ? h('button', { type: 'button', class: 'linkbtn danger-link', 'data-acao': 'excluir-anexo-dem', onclick: async () => {
+      if (!confirm(`Remover o anexo "${a.nome}"? Não é possível desfazer.`)) return;
+      if (await acao(() => api.excluirAnexoDemanda(a), 'Anexo removido.')) await refrescarDemandas();
+    } }, 'Remover') : null);
+}
+
+function abrirDemanda(id) {
+  demAbertaId = id; const adm = ehAdmin();
+  ui.demA = h('div', { id: 'dem-a' }); ui.demB = h('div', { id: 'dem-b' });
+  let selArq = null;
+  const btnEnviar = h('button', { class: 'btn sm primary hidden', type: 'button', id: 'dem-enviar-anexos', onclick: async () => {
+    const lista = selArq.arquivos(); if (!lista.length) return;
+    btnEnviar.disabled = true; let falhas = [];
+    const ok = await acao(async () => { falhas = await api.anexarADemanda(demAbertaId, lista); }, null);
+    btnEnviar.disabled = false; if (!ok) return;
+    selArq.limpar();
+    if (falhas.length) toast('Alguns anexos falharam: ' + falhas.join(' · '), true); else toast('Anexos enviados.');
+    await refrescarDemandas();
+  } }, 'Enviar anexos');
+  if (adm) selArq = seletorArquivos('Anexar arquivos', n => btnEnviar.classList.toggle('hidden', n === 0));
+
+  const mc = campoMencao({ id: 'and-texto', maxlength: '2000', placeholder: 'Novo tópico de andamento... use @ para mencionar alguém (Ctrl+Enter para adicionar)', 'aria-label': 'Novo tópico de andamento' },
+    () => candidatosDem(S.demandas.find(x => x.id === demAbertaId)));
+  const chkMarco = h('input', { type: 'checkbox', id: 'and-marco' });
+  const btnAdd = h('button', { class: 'btn primary', type: 'button', id: 'and-enviar', onclick: () => adicionar() }, 'Adicionar tópico');
+  async function adicionar() {
+    const texto = mc.valor().trim();
+    if (!texto) { toast('Escreva o tópico do andamento.', true); return; }
+    btnAdd.disabled = true;
+    const ok = await acao(() => api.criarAndamento(demAbertaId, texto, chkMarco.checked), 'Tópico adicionado ao andamento.');
+    btnAdd.disabled = false; if (!ok) return;
+    mc.limpar(); chkMarco.checked = false;
+    await refrescarDemandas();
+    const corpo = ui.demB && ui.demB.closest('.dlg-body'); if (corpo) corpo.scrollTop = corpo.scrollHeight;
+  }
+  mc.ta.addEventListener('keydown', e => { if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) { e.preventDefault(); adicionar(); } });
+
+  const corpo = h('div', { id: 'demanda-detalhe' }, ui.demA,
+    adm ? h('div', { class: 'det-anexar' }, selArq.el, btnEnviar) : null,
+    ui.demB,
+    h('div', { class: 'coment-form' }, mc.el, h('div', { class: 'coment-form-foot' }, h('label', { class: 'check' }, chkMarco, 'Marcar como marco'), btnAdd)));
+  dlgDem = modal({ titulo: 'Demanda', corpo, largo: true });
+  dlgDem.addEventListener('close', () => { dlgDem = null; demAbertaId = null; ui.demA = ui.demB = null; atualizarDemandas(); });
+  desenharDemanda();
+}
+
+function desenharDemanda() {
+  if (!dlgDem || !ui.demA || !ui.demB) return;
+  const d = S.demandas.find(x => x.id === demAbertaId);
+  if (!d) { dlgDem.close(); return; }
+  const adm = ehAdmin(), anexos = anexosDemDe(d.id), ands = andamentoDe(d.id);
+  const ficha = [['Responsável', nomeResp(d)], ['Data de início', fmtData(d.data_inicio) || '—'], ['Data de conclusão', fmtData(d.data_conclusao) || '—'],
+    ['Duração', textoDuracao(d)], ['Previsão de atualização', fmtData(d.previsao_atualizacao) || '—'], ['Setores envolvidos', (d.setores || []).join(', ') || '—']];
+  subst(ui.demA,
+    h('div', { class: 'det-head', style: `--cor:${corDem('prioridade', d.prioridade)}` },
+      h('div', { class: 'det-tags' }, pilulaDem('status', d.status), pilulaDem('prioridade', d.prioridade), d.time_nome ? h('span', { class: 'tag', text: d.time_nome }) : null),
+      h('h3', { class: 'det-titulo', text: d.demanda }),
+      h('div', { class: 'meta', text: `Registrada por ${d.criado_por_nome || '—'} em ${fmtDH(d.criado_em)}` })),
+    h('dl', { class: 'ficha' }, ficha.map(([k, v]) => [h('dt', { text: k }), h('dd', { text: v })])),
+    d.links ? [h('h4', { class: 'det-sub', text: 'Links vinculados' }), h('div', { class: 'dem-links' }, linksDem(d.links))] : null,
+    adm ? h('div', { class: 'det-acoes' },
+      h('button', { class: 'btn sm', type: 'button', 'data-acao': 'editar-demanda-detalhe', onclick: () => abrirFormDemanda(d) }, 'Editar'),
+      h('button', { class: 'btn sm danger', type: 'button', 'data-acao': 'excluir-demanda-detalhe', onclick: () => excluirDemanda(d, () => { if (dlgDem) dlgDem.close(); }) }, 'Excluir')) : null,
+    h('h4', { class: 'det-sub', text: `Anexos (${anexos.length})` }),
+    anexos.length ? h('ul', { class: 'anexos' }, anexos.map(linhaAnexoDem)) : h('div', { class: 'hint', text: 'Nenhum arquivo anexado.' }));
+  subst(ui.demB,
+    h('h4', { class: 'det-sub', text: `Andamento (${ands.length})` }),
+    ands.length ? h('ul', { class: 'dem-topicos', id: 'dem-topicos' }, ands.map(a => h('li', { class: 'dem-topico' + (a.marco ? ' marco' : ''), 'data-and': a.id },
+      h('div', { class: 'coment-head' },
+        a.marco ? h('span', { class: 'chip-marco', text: 'Marco' }) : null,
+        h('strong', { text: a.criado_por_nome || '—' }), h('small', { text: fmtDH(a.criado_em) }),
+        (adm || a.criado_por === S.perfil.id) ? h('button', { type: 'button', class: 'linkbtn danger-link', 'data-acao': 'excluir-andamento', onclick: async () => {
+          if (!confirm('Excluir este tópico do andamento? Não é possível desfazer.')) return;
+          if (await acao(() => api.excluirAndamento(a.id), 'Tópico excluído.')) await refrescarDemandas();
+        } }, 'Excluir') : null),
+      h('div', { class: 'coment-texto' }, textoComMencoes(a.texto)))))
+      : h('div', { class: 'hint', text: 'Ainda não há andamento registrado. Adicione o primeiro tópico abaixo.' }));
+}
+
+/* ---- listas suspensas (só administrador) ---- */
+let corpoListas = null;
+function abrirListasDemanda() {
+  corpoListas = h('div', { id: 'listas-dem' });
+  const dlg = modal({ titulo: 'Listas da Gestão de Demandas', corpo: corpoListas, largo: true });
+  dlg.addEventListener('close', () => { corpoListas = null; render(); });
+  desenharListasDem();
+}
+function desenharListasDem() {
+  if (!corpoListas) return;
+  const refrescar = async () => { try { await recarregar(); } catch (e) { toast(erroAmigavel(e), true); } desenharListasDem(); };
+  const comCor = l => l === 'status' || l === 'prioridade';
+  const bloco = lista => {
+    const nome = h('input', { type: 'text', maxlength: '60', placeholder: `Nova opção de ${LISTAS_DEM[lista]}`, 'aria-label': `Nova opção de ${LISTAS_DEM[lista]}`, 'data-nova': lista });
+    const adicionar = async () => {
+      const v = nome.value.trim(); if (!v) { toast('Informe o nome da opção.', true); return; }
+      if (await acao(() => api.criarOpcao(lista, v), 'Opção criada.')) await refrescar();
+    };
+    nome.addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); adicionar(); } });
+    return h('section', { class: 'lista-dem', 'data-lista': lista },
+      h('h3', { text: LISTAS_DEM[lista] }),
+      h('ul', {}, opcoesDe(lista).map(o => h('li', { 'data-opcao': o.id },
+        comCor(lista) ? h('input', { type: 'color', value: corDem(lista, o.nome), 'aria-label': `Cor de ${o.nome}`, onchange: async e => { if (await acao(() => api.atualizarOpcao(o.id, { cor: e.target.value }), null)) await refrescar(); } }) : null,
+        h('span', { class: 'lista-nome', text: o.nome }),
+        h('button', { type: 'button', class: 'linkbtn danger-link', 'data-acao': 'excluir-opcao', onclick: async () => {
+          if (!confirm(`Remover "${o.nome}" da lista de ${LISTAS_DEM[lista]}? As demandas que já usam essa opção continuam com ela.`)) return;
+          if (await acao(() => api.excluirOpcao(o.id), 'Opção removida.')) await refrescar();
+        } }, 'Remover')))),
+      h('div', { class: 'lista-nova' }, nome, h('button', { type: 'button', class: 'btn sm', 'data-acao': 'adicionar-opcao', onclick: adicionar }, 'Adicionar')));
+  };
+  subst(corpoListas,
+    h('p', { class: 'hint', text: 'Estas listas alimentam os campos da Gestão de Demandas. A lista de responsáveis vem dos gestores cadastrados em Administração.' }),
+    h('div', { class: 'listas-grid' }, Object.keys(LISTAS_DEM).map(bloco)));
 }
 
 /* ================= ADMINISTRAÇÃO ================= */
