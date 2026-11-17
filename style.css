@@ -446,3 +446,69 @@ html,body{overflow-x:hidden}
 .coment-form textarea{border:1px solid #c5d3d6;border-radius:8px;padding:9px 11px;background:#fff;width:100%;min-height:84px;resize:vertical}
 .coment-form-foot{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap}
 @media (max-width:640px){.arq-chip .arq-nome{max-width:150px}}
+/* ===================== Atualização 08: demandas, notificações, menções e avisos por horário ===================== */
+
+/* avisos: dia inteiro / período */
+.chip.dia-todo{background:#eef4f4;color:var(--muted)}
+.chip.horario{background:#e0f2fe;color:#075985}
+td.col-envio{white-space:nowrap;min-width:122px}
+.envio-info{display:flex;align-items:center;justify-content:flex-end;gap:12px;flex-wrap:wrap}
+
+/* menções (@) */
+.mencao{background:#fde7f1;color:#9d174d;border-radius:5px;padding:0 4px;font-weight:600;white-space:nowrap}
+.mencao.eu{background:#be185d;color:#fff}
+.mencao-caixa{position:relative;width:100%}
+.mencao-lista{position:absolute;left:0;right:0;bottom:calc(100% + 4px);z-index:30;margin:0;padding:4px;list-style:none;background:#fff;border:1px solid var(--line);border-radius:10px;box-shadow:0 6px 22px rgba(15,38,43,.18);max-height:230px;overflow:auto}
+.mencao-lista li{display:flex;align-items:baseline;justify-content:space-between;gap:10px;padding:7px 10px;border-radius:7px;cursor:pointer}
+.mencao-lista li small{color:var(--muted);white-space:nowrap}
+.mencao-lista li.ativo,.mencao-lista li:hover{background:var(--brand-soft)}
+
+/* notificações */
+.notif-lista{display:flex;flex-direction:column;gap:10px}
+.notif{display:flex;gap:12px;align-items:flex-start;background:#fff;border:1px solid var(--line);border-left:5px solid var(--cor,#64748b);border-radius:11px;padding:12px 14px;box-shadow:var(--shadow)}
+.notif.nova{background:#f3fbfa;border-color:#b6dcd8;border-left-color:var(--cor,#64748b)}
+.notif-ic{flex:none;width:34px;height:34px;border-radius:50%;background:var(--cor,#64748b);color:#fff;display:grid;place-items:center;font-weight:800;font-size:16px}
+.notif-corpo{flex:1;min-width:0}
+.notif-tit{font-weight:700}
+.notif.nova .notif-tit::after{content:"";display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--cor,#64748b);margin-left:8px;vertical-align:middle}
+.notif-msg{overflow-wrap:anywhere;margin-top:2px}
+.notif-quando{color:var(--muted);display:block;margin-top:4px}
+.notif .acoes{flex:none;flex-wrap:wrap;justify-content:flex-end}
+@media (max-width:640px){.notif{flex-wrap:wrap}.notif .acoes{width:100%;justify-content:flex-start}}
+
+/* gestão de demandas */
+.dem-wrap{max-height:74vh}
+.dem-tabela{min-width:1850px}
+.dem-tabela th{vertical-align:top;white-space:normal;min-width:112px;z-index:2}
+.dem-tabela th.col-dem-nome{min-width:230px}
+.dem-tabela th.col-dem-and{min-width:250px}
+.dem-tabela th.col-dem-links{min-width:180px}
+.th-rot{margin-bottom:6px}
+.dem-tabela th input,.dem-tabela th select{width:100%;font-size:12.5px;text-transform:none;letter-spacing:0;font-weight:400;padding:4px 6px;border:1px solid #c5d3d6;border-radius:6px;background:#fff;color:var(--ink)}
+.th-par{display:flex;flex-direction:column;gap:4px}
+.dem-nome{min-width:230px;font-weight:600}
+.pilula-dem{display:inline-block;border-radius:999px;padding:2px 10px;font-size:12.5px;font-weight:700;color:#fff;background:var(--cor,#64748b);white-space:nowrap}
+.dem-setores{display:flex;flex-wrap:wrap;gap:4px}
+.chip-setor{background:#eef4f4;border:1px solid #d3e0e2;border-radius:999px;padding:1px 8px;font-size:12px;white-space:nowrap}
+.dem-and{min-width:250px}
+.dem-and ul{margin:0;padding-left:16px}
+.dem-and li{display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;margin-bottom:2px}
+.dem-and li.marco{font-weight:600;color:var(--brand-dark)}
+.dem-link-linha a{color:var(--brand-dark);overflow-wrap:anywhere}
+.dem-links{min-width:170px}
+.chips-setores{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.chip-check{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);background:#fff;border-radius:999px;padding:3px 11px;cursor:pointer;font-size:14px}
+.chip-check:has(input:checked){background:var(--brand-soft);border-color:#8fd3cc}
+.dur-calc{display:block;font-weight:700;padding:8px 0}
+.dem-topicos{list-style:none;margin:6px 0 0;padding:0;display:flex;flex-direction:column;gap:8px}
+.dem-topico{background:#fff;border:1px solid var(--line);border-left:4px solid #c5d3d6;border-radius:0 10px 10px 0;padding:8px 12px}
+.dem-topico.marco{border-left-color:var(--brand);background:#f3fbfa}
+.chip-marco{background:var(--brand);color:#fff;border-radius:999px;padding:1px 9px;font-size:12px;font-weight:700}
+.listas-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:18px;margin-top:10px}
+.lista-dem h3{font-size:15px;margin-bottom:8px}
+.lista-dem ul{list-style:none;margin:0 0 10px;padding:0;display:flex;flex-direction:column;gap:6px}
+.lista-dem li{display:flex;align-items:center;gap:8px;border:1px solid var(--line);border-radius:8px;padding:4px 8px;background:#fff}
+.lista-dem .lista-nome{flex:1;min-width:0;overflow-wrap:anywhere}
+.lista-dem input[type=color]{width:28px;height:24px;padding:0;border:1px solid var(--line);border-radius:5px;background:none;cursor:pointer}
+.lista-nova{display:flex;gap:8px}
+.lista-nova input{flex:1;min-width:0;border:1px solid #c5d3d6;border-radius:8px;padding:6px 9px;background:#fff}
