@@ -488,9 +488,9 @@ td.col-envio{white-space:nowrap;min-width:122px}
 
 /* gestão de demandas: tabela no estilo da aba Colaboradores (cabeçalho verde, colunas proporcionais, sem rolagem lateral) */
 .dem-wrap{max-height:calc(100vh - 170px);min-height:280px;overflow:auto;border-radius:12px}
-#dem-tabela{width:100%;min-width:0;table-layout:fixed;border-collapse:separate;border-spacing:0;font-size:13px}
-#dem-tabela thead th{position:sticky;top:0;z-index:3;hyphens:none;word-break:normal;overflow-wrap:normal;background:linear-gradient(180deg,#58b535 0%,#4ea72e 100%);color:#fff;font-weight:700;font-size:13px;text-transform:none;letter-spacing:0;text-align:center;vertical-align:middle;padding:10px 4px;border-right:1px solid rgba(255,255,255,.28);border-bottom:2px solid #3f8a24;white-space:normal;line-height:1.2;box-shadow:0 2px 4px rgba(15,38,43,.12)}
-#dem-tabela thead th:last-child{border-right:0}
+.tabela-verde{width:100%;min-width:0;table-layout:fixed;border-collapse:separate;border-spacing:0;font-size:13px}
+.tabela-verde thead th{position:sticky;top:0;z-index:3;hyphens:none;word-break:normal;overflow-wrap:normal;background:linear-gradient(180deg,#58b535 0%,#4ea72e 100%);color:#fff;font-weight:700;font-size:13px;text-transform:none;letter-spacing:0;text-align:center;vertical-align:middle;padding:10px 4px;border-right:1px solid rgba(255,255,255,.28);border-bottom:2px solid #3f8a24;white-space:normal;line-height:1.2;box-shadow:0 2px 4px rgba(15,38,43,.12)}
+.tabela-verde thead th:last-child{border-right:0}
 .th-cab{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px}
 .th-rot{overflow-wrap:normal;word-break:normal;hyphens:none}
 button.th-filtro{flex:none;width:30px;height:17px;padding:0;line-height:1;font-size:11px;cursor:pointer;color:#fff;background:rgba(255,255,255,.22);border:1px solid rgba(255,255,255,.5);border-radius:5px}
@@ -502,15 +502,15 @@ th.th-ativo .th-rot::after{content:" ●";font-size:9px}
 .th-pop input,.th-pop select{width:100%;border:1px solid #c5d3d6;border-radius:7px;padding:6px 8px;background:#fff;font:inherit;color:var(--ink)}
 .th-par{display:flex;flex-direction:column;gap:6px}
 .th-par label{display:flex;flex-direction:column;gap:3px;font-weight:600;color:var(--muted);font-size:12px}
-#dem-tabela td{background:#fff;color:#17262b;text-align:center;vertical-align:middle;padding:7px 5px;border-right:1px solid rgba(0,0,0,.14);border-bottom:1px solid rgba(0,0,0,.14);white-space:normal;overflow-wrap:anywhere;line-height:1.25}
-#dem-tabela td:first-child{border-left:1px solid rgba(0,0,0,.14)}
-#dem-tabela tbody tr:hover td{filter:brightness(.96)}
-#dem-tabela td.cel-esq{text-align:left}
-#dem-tabela td.nowrap{white-space:normal}
-#dem-tabela td.cel-cor{background:var(--cor,#64748b);color:#fff;font-weight:700}
-#dem-tabela td.col-acoes{width:auto;min-width:0;padding:3px}
-#dem-tabela td.col-acoes .acoes{flex-wrap:wrap;justify-content:center;gap:3px}
-#dem-tabela td.empty{padding:24px;font-weight:400}
+.tabela-verde td{background:#fff;color:#17262b;text-align:center;vertical-align:middle;padding:7px 5px;border-right:1px solid rgba(0,0,0,.14);border-bottom:1px solid rgba(0,0,0,.14);white-space:normal;overflow-wrap:anywhere;line-height:1.25}
+.tabela-verde td:first-child{border-left:1px solid rgba(0,0,0,.14)}
+.tabela-verde tbody tr:hover td{filter:brightness(.96)}
+.tabela-verde td.cel-esq{text-align:left}
+.tabela-verde td.nowrap{white-space:normal}
+.tabela-verde td.cel-cor{background:var(--cor,#64748b);color:#fff;font-weight:700}
+.tabela-verde td.col-acoes{width:auto;min-width:0;padding:3px}
+.tabela-verde td.col-acoes .acoes{flex-wrap:wrap;justify-content:center;gap:3px}
+.tabela-verde td.empty{padding:24px;font-weight:400}
 .dem-nome{font-weight:600}
 .dem-nome .topico-titulo{font-size:13px;text-align:left}
 .dem-setores{display:flex;flex-wrap:wrap;gap:3px;justify-content:center}
@@ -520,8 +520,8 @@ th.th-ativo .th-rot::after{content:" ●";font-size:9px}
 .dem-and li.marco{font-weight:600;color:var(--brand-dark)}
 .dem-link-linha a{color:var(--brand-dark);overflow-wrap:anywhere}
 .dem-links{font-size:12px}
-@media (max-width:1450px){#dem-tabela thead th{font-size:12px}}
-@media (max-width:1100px){#dem-tabela{min-width:1100px}}
+@media (max-width:1450px){.tabela-verde thead th{font-size:12px}}
+@media (max-width:1100px){.tabela-verde{min-width:1100px}}
 
 /* formulário e detalhe da demanda */
 .chips-setores{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
@@ -542,3 +542,19 @@ th.th-ativo .th-rot::after{content:" ●";font-size:9px}
 .lista-dem input[type=color]{width:28px;height:24px;padding:0;border:1px solid var(--line);border-radius:5px;background:none;cursor:pointer}
 .lista-nova{display:flex;gap:8px}
 .lista-nova input{flex:1;min-width:0;border:1px solid #c5d3d6;border-radius:8px;padding:6px 9px;background:#fff}
+
+/* análise de atendimentos: mesma tabela verde, textos longos recolhidos */
+.an-wrap{max-height:calc(100vh - 170px);min-height:280px;overflow:auto;border-radius:12px}
+#analises-lista #an-tabela{min-width:0;width:100%}
+#analises-lista #an-tabela th:last-child,#analises-lista #an-tabela td.col-acoes{position:static;right:auto;box-shadow:none;background:#fff}
+#analises-lista #an-tabela thead th:last-child{background:linear-gradient(180deg,#58b535 0%,#4ea72e 100%);position:sticky}
+#analises-lista #an-tabela tr:hover td.col-acoes{background:#fff}
+#analises-lista #an-tabela td.col-acoes .acoes{flex-direction:row;flex-wrap:wrap;justify-content:center;gap:3px;align-items:center}
+#analises-lista #an-tabela td.col-data,#analises-lista #an-tabela td.col-id,#analises-lista #an-tabela td.col-envio,#analises-lista #an-tabela td.col-atend,#analises-lista #an-tabela td.col-canal,#analises-lista #an-tabela td.col-gestor{min-width:0;white-space:normal}
+#analises-lista #an-tabela td.cell-long{min-width:0;max-width:none;white-space:normal;cursor:pointer;vertical-align:top;line-height:1.3}
+#an-tabela .cel-texto{display:-webkit-box;-webkit-line-clamp:5;-webkit-box-orient:vertical;overflow:hidden;white-space:pre-wrap;font-size:12.5px}
+#an-tabela td.cell-long.aberto .cel-texto{display:block;-webkit-line-clamp:unset;overflow:visible}
+#an-tabela td.cell-long:hover{background:#f7fbf5}
+#an-tabela td{vertical-align:top}
+#an-tabela td.col-canal,#an-tabela td.col-acoes{vertical-align:top}
+@media (max-width:1100px){#analises-lista #an-tabela{min-width:1000px}}
