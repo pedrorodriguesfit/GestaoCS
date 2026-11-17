@@ -448,6 +448,16 @@ html,body{overflow-x:hidden}
 @media (max-width:640px){.arq-chip .arq-nome{max-width:150px}}
 /* ===================== Atualização 08: demandas, notificações, menções e avisos por horário ===================== */
 
+/* abas do topo: cabem na tela sem cortar o nome da primeira */
+.topbar.cinco-abas .tabs{justify-content:space-between;gap:0}
+.topbar.cinco-abas .tab{padding:12px 8px 10px;font-size:13.5px;flex:0 1 auto}
+@media (max-width:1180px){.topbar.cinco-abas .tabs{justify-content:flex-start}.topbar.cinco-abas .tab{padding:12px 10px 10px}}
+
+/* caixa de seleção dentro de formulário (ex.: "Dia inteiro") */
+.field label.check{display:flex;flex-direction:row;align-items:center;gap:8px;text-transform:none;letter-spacing:0;font-size:15px;font-weight:600;color:var(--ink);cursor:pointer}
+.field label.check input[type=checkbox]{width:18px;height:18px;padding:0;margin:0;flex:none}
+.field .chip-check input,.field .chip-check input[type=checkbox]{width:auto;padding:0;margin:0}
+
 /* avisos: dia inteiro / período */
 .chip.dia-todo{background:#eef4f4;color:var(--muted)}
 .chip.horario{background:#e0f2fe;color:#075985}
@@ -476,34 +486,53 @@ td.col-envio{white-space:nowrap;min-width:122px}
 .notif .acoes{flex:none;flex-wrap:wrap;justify-content:flex-end}
 @media (max-width:640px){.notif{flex-wrap:wrap}.notif .acoes{width:100%;justify-content:flex-start}}
 
-/* gestão de demandas */
-.dem-wrap{max-height:74vh}
-.dem-tabela{min-width:1850px}
-.dem-tabela th{vertical-align:top;white-space:normal;min-width:112px;z-index:2}
-.dem-tabela th.col-dem-nome{min-width:230px}
-.dem-tabela th.col-dem-and{min-width:250px}
-.dem-tabela th.col-dem-links{min-width:180px}
-.th-rot{margin-bottom:6px}
-.dem-tabela th input,.dem-tabela th select{width:100%;font-size:12.5px;text-transform:none;letter-spacing:0;font-weight:400;padding:4px 6px;border:1px solid #c5d3d6;border-radius:6px;background:#fff;color:var(--ink)}
-.th-par{display:flex;flex-direction:column;gap:4px}
-.dem-nome{min-width:230px;font-weight:600}
-.pilula-dem{display:inline-block;border-radius:999px;padding:2px 10px;font-size:12.5px;font-weight:700;color:#fff;background:var(--cor,#64748b);white-space:nowrap}
-.dem-setores{display:flex;flex-wrap:wrap;gap:4px}
-.chip-setor{background:#eef4f4;border:1px solid #d3e0e2;border-radius:999px;padding:1px 8px;font-size:12px;white-space:nowrap}
-.dem-and{min-width:250px}
-.dem-and ul{margin:0;padding-left:16px}
-.dem-and li{display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;margin-bottom:2px}
+/* gestão de demandas: tabela no estilo da aba Colaboradores (cabeçalho verde, colunas proporcionais, sem rolagem lateral) */
+.dem-wrap{max-height:calc(100vh - 170px);min-height:280px;overflow:auto;border-radius:12px}
+#dem-tabela{width:100%;min-width:0;table-layout:fixed;border-collapse:separate;border-spacing:0;font-size:13px}
+#dem-tabela thead th{position:sticky;top:0;z-index:3;background:linear-gradient(180deg,#58b535 0%,#4ea72e 100%);color:#fff;font-weight:700;font-size:13px;text-transform:none;letter-spacing:0;text-align:center;vertical-align:middle;padding:10px 4px;border-right:1px solid rgba(255,255,255,.28);border-bottom:2px solid #3f8a24;white-space:normal;line-height:1.2;box-shadow:0 2px 4px rgba(15,38,43,.12)}
+#dem-tabela thead th:last-child{border-right:0}
+.th-cab{display:flex;align-items:center;justify-content:center;gap:4px}
+.th-rot{overflow-wrap:anywhere}
+button.th-filtro{flex:none;width:20px;height:20px;padding:0;line-height:1;font-size:11px;cursor:pointer;color:#fff;background:rgba(255,255,255,.22);border:1px solid rgba(255,255,255,.5);border-radius:5px}
+button.th-filtro:hover{background:rgba(255,255,255,.42)}
+th.th-ativo button.th-filtro{background:#fff;color:#2f7a16;border-color:#fff}
+th.th-ativo .th-rot::after{content:" ●";font-size:9px}
+.th-pop{position:fixed;z-index:60;width:250px;display:flex;flex-direction:column;gap:8px;background:#fff;color:var(--ink);border:1px solid #b8c8cb;border-radius:10px;box-shadow:0 10px 30px rgba(15,38,43,.28);padding:11px 12px;text-align:left;font-weight:400;font-size:13px;line-height:1.3;text-transform:none;letter-spacing:0}
+.th-pop-tit{font-weight:700;color:var(--muted);font-size:12px;text-transform:uppercase;letter-spacing:.4px}
+.th-pop input,.th-pop select{width:100%;border:1px solid #c5d3d6;border-radius:7px;padding:6px 8px;background:#fff;font:inherit;color:var(--ink)}
+.th-par{display:flex;flex-direction:column;gap:6px}
+.th-par label{display:flex;flex-direction:column;gap:3px;font-weight:600;color:var(--muted);font-size:12px}
+#dem-tabela td{background:#fff;color:#17262b;text-align:center;vertical-align:middle;padding:7px 5px;border-right:1px solid rgba(0,0,0,.14);border-bottom:1px solid rgba(0,0,0,.14);white-space:normal;overflow-wrap:anywhere;line-height:1.25}
+#dem-tabela td:first-child{border-left:1px solid rgba(0,0,0,.14)}
+#dem-tabela tbody tr:hover td{filter:brightness(.96)}
+#dem-tabela td.cel-esq{text-align:left}
+#dem-tabela td.nowrap{white-space:normal}
+#dem-tabela td.cel-cor{background:var(--cor,#64748b);color:#fff;font-weight:700}
+#dem-tabela td.col-acoes{width:auto;min-width:0;padding:3px}
+#dem-tabela td.col-acoes .acoes{flex-wrap:wrap;justify-content:center;gap:3px}
+#dem-tabela td.empty{padding:24px;font-weight:400}
+.dem-nome{font-weight:600}
+.dem-nome .topico-titulo{font-size:13px;text-align:left}
+.dem-setores{display:flex;flex-wrap:wrap;gap:3px;justify-content:center}
+.chip-setor{background:#eef4f4;border:1px solid #d3e0e2;border-radius:999px;padding:0 7px;font-size:11.5px;white-space:nowrap}
+.dem-and ul{margin:0;padding-left:15px;font-size:12.5px}
+.dem-and li{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;margin-bottom:2px}
 .dem-and li.marco{font-weight:600;color:var(--brand-dark)}
 .dem-link-linha a{color:var(--brand-dark);overflow-wrap:anywhere}
-.dem-links{min-width:170px}
+.dem-links{font-size:12px}
+@media (max-width:1100px){#dem-tabela{min-width:1100px}}
+
+/* formulário e detalhe da demanda */
 .chips-setores{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
-.chip-check{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);background:#fff;border-radius:999px;padding:3px 11px;cursor:pointer;font-size:14px}
+.chip-check{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);background:#fff;border-radius:999px;padding:3px 11px;cursor:pointer;font-size:14px;text-transform:none;letter-spacing:0;font-weight:400;color:var(--ink)}
 .chip-check:has(input:checked){background:var(--brand-soft);border-color:#8fd3cc}
 .dur-calc{display:block;font-weight:700;padding:8px 0}
+.pilula-dem{display:inline-block;border-radius:999px;padding:2px 10px;font-size:12.5px;font-weight:700;color:#fff;background:var(--cor,#64748b);white-space:nowrap}
 .dem-topicos{list-style:none;margin:6px 0 0;padding:0;display:flex;flex-direction:column;gap:8px}
 .dem-topico{background:#fff;border:1px solid var(--line);border-left:4px solid #c5d3d6;border-radius:0 10px 10px 0;padding:8px 12px}
 .dem-topico.marco{border-left-color:var(--brand);background:#f3fbfa}
 .chip-marco{background:var(--brand);color:#fff;border-radius:999px;padding:1px 9px;font-size:12px;font-weight:700}
+#demanda-detalhe .dem-links{font-size:14px}
 .listas-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:18px;margin-top:10px}
 .lista-dem h3{font-size:15px;margin-bottom:8px}
 .lista-dem ul{list-style:none;margin:0 0 10px;padding:0;display:flex;flex-direction:column;gap:6px}
