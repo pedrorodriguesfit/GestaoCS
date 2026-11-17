@@ -489,11 +489,11 @@ td.col-envio{white-space:nowrap;min-width:122px}
 /* gestão de demandas: tabela no estilo da aba Colaboradores (cabeçalho verde, colunas proporcionais, sem rolagem lateral) */
 .dem-wrap{max-height:calc(100vh - 170px);min-height:280px;overflow:auto;border-radius:12px}
 #dem-tabela{width:100%;min-width:0;table-layout:fixed;border-collapse:separate;border-spacing:0;font-size:13px}
-#dem-tabela thead th{position:sticky;top:0;z-index:3;background:linear-gradient(180deg,#58b535 0%,#4ea72e 100%);color:#fff;font-weight:700;font-size:13px;text-transform:none;letter-spacing:0;text-align:center;vertical-align:middle;padding:10px 4px;border-right:1px solid rgba(255,255,255,.28);border-bottom:2px solid #3f8a24;white-space:normal;line-height:1.2;box-shadow:0 2px 4px rgba(15,38,43,.12)}
+#dem-tabela thead th{position:sticky;top:0;z-index:3;hyphens:none;word-break:normal;overflow-wrap:normal;background:linear-gradient(180deg,#58b535 0%,#4ea72e 100%);color:#fff;font-weight:700;font-size:13px;text-transform:none;letter-spacing:0;text-align:center;vertical-align:middle;padding:10px 4px;border-right:1px solid rgba(255,255,255,.28);border-bottom:2px solid #3f8a24;white-space:normal;line-height:1.2;box-shadow:0 2px 4px rgba(15,38,43,.12)}
 #dem-tabela thead th:last-child{border-right:0}
-.th-cab{display:flex;align-items:center;justify-content:center;gap:4px}
-.th-rot{overflow-wrap:anywhere}
-button.th-filtro{flex:none;width:20px;height:20px;padding:0;line-height:1;font-size:11px;cursor:pointer;color:#fff;background:rgba(255,255,255,.22);border:1px solid rgba(255,255,255,.5);border-radius:5px}
+.th-cab{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px}
+.th-rot{overflow-wrap:normal;word-break:normal;hyphens:none}
+button.th-filtro{flex:none;width:30px;height:17px;padding:0;line-height:1;font-size:11px;cursor:pointer;color:#fff;background:rgba(255,255,255,.22);border:1px solid rgba(255,255,255,.5);border-radius:5px}
 button.th-filtro:hover{background:rgba(255,255,255,.42)}
 th.th-ativo button.th-filtro{background:#fff;color:#2f7a16;border-color:#fff}
 th.th-ativo .th-rot::after{content:" ●";font-size:9px}
@@ -520,6 +520,7 @@ th.th-ativo .th-rot::after{content:" ●";font-size:9px}
 .dem-and li.marco{font-weight:600;color:var(--brand-dark)}
 .dem-link-linha a{color:var(--brand-dark);overflow-wrap:anywhere}
 .dem-links{font-size:12px}
+@media (max-width:1450px){#dem-tabela thead th{font-size:12px}}
 @media (max-width:1100px){#dem-tabela{min-width:1100px}}
 
 /* formulário e detalhe da demanda */
