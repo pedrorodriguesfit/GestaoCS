@@ -558,3 +558,8 @@ th.th-ativo .th-rot::after{content:" ●";font-size:9px}
 #an-tabela td{vertical-align:top}
 #an-tabela td.col-canal,#an-tabela td.col-acoes{vertical-align:top}
 @media (max-width:1100px){#analises-lista #an-tabela{min-width:1000px}}
+/* ---- atualização 2026.11.23: resumo do dia (dentro do card do dia no calendário) ---- */
+.dia-resumo{display:flex;flex-wrap:wrap;gap:6px 8px;align-items:center;margin:0 0 10px}
+.dia-resumo .rot{font-size:13px;font-weight:700;color:var(--muted)}
+.dia-resumo .tag{font-size:13px}
+.dia-resumo .hint{margin:0}
