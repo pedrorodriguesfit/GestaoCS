@@ -8,7 +8,7 @@ const CFG = window.GESTAO_CS_CONFIG || {};
 const SUPABASE_JS = 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.118.0/dist/umd/supabase.js';
 const MODO = (CFG.supabaseUrl && CFG.supabaseAnonKey) ? 'supabase' : 'demo';
 const LOGO_FIT = 'data:image/png;base64,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'; // logo FIT Energia (versão para fundo escuro), embutido para não depender de outro arquivo
-const VERSAO = '2026.11.17-d';   // aparece no rodapé: serve para conferir se a versão nova está no ar
+const VERSAO = '2026.11.23-a';   // aparece no rodapé: serve para conferir se a versão nova está no ar
 const CANAIS = ['Hubspot', 'BlipDesk', '3CX'];
 /* Aba "Gerência & Coordenação" (só administradores): temas dos tópicos e limites dos anexos */
 const TEMAS = [
@@ -18,6 +18,8 @@ const TEMAS = [
   { nome: 'Estratégia', cor: '#4d7c0f' }
 ];
 const BUCKET_GERENCIA = 'gerencia-anexos';
+const BUCKET_AVISOS = 'avisos-anexos';      // anexos e comentários dos avisos (atualizacao_09)
+const BUCKET_ANALISES = 'analises-anexos';  // anexos das avaliações de atendimento (atualizacao_09)
 const MAX_ARQUIVO = 10 * 1024 * 1024;   // 10 MB por arquivo (o mesmo limite está no bucket do Supabase)
 const MAX_ARQUIVOS = 10;                // arquivos por envio
 const MAX_ARQUIVO_DEMO = 400 * 1024;    // no modo demonstração os arquivos ficam no navegador, que tem pouco espaço
@@ -32,7 +34,7 @@ const COR_PADRAO_DEM = {
 const TABELA_AUSENTE = /does not exist|Could not find the table|schema cache|42P01/i;
 function filtrosDemVazios() { return { demanda: '', time: '', responsavel: '', status: '', prioridade: '', ini_de: '', ini_ate: '', fim_de: '', fim_ate: '', dur_min: '', dur_max: '', prev_de: '', prev_ate: '', setor: '', andamento: '', anexo: '', links: '' }; }
 function estadoDemNotif() {
-  return { demandas: [], demOpcoes: [], demAndamento: [], demAnexos: [], demIndisponivel: false, notifs: [], notifIndisponivel: false, dem: { f: filtrosDemVazios() }, notif: { filtro: 'todas' } };
+  return { demandas: [], demOpcoes: [], demAndamento: [], demAnexos: [], demIndisponivel: false, notifs: [], notifIndisponivel: false, dem: { f: filtrosDemVazios() }, notif: { filtro: 'todas' }, avComentarios: [], avAnexos: [], anAnexos: [], avExtraIndisponivel: false };
 }
 const hhmm = t => String(t || '').slice(0, 5);
 const diaInteiro = a => a.dia_inteiro !== false;
@@ -108,6 +110,9 @@ function erroAmigavel(e) {
   if (/Could not find the .* column|column .* does not exist/i.test(m)) return 'O banco de dados ainda não tem as colunas novas. Rode a atualização do Supabase indicada no README (atualizacao_05_colaboradores.sql) e recarregue a página.';
   if (/exceeded the maximum allowed size|payload too large|entity too large/i.test(m)) return 'O arquivo é maior que 10 MB.';
   if (/Bucket not found/i.test(m)) return 'O espaço de arquivos ainda não foi criado. Rode no Supabase o arquivo atualizacao_07_gerencia.sql (Gerência & Coordenação) ou atualizacao_08_demandas_notificacoes.sql (Gestão de Demandas) e recarregue a página.';
+  if (/avisos_gestor_id_fkey|violates foreign key constraint/i.test(m)) return 'O banco ainda não libera a exclusão de perfis com avisos ou pessoas vinculadas. Rode o arquivo atualizacao_09_perfis_comentarios_anexos.sql no Supabase e tente de novo.';
+  if (/Could not find the function|function .* does not exist/i.test(m)) return 'O banco de dados ainda não tem a atualização mais recente. Rode o arquivo atualizacao_09_perfis_comentarios_anexos.sql no Supabase e recarregue a página.';
+  if (/aviso_comentarios|aviso_anexos|analise_anexos/i.test(m) && TABELA_AUSENTE.test(m)) return 'O banco ainda não tem as tabelas de comentários e anexos. Rode o arquivo atualizacao_09_perfis_comentarios_anexos.sql no Supabase e recarregue a página.';
   if (/row-level security|permission denied|insufficient/i.test(m)) return 'Você não tem permissão para esta ação.';
   if (/Password should be at least/i.test(m)) return 'A senha precisa ter pelo menos 8 caracteres.';
   if (/rate limit|too many/i.test(m)) return 'Muitas tentativas seguidas. Aguarde alguns minutos e tente de novo.';
@@ -255,6 +260,8 @@ function criarApiDemo() {
     try { db = JSON.parse(localStorage.getItem(KEY)); } catch { db = null; }
     if (!db) { db = seed(); }
     completarDemo(); try { salvar(); } catch { /* ok */ }
+    if (!db.avComentarios) { db.avComentarios = []; db.avAnexos = []; db.anAnexos = []; }
+    db.seq = Object.assign({ avcom: 0, avanx: 0, anx: 0 }, db.seq || {});
     if (!db.topicos) { const g = seedGerencia(); db.topicos = g.topicos; db.comentarios = g.comentarios; db.anexos = g.anexos; Object.assign(db.seq, { topico: g.seqGer.topico, comentario: g.seqGer.comentario, anexo: g.seqGer.anexo }); try { salvar(); } catch { /* sem espaço */ } }
   };
   carregar();
@@ -313,6 +320,24 @@ function criarApiDemo() {
       }
     }
   }
+  /* comentários e anexos dos avisos / anexos das análises (demo) */
+  const participaAviso = (p, a) => !!a && (p.papel === 'admin' || a.criado_por === p.id || a.gestor_id === p.id);
+  const avisoParticipado = id => { const p = exigir(); const a = db.avisos.find(x => x.id === id); if (!participaAviso(p, a)) throw new Error('Você não tem permissão para esta ação.'); return { p, a }; };
+  const analiseParticipada = id => { const p = exigir(); const a = db.analises.find(x => x.id === id); if (!a || !(p.papel === 'admin' || a.gestor_id === p.id)) throw new Error('Você não tem permissão para esta ação.'); return { p, a }; };
+  async function anexarGenDemo(lista, base, seqKey, arquivos, p) {
+    const falhas = [];
+    for (const f of (arquivos || [])) {
+      if (f.size > MAX_ARQUIVO_DEMO) { falhas.push(`${f.name}: na demonstração só cabem arquivos de até 400 KB`); continue; }
+      let novo = null;
+      try {
+        const dados = await lerDataUrl(f);
+        novo = { id: ++db.seq[seqKey], ...base, nome: f.name, caminho: 'demo/' + seqKey + '/' + db.seq[seqKey], tamanho: f.size, tipo: f.type || null, dados, criado_por: p.id, criado_por_nome: p.nome, criado_em: new Date().toISOString() };
+        db[lista].push(novo); salvar();
+      } catch (e) { if (novo) db[lista] = db[lista].filter(x => x !== novo); falhas.push(`${f.name}: não foi possível guardar o arquivo no navegador`); }
+    }
+    return falhas;
+  }
+  const podeApagarDemo = (p, x) => p.papel === 'admin' || (x.criado_por != null && x.criado_por === p.id);
   async function anexarDemandaDemo(demanda_id, arquivos, p) {
     const falhas = [];
     for (const f of (arquivos || [])) {
@@ -358,24 +383,28 @@ function criarApiDemo() {
       if (!db.lugares) db.lugares = [];
       const adm = p.papel === 'admin';
       const demandas = db.demandas.filter(x => podeVerDem(p, x)), idsDem = new Set(demandas.map(x => x.id));
-      return clone({ perfis: db.perfis, funcionarios: db.funcionarios, naturezas: db.naturezas, avisos, analises, lugares: db.lugares,
+      const idsAv = new Set(avisos.filter(a => participaAviso(p, a)).map(a => a.id)), idsAn = new Set(analises.map(a => a.id));
+      return clone({ avComentarios: db.avComentarios.filter(c => idsAv.has(c.aviso_id)), avAnexos: db.avAnexos.filter(x => idsAv.has(x.aviso_id)).map(({ dados, ...resto }) => resto), anAnexos: db.anAnexos.filter(x => idsAn.has(x.analise_id)).map(({ dados, ...resto }) => resto), perfis: db.perfis, funcionarios: db.funcionarios, naturezas: db.naturezas, avisos, analises, lugares: db.lugares,
         topicos: adm ? db.topicos : [], comentarios: adm ? db.comentarios : [], anexos: adm ? db.anexos.map(({ dados, ...resto }) => resto) : [],
         demandas, demOpcoes: db.demOpcoes, demAndamento: db.demAndamento.filter(a => idsDem.has(a.demanda_id)),
         demAnexos: db.demAnexos.filter(a => idsDem.has(a.demanda_id)).map(({ dados, ...resto }) => resto),
         notificacoes: db.notificacoes.filter(n => n.perfil_id === p.id).sort((a, b) => b.criada_em.localeCompare(a.criada_em) || b.id - a.id).slice(0, 300) });
     },
-    async criarAviso(d) {
+    async criarAviso(d, arquivos) {
       validarHorario(d); const p = exigir();
       if (!podeCriarPara(d.funcionario_id)) throw new Error('Você não tem permissão para esta ação.');
       const fu = db.funcionarios.find(f => f.id === d.funcionario_id);
       if (!fu) throw new Error('Funcionário não encontrado');
       if (d.data_fim < d.data_inicio) throw new Error('A data final não pode ser anterior à inicial.');
       const adm = p.papel === 'admin';
+      const novoId = db.seq.aviso + 1;
       db.avisos.push({ id: ++db.seq.aviso, funcionario_id: fu.id, funcionario_nome: fu.nome, setor: fu.subsetor,
         gestor_id: adm ? fu.gestor_id : p.id, natureza: d.natureza, data_inicio: d.data_inicio, data_fim: d.data_fim,
         observacao: d.observacao || null, dia_inteiro: d.dia_inteiro !== false, hora_inicio: d.dia_inteiro === false ? d.hora_inicio : null, hora_fim: d.dia_inteiro === false ? d.hora_fim : null, status: adm ? 'aprovado' : 'pendente', motivo_recusa: null,
         criado_por: p.id, criado_por_nome: p.nome, criado_em: new Date().toISOString(), decidido_por: adm ? p.id : null, decidido_em: null });
-      salvar(); return wait();
+      salvar();
+      const falhas = (arquivos && arquivos.length) ? await anexarGenDemo('avAnexos', { aviso_id: novoId, comentario_id: null }, 'avanx', arquivos, p) : [];
+      return wait({ id: novoId, falhas });
     },
     async decidirAviso(id, status, motivo) {
       admin(); const a = db.avisos.find(x => x.id === id); if (!a) throw new Error('Aviso não encontrado');
@@ -410,14 +439,55 @@ function criarApiDemo() {
       const visivel = a && (p.papel === 'admin' || a.status === 'aprovado' || a.criado_por === p.id);
       const pode = visivel && (p.papel === 'admin' || (a.gestor_id === p.id && distinct(a.funcionario_id, p.funcionario_id)));
       if (!pode) throw new Error('Você não tem permissão para esta ação.');
-      db.avisos = db.avisos.filter(x => x.id !== id); salvar(); return wait();
+      db.avisos = db.avisos.filter(x => x.id !== id); db.avComentarios = db.avComentarios.filter(c => c.aviso_id !== id); db.avAnexos = db.avAnexos.filter(x => x.aviso_id !== id); salvar(); return wait();
     },
-    async criarAnalise(d) {
+    /* ----- comentários e anexos dos avisos (demo): admin, quem criou o aviso e o gestor do aviso ----- */
+    async criarComentarioAviso(aviso_id, texto, arquivos) {
+      const { p, a } = avisoParticipado(aviso_id);
+      texto = String(texto || '').trim(); if (!texto && !(arquivos && arquivos.length)) throw new Error('Escreva um comentário ou anexe um arquivo.');
+      const id = ++db.seq.avcom;
+      db.avComentarios.push({ id, aviso_id, texto: texto || null, criado_por: p.id, criado_por_nome: p.nome, criado_em: new Date().toISOString() });
+      const titulo = `${a.funcionario_nome} (${a.natureza})`;
+      const avisados = new Set();
+      mencionados(texto).forEach(mid => { const alvo = db.perfis.find(x => x.id === mid); if (alvo && (alvo.papel === 'admin' || alvo.id === a.criado_por) && alvo.id !== p.id) { avisados.add(mid); notificar(mid, 'mencao_aviso', 'Você foi mencionado(a) em um aviso', `${p.nome} em "${titulo}": ${excerto(texto)}`, { aviso_id, comentario_id: id }); } });
+      if (a.criado_por != null && a.criado_por !== p.id && !avisados.has(a.criado_por)) notificar(a.criado_por, 'comentario_aviso', 'Novo comentário no seu aviso', `${p.nome} comentou no aviso "${titulo}": ${excerto(texto || 'enviou um anexo')}`, { aviso_id, comentario_id: id });
+      salvar();
+      return { id, falhas: await anexarGenDemo('avAnexos', { aviso_id, comentario_id: id }, 'avanx', arquivos, p) };
+    },
+    async excluirComentarioAviso(id) {
+      const p = exigir(); const c = db.avComentarios.find(x => x.id === id); if (!c) throw new Error('Comentário não encontrado.');
+      avisoParticipado(c.aviso_id); if (!podeApagarDemo(p, c)) throw new Error('Você não tem permissão para esta ação.');
+      db.avComentarios = db.avComentarios.filter(x => x.id !== id); db.avAnexos = db.avAnexos.filter(x => x.comentario_id !== id); salvar(); return wait();
+    },
+    async anexarAoAviso(aviso_id, arquivos) { const { p } = avisoParticipado(aviso_id); return anexarGenDemo('avAnexos', { aviso_id, comentario_id: null }, 'avanx', arquivos, p); },
+    async excluirAnexoAviso(a) {
+      const p = exigir(); const x = db.avAnexos.find(y => y.id === a.id); if (!x) throw new Error('Anexo não encontrado.');
+      avisoParticipado(x.aviso_id); if (!podeApagarDemo(p, x)) throw new Error('Você não tem permissão para esta ação.');
+      db.avAnexos = db.avAnexos.filter(y => y.id !== a.id); salvar(); return wait();
+    },
+    async urlAnexoAviso(a) { const x = db.avAnexos.find(y => y.id === a.id); if (!x) throw new Error('Anexo não encontrado.'); avisoParticipado(x.aviso_id); return URL.createObjectURL(await (await fetch(x.dados)).blob()); },
+    async vincularAvisoGestor(aviso_id, gestor_id) {
+      admin(); const a = db.avisos.find(x => x.id === aviso_id); if (!a) throw new Error('Aviso não encontrado');
+      if (gestor_id != null && !db.perfis.some(x => x.id === gestor_id)) throw new Error('Gestor não encontrado');
+      a.gestor_id = gestor_id ?? null; salvar(); return wait();
+    },
+    /* ----- anexos das avaliações de atendimento (demo) ----- */
+    async anexarAAnalise(analise_id, arquivos) { const { p } = analiseParticipada(analise_id); return anexarGenDemo('anAnexos', { analise_id }, 'anx', arquivos, p); },
+    async excluirAnexoAnalise(a) {
+      const p = exigir(); const x = db.anAnexos.find(y => y.id === a.id); if (!x) throw new Error('Anexo não encontrado.');
+      analiseParticipada(x.analise_id); if (!podeApagarDemo(p, x) && p.papel !== 'admin') throw new Error('Você não tem permissão para esta ação.');
+      db.anAnexos = db.anAnexos.filter(y => y.id !== a.id); salvar(); return wait();
+    },
+    async urlAnexoAnalise(a) { const x = db.anAnexos.find(y => y.id === a.id); if (!x) throw new Error('Anexo não encontrado.'); analiseParticipada(x.analise_id); return URL.createObjectURL(await (await fetch(x.dados)).blob()); },
+    async criarAnalise(d, arquivos) {
       const p = exigir();
       if (!CANAIS.includes(d.canal)) throw new Error('Canal inválido');
       if (!String(d.atendente || '').trim()) throw new Error('Informe o atendente.');
+      const novoId = db.seq.analise + 1;
       db.analises.push({ id: ++db.seq.analise, gestor_id: p.id, gestor_nome: p.nome, ...d, criado_em: new Date().toISOString() });
-      salvar(); return wait();
+      salvar();
+      const falhas = (arquivos && arquivos.length) ? await anexarGenDemo('anAnexos', { analise_id: novoId }, 'anx', arquivos, p) : [];
+      return wait({ id: novoId, falhas });
     },
     async editarAnalise(id, d) {
       const p = exigir(); const a = db.analises.find(x => x.id === id);
@@ -431,7 +501,7 @@ function criarApiDemo() {
     async excluirAnalise(id) {
       admin(); const a = db.analises.find(x => x.id === id);
       if (a && a.gestor_id != null) notificar(a.gestor_id, 'analise_excluida', 'Uma análise sua foi excluída', `Um administrador excluiu o registro do atendimento ${a.id_atendimento}${a.atendente ? ' (' + a.atendente + ')' : ''}.`, { id_atendimento: a.id_atendimento });
-      db.analises = db.analises.filter(x => x.id !== id); salvar(); return wait();
+      db.analises = db.analises.filter(x => x.id !== id); db.anAnexos = db.anAnexos.filter(x => x.analise_id !== id); salvar(); return wait();
     },
     async criarNatureza(nome) {
       admin(); nome = String(nome).trim(); if (!nome) throw new Error('Informe o nome da opção.');
@@ -540,11 +610,39 @@ function criarApiDemo() {
       const eu_ = admin(); const alvo = db.perfis.find(p => p.id === id); if (!alvo) throw new Error('Gestor não encontrado');
       if (alvo.id === eu_.id) throw new Error('Você não pode excluir o seu próprio perfil');
       if (alvo.papel === 'admin' && db.perfis.filter(p => p.papel === 'admin').length <= 1) throw new Error('Não é possível excluir o único administrador');
-      db.perfis = db.perfis.filter(p => p.id !== id);
-      db.funcionarios.forEach(f => { if (f.gestor_id === id) f.gestor_id = null; });
-      db.avisos.forEach(a => { if (a.gestor_id === id) a.gestor_id = null; if (a.criado_por === id) a.criado_por = null; });
+      /* avisos criados por ele ficam pendentes e sem gestor, para um admin vincular a outro gestor */
+      let nAvisos = 0, nLiderados = 0;
+      db.avisos.forEach(a => {
+        const criado = a.criado_por === id, dele = a.gestor_id === id;
+        if (criado) { a.status = 'pendente'; a.motivo_recusa = null; a.decidido_por = null; a.decidido_em = null; a.criado_por = null; nAvisos++; }
+        if (criado || dele) a.gestor_id = null;
+      });
+      /* as pessoas lideradas ficam sem gestor */
+      db.funcionarios.forEach(f => {
+        if (f.gestor_id === id || (alvo.funcionario_id != null && f.superior_id === alvo.funcionario_id)) { f.gestor_id = null; f.superior_id = null; f.gestor_nome = null; nLiderados++; }
+      });
       db.analises.forEach(a => { if (a.gestor_id === id) a.gestor_id = null; });
-      db.convites = db.convites.filter(c => c.perfil_id !== id); salvar(); return wait();
+      db.perfis = db.perfis.filter(p => p.id !== id);
+      db.convites = db.convites.filter(c => c.perfil_id !== id);
+      if (nAvisos || nLiderados) db.perfis.filter(p => p.papel === 'admin').forEach(ad => notificar(ad.id, 'gestor_removido', 'Perfil de gestor excluído', `O perfil de ${alvo.nome} foi excluído: ${nAvisos} ${nAvisos === 1 ? 'aviso ficou pendente' : 'avisos ficaram pendentes'} e ${nLiderados} ${nLiderados === 1 ? 'pessoa ficou sem gestor' : 'pessoas ficaram sem gestor'}. Vincule a um novo gestor.`, { avisos: nAvisos, liderados: nLiderados }));
+      salvar(); return wait({ avisos_pendentes: nAvisos, liderados_sem_gestor: nLiderados });
+    },
+    async editarGestor(id, d) {
+      const eu_ = admin(); const p = db.perfis.find(x => x.id === id); if (!p) throw new Error('Gestor não encontrado');
+      const nome = String(d.nome || '').trim(); if (!nome) throw new Error('Informe o nome');
+      if (!['admin', 'supervisor'].includes(d.papel)) throw new Error('Perfil inválido');
+      if (p.papel === 'admin' && d.papel !== 'admin' && db.perfis.filter(x => x.papel === 'admin').length <= 1) throw new Error('Não é possível rebaixar o único administrador');
+      if (d.email != null) {
+        const email = String(d.email).trim().toLowerCase();
+        if (email !== p.email) {
+          if (p.user_id) throw new Error('O e-mail de quem já fez o primeiro acesso não pode ser alterado aqui.');
+          if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) throw new Error('E-mail inválido');
+          if (db.perfis.some(x => x.id !== id && x.email === email)) throw new Error('Já existe um perfil com este e-mail');
+          p.email = email;
+        }
+      }
+      Object.assign(p, { nome, papel: d.papel, funcionario_id: d.funcionario_id || null });
+      void eu_; salvar(); return wait();
     },
     async atualizarFuncionario(id, patch) {
       admin(); const f = db.funcionarios.find(x => x.id === id); if (!f) throw new Error('Funcionário não encontrado');
@@ -687,6 +785,28 @@ function criarApiSupabase(sb) {
     }
     return falhas;
   }
+  /* Envio genérico (avisos e análises): sobe cada arquivo ao espaço privado e registra o anexo */
+  async function enviarGen(cfg, arquivos) {
+    const falhas = [];
+    for (const f of (arquivos || [])) {
+      const ext = (f.name.match(/\.[A-Za-z0-9]{1,8}$/) || [''])[0].toLowerCase();
+      const caminho = `${cfg.pasta}/${cfg.id}/${crypto.randomUUID()}${ext}`;
+      try {
+        if (f.size > MAX_ARQUIVO) throw new Error('O arquivo é maior que 10 MB.');
+        const up = await sb.storage.from(cfg.bucket).upload(caminho, f, { contentType: f.type || 'application/octet-stream', upsert: false });
+        if (up.error) throw up.error;
+        const ins = await sb.from(cfg.tabela).insert({ ...cfg.campos, nome: f.name, caminho, tamanho: f.size, tipo: f.type || null });
+        if (ins.error) { try { await sb.storage.from(cfg.bucket).remove([caminho]); } catch { /* ok */ } throw ins.error; }
+      } catch (e) { falhas.push(`${f.name}: ${erroAmigavel(e)}`); }
+    }
+    return falhas;
+  }
+  const cfgAviso = (aviso_id, comentario_id) => ({ bucket: BUCKET_AVISOS, pasta: 'avisos', id: aviso_id, tabela: 'aviso_anexos', campos: { aviso_id, comentario_id } });
+  const cfgAnalise = analise_id => ({ bucket: BUCKET_ANALISES, pasta: 'analises', id: analise_id, tabela: 'analise_anexos', campos: { analise_id } });
+  const urlAssinada = async (bucket, a, baixar) => {
+    const r = await sb.storage.from(bucket).createSignedUrl(a.caminho, 120, baixar ? { download: a.nome } : undefined);
+    if (r.error) throw r.error; return r.data.signedUrl;
+  };
   const registroDemanda = d => ({ demanda: String(d.demanda).trim(), time_nome: d.time_nome || null, responsavel_id: d.responsavel_id, status: d.status, prioridade: d.prioridade,
     data_inicio: d.data_inicio || null, data_conclusao: d.data_conclusao || null, previsao_atualizacao: d.previsao_atualizacao || null, setores: d.setores || [], links: String(d.links || '').trim() || null });
   const COL_PERFIL = 'id,user_id,email,nome,papel,funcionario_id';
@@ -726,6 +846,12 @@ function criarApiSupabase(sb) {
         paginado(() => sb.from('demanda_andamento').select('*').order('criado_em').order('id')),
         paginado(() => sb.from('demanda_anexos').select('*').order('criado_em').order('id'))
       ]).catch(e => ({ erro: e }));
+      /* Comentários e anexos dos avisos e anexos das análises (o banco só entrega o que a pessoa pode ver) */
+      const extraP = Promise.all([
+        paginado(() => sb.from('aviso_comentarios').select('*').order('criado_em').order('id')),
+        paginado(() => sb.from('aviso_anexos').select('*').order('criado_em').order('id')),
+        paginado(() => sb.from('analise_anexos').select('*').order('criado_em').order('id'))
+      ]).catch(e => ({ erro: e }));
       const notP = Promise.resolve(sb.from('notificacoes').select('*').order('criada_em', { ascending: false }).limit(300)).catch(e => ({ error: e }));
       const [perfis, funcionarios, naturezas, avisos, analises] = await Promise.all([
         paginado(() => sb.from('perfis').select(COL_PERFIL).order('nome')),
@@ -741,12 +867,21 @@ function criarApiSupabase(sb) {
       const dem = await demP; let demIndisponivel = false, demandas = [], demOpcoes = [], demAndamento = [], demAnexos = [];
       if (dem.erro) { if (TABELA_AUSENTE.test(String(dem.erro.message || dem.erro))) demIndisponivel = true; else throw dem.erro; }
       else [demandas, demOpcoes, demAndamento, demAnexos] = dem;
+      const extra = await extraP; let avComentarios = [], avAnexos = [], anAnexos = [], avExtraIndisponivel = false;
+      if (extra.erro) { if (TABELA_AUSENTE.test(String(extra.erro.message || extra.erro))) avExtraIndisponivel = true; else throw extra.erro; }
+      else [avComentarios, avAnexos, anAnexos] = extra;
       const nt = await notP; let notificacoes = [], notifIndisponivel = false;
       if (nt.error) { if (TABELA_AUSENTE.test(String(nt.error.message || nt.error))) notifIndisponivel = true; else throw nt.error; }
       else notificacoes = nt.data || [];
-      return { perfis, funcionarios, naturezas, avisos, analises, lugares, lugaresIndisponivel, topicos, comentarios, anexos, gerIndisponivel, demandas, demOpcoes, demAndamento, demAnexos, demIndisponivel, notificacoes, notifIndisponivel };
+      return { perfis, funcionarios, naturezas, avisos, analises, lugares, lugaresIndisponivel, topicos, comentarios, anexos, gerIndisponivel, demandas, demOpcoes, demAndamento, demAnexos, demIndisponivel, notificacoes, notifIndisponivel, avComentarios, avAnexos, anAnexos, avExtraIndisponivel };
     },
-    async criarAviso(d) { ok(await sb.from('avisos').insert({ funcionario_id: d.funcionario_id, natureza: d.natureza, data_inicio: d.data_inicio, data_fim: d.data_fim, observacao: d.observacao || null, ...horarioAviso(d) })); },
+    async criarAviso(d, arquivos) {
+      const linha = { funcionario_id: d.funcionario_id, natureza: d.natureza, data_inicio: d.data_inicio, data_fim: d.data_fim, observacao: d.observacao || null, ...horarioAviso(d) };
+      if (!arquivos || !arquivos.length) { ok(await sb.from('avisos').insert(linha)); return { id: null, falhas: [] }; }
+      const r = ok(await sb.from('avisos').insert(linha).select('id'));
+      const id = r && r[0] ? r[0].id : null;
+      return { id, falhas: id ? await enviarGen(cfgAviso(id, null), arquivos) : arquivos.map(f => `${f.name}: não foi possível localizar o aviso criado`) };
+    },
     async decidirAviso(id, status, motivo) {
       const dados = ok(await sb.from('avisos').update({ status, motivo_recusa: status === 'recusado' ? (motivo || null) : null }).eq('id', id).select('id'));
       if (!dados.length) throw new Error('Você não tem permissão para esta ação.');
@@ -755,13 +890,52 @@ function criarApiSupabase(sb) {
       const dados = ok(await sb.from('avisos').update({ funcionario_id: d.funcionario_id, natureza: d.natureza, data_inicio: d.data_inicio, data_fim: d.data_fim, observacao: d.observacao || null, ...horarioAviso(d, S.avisos.find(x => x.id === id)) }).eq('id', id).select('id'));
       if (!dados || !dados.length) throw new Error('Você não tem permissão para esta ação.');
     },
-    async excluirAviso(id) { await removido(sb.from('avisos').delete().eq('id', id)); },
-    async criarAnalise(d) { ok(await sb.from('analises').insert({ atendente: d.atendente, id_atendimento: d.id_atendimento, resumo: d.resumo, avaliacao: d.avaliacao, pontos_melhoria: d.pontos_melhoria, canal: d.canal, data_atendimento: d.data_atendimento })); },
+    async excluirAviso(id) {
+      let caminhos = []; try { caminhos = (await sb.from('aviso_anexos').select('caminho').eq('aviso_id', id)).data?.map(a => a.caminho) || []; } catch { /* tabela ainda não existe */ }
+      await removido(sb.from('avisos').delete().eq('id', id));
+      if (caminhos.length) { try { await sb.storage.from(BUCKET_AVISOS).remove(caminhos); } catch { /* arquivo órfão não aparece para ninguém */ } }
+    },
+    /* ----- comentários e anexos dos avisos (as regras estão no banco) ----- */
+    async criarComentarioAviso(aviso_id, texto, arquivos) {
+      const r = ok(await sb.from('aviso_comentarios').insert({ aviso_id, texto: String(texto || '').trim() || null }).select('id'));
+      const id = r && r[0] ? r[0].id : null; if (!id) throw new Error('Você não tem permissão para esta ação.');
+      return { id, falhas: await enviarGen(cfgAviso(aviso_id, id), arquivos) };
+    },
+    async excluirComentarioAviso(id) {
+      const caminhos = ok(await sb.from('aviso_anexos').select('caminho').eq('comentario_id', id)).map(a => a.caminho);
+      await removido(sb.from('aviso_comentarios').delete().eq('id', id));
+      if (caminhos.length) { try { await sb.storage.from(BUCKET_AVISOS).remove(caminhos); } catch { /* idem */ } }
+    },
+    async anexarAoAviso(aviso_id, arquivos) { return enviarGen(cfgAviso(aviso_id, null), arquivos); },
+    async excluirAnexoAviso(a) {
+      await removido(sb.from('aviso_anexos').delete().eq('id', a.id));
+      try { await sb.storage.from(BUCKET_AVISOS).remove([a.caminho]); } catch { /* idem */ }
+    },
+    async urlAnexoAviso(a, baixar) { return urlAssinada(BUCKET_AVISOS, a, baixar); },
+    async vincularAvisoGestor(aviso_id, gestor_id) { ok(await sb.rpc('vincular_aviso_gestor', { p_aviso_id: aviso_id, p_gestor_id: gestor_id ?? null })); },
+    /* ----- anexos das avaliações de atendimento ----- */
+    async anexarAAnalise(analise_id, arquivos) { return enviarGen(cfgAnalise(analise_id), arquivos); },
+    async excluirAnexoAnalise(a) {
+      await removido(sb.from('analise_anexos').delete().eq('id', a.id));
+      try { await sb.storage.from(BUCKET_ANALISES).remove([a.caminho]); } catch { /* idem */ }
+    },
+    async urlAnexoAnalise(a, baixar) { return urlAssinada(BUCKET_ANALISES, a, baixar); },
+    async criarAnalise(d, arquivos) {
+      const linha = { atendente: d.atendente, id_atendimento: d.id_atendimento, resumo: d.resumo, avaliacao: d.avaliacao, pontos_melhoria: d.pontos_melhoria, canal: d.canal, data_atendimento: d.data_atendimento };
+      if (!arquivos || !arquivos.length) { ok(await sb.from('analises').insert(linha)); return { id: null, falhas: [] }; }
+      const r = ok(await sb.from('analises').insert(linha).select('id'));
+      const id = r && r[0] ? r[0].id : null;
+      return { id, falhas: id ? await enviarGen(cfgAnalise(id), arquivos) : arquivos.map(f => `${f.name}: não foi possível localizar o registro criado`) };
+    },
     async editarAnalise(id, d) {
       const dados = ok(await sb.from('analises').update({ atendente: d.atendente, id_atendimento: d.id_atendimento, resumo: d.resumo, avaliacao: d.avaliacao, pontos_melhoria: d.pontos_melhoria, canal: d.canal, data_atendimento: d.data_atendimento }).eq('id', id).select('id'));
       if (!dados || !dados.length) throw new Error('Você não tem permissão para esta ação.');
     },
-    async excluirAnalise(id) { await removido(sb.from('analises').delete().eq('id', id)); },
+    async excluirAnalise(id) {
+      let caminhos = []; try { caminhos = (await sb.from('analise_anexos').select('caminho').eq('analise_id', id)).data?.map(a => a.caminho) || []; } catch { /* tabela ainda não existe */ }
+      await removido(sb.from('analises').delete().eq('id', id));
+      if (caminhos.length) { try { await sb.storage.from(BUCKET_ANALISES).remove(caminhos); } catch { /* idem */ } }
+    },
     async criarNatureza(nome) { ok(await sb.from('naturezas').insert({ nome: String(nome).trim(), ordem: 100 })); },
     async excluirNatureza(id) { await removido(sb.from('naturezas').delete().eq('id', id)); },
     /* ----- Gerência & Coordenação: só administrador (as regras estão no banco) ----- */
@@ -846,7 +1020,8 @@ function criarApiSupabase(sb) {
       return ok(await sb.rpc('criar_gestor', { p_nome: nome, p_email: email, p_papel: papel, p_funcionario_id: funcionario_id || null }));
     },
     async novoCodigo(perfil_id) { return ok(await sb.rpc('novo_codigo_gestor', { p_perfil_id: perfil_id })); },
-    async excluirGestor(id) { ok(await sb.rpc('excluir_gestor', { p_perfil_id: id })); },
+    async excluirGestor(id) { const r = ok(await sb.rpc('excluir_gestor', { p_perfil_id: id })); return (r && typeof r === 'object') ? r : {}; },
+    async editarGestor(id, d) { ok(await sb.rpc('editar_gestor', { p_perfil_id: id, p_nome: d.nome, p_email: d.email ?? null, p_papel: d.papel, p_funcionario_id: d.funcionario_id || null })); },
     async atualizarFuncionario(id, patch) {
       const dados = ok(await sb.from('funcionarios').update(patch).eq('id', id).select('id'));
       if (!dados.length) throw new Error('Você não tem permissão para esta ação.');
@@ -898,6 +1073,7 @@ async function recarregar() {
   S.topicos = d.topicos || []; S.comentarios = d.comentarios || []; S.anexos = d.anexos || []; S.gerIndisponivel = !!d.gerIndisponivel;
   S.demandas = d.demandas || []; S.demOpcoes = d.demOpcoes || []; S.demAndamento = d.demAndamento || []; S.demAnexos = d.demAnexos || []; S.demIndisponivel = !!d.demIndisponivel;
   S.notifs = d.notificacoes || []; S.notifIndisponivel = !!d.notifIndisponivel;
+  S.avComentarios = d.avComentarios || []; S.avAnexos = d.avAnexos || []; S.anAnexos = d.anAnexos || []; S.avExtraIndisponivel = !!d.avExtraIndisponivel;
   S.colabIndisponivel = S.funcionarios.length > 0 && !('vaga' in S.funcionarios[0]);
   S.carregadoEm = Date.now();
 }
@@ -905,7 +1081,7 @@ async function acao(fn, okMsg) {
   try { await fn(); if (okMsg) toast(okMsg); return true; }
   catch (e) { toast(erroAmigavel(e), true); return false; }
 }
-async function atualizarDepois() { await recarregar(); atualizarAvisos(); atualizarAnalises(); atualizarBadge(); if (typeof preencherDia === 'function') preencherDia(); if (typeof atualizarMapa === 'function') atualizarMapa(); if (typeof atualizarOrg === 'function') atualizarOrg(); atualizarGerencia(); desenharTopico(); atualizarDemandas(); desenharDemanda(); atualizarNotificacoes(); }
+async function atualizarDepois() { await recarregar(); atualizarAvisos(); atualizarAnalises(); atualizarBadge(); if (typeof preencherDia === 'function') preencherDia(); if (typeof atualizarMapa === 'function') atualizarMapa(); if (typeof atualizarOrg === 'function') atualizarOrg(); atualizarGerencia(); desenharTopico(); desenharAviso(); desenharAnexosAnalise(); atualizarDemandas(); desenharDemanda(); atualizarNotificacoes(); }
 
 /* ================= modal ================= */
 function modal({ titulo, corpo, rodape, largo }) {
@@ -1162,6 +1338,11 @@ function cardAviso(a, { decidir = false } = {}) {
       acao(async () => { await api.decidirAviso(a.id, 'recusado', motivo.trim()); await atualizarDepois(); }, 'Aviso recusado.');
     } }, 'Recusar'));
   }
+  if (participaAviso(a)) {
+    const nCom = S.avComentarios.filter(c => c.aviso_id === a.id).length, nAx = S.avAnexos.filter(x => x.aviso_id === a.id).length;
+    acoes.push(h('button', { class: 'btn sm', 'data-acao': 'comentarios', title: 'Comentários e anexos deste aviso', onclick: () => abrirAviso(a.id) }, `Comentários${nCom ? ` (${nCom})` : ''}${nAx ? ` 📎${nAx}` : ''}`));
+  }
+  if (ehAdmin() && a.gestor_id == null) acoes.push(h('button', { class: 'btn sm', 'data-acao': 'vincular-gestor', onclick: () => abrirVincularAviso(a) }, 'Vincular gestor'));
   if (podeEditarAviso(a)) acoes.push(h('button', { class: 'btn sm', 'data-acao': 'editar', onclick: () => abrirFormAviso(a) }, 'Editar'));
   if (podeExcluirAviso(a)) acoes.push(h('button', { class: 'btn sm danger', 'data-acao': 'excluir', onclick: () => {
     if (!confirm(`Excluir o aviso de ${a.funcionario_nome} (${a.natureza}, ${quando})?`)) return;
@@ -1172,7 +1353,8 @@ function cardAviso(a, { decidir = false } = {}) {
     h('div', { class: 'meta' }, [a.setor, 'Gestor: ' + gestor].filter(Boolean).join(' · ')),
     h('div', { class: 'when' }, h('span', { text: quando }), unico ? null : h('small', { text: `${diasEntre(a.data_inicio, a.data_fim)} dias` }),
       h('span', { class: 'chip ' + (diaInteiro(a) ? 'dia-todo' : 'horario'), 'data-horario': diaInteiro(a) ? 'dia' : 'periodo', text: textoHorario(a) }),
-      a.status !== 'aprovado' ? h('span', { class: 'chip ' + a.status, text: a.status === 'pendente' ? 'Aguardando aprovação' : 'Recusado' }) : null),
+      a.status !== 'aprovado' ? h('span', { class: 'chip ' + a.status, text: a.status === 'pendente' ? 'Aguardando aprovação' : 'Recusado' }) : null,
+      ehAdmin() && a.gestor_id == null && a.status === 'pendente' ? h('span', { class: 'chip recusado', 'data-sem-gestor': '1', text: 'Sem gestor' }) : null),
     a.observacao ? h('div', { class: 'obs', text: a.observacao }) : null,
     a.status === 'pendente' ? avisoSobreposicao(a) : null,
     a.status === 'recusado' && a.motivo_recusa ? h('div', { class: 'motivo', text: 'Motivo: ' + a.motivo_recusa }) : null,
@@ -1261,6 +1443,7 @@ function abrirFormAviso(existente) {
   chkDia.addEventListener('change', () => { boxHoras.classList.toggle('hidden', chkDia.checked); hIni.required = hFim.required = !chkDia.checked; });
   hIni.required = hFim.required = !chkDia.checked;
   const adm = ehAdmin();
+  const arqsAv = editando ? null : seletorArquivos('Anexar arquivos');
   const form = h('form', { id: 'form-aviso', novalidate: true, onsubmit: async ev => {
     ev.preventDefault(); erro.classList.add('hidden');
     const multi = $('input[name=na-tipo]:checked', form).value === 'multi';
@@ -1270,7 +1453,9 @@ function abrirFormAviso(existente) {
     const btn = $('#na-enviar'); btn.disabled = true;
     const voltaParaAprovacao = editando && !adm;
     const msgOk = editando ? (adm ? 'Aviso atualizado.' : 'Aviso atualizado e enviado para a aprovação do administrador.') : (adm ? 'Aviso publicado no quadro.' : 'Aviso enviado para a aprovação do administrador.');
-    const ok = await acao(async () => { if (editando) await api.editarAviso(existente.id, d); else await api.criarAviso(d); await atualizarDepois(); }, msgOk);
+    let res = null;
+    const ok = await acao(async () => { if (editando) await api.editarAviso(existente.id, d); else res = await api.criarAviso(d, arqsAv.arquivos()); await atualizarDepois(); }, msgOk);
+    if (ok && res && res.falhas && res.falhas.length) toast('Aviso criado, mas alguns anexos falharam: ' + res.falhas.join(' · '), true);
     if (ok) dlg.close(); else btn.disabled = false;
   } },
     h('div', { class: 'form-grid' },
@@ -1284,7 +1469,8 @@ function abrirFormAviso(existente) {
       h('div', { class: 'field' }, lblIni, dIni), boxFim,
       h('div', { class: 'field span-all' }, h('label', { class: 'check', for: 'na-dia' }, chkDia, 'Dia inteiro'), h('small', { text: 'Desmarque se o aviso vale só para parte do dia e informe o horário.' })),
       boxHoras,
-      h('div', { class: 'field span-all' }, h('label', { for: 'na-obs', text: 'Observações' }), obs, h('small', { text: 'Não registre diagnóstico, CID ou outros dados de saúde. Informe apenas o que o time precisa saber para se organizar.' })), erro));
+      h('div', { class: 'field span-all' }, h('label', { for: 'na-obs', text: 'Observações' }), obs, h('small', { text: 'Não registre diagnóstico, CID ou outros dados de saúde. Informe apenas o que o time precisa saber para se organizar.' })),
+      editando ? null : h('div', { class: 'field span-all' }, h('label', { text: 'Anexos (opcional)' }), arqsAv.el), erro));
   const dlg = modal({ titulo: editando ? 'Editar aviso' : 'Novo aviso', corpo: form,
     rodape: [h('button', { class: 'btn', type: 'button', onclick: () => dlg.close() }, 'Cancelar'), h('button', { class: 'btn primary', id: 'na-enviar', type: 'submit', form: 'form-aviso' }, editando ? (adm || existente.status === 'pendente' ? 'Salvar alterações' : 'Salvar e enviar para aprovação') : (adm ? 'Publicar aviso' : 'Enviar para aprovação'))] });
 }
@@ -1373,6 +1559,7 @@ function conteudoDia(iso) {
   const lista = avisosDoDia(baseCalendario(), iso).sort((a, b) => a.funcionario_nome.localeCompare(b.funcionario_nome, 'pt-BR'));
   const grupos = gruposDoMesmoTime(lista);
   const topo = [];
+  if (lista.length) topo.push(resumoDoDia(lista));
   if (lista.length >= 2) topo.push(h('div', { class: 'dia-aviso multi', id: 'dia-multi', text: `${lista.length} avisos neste dia.` }));
   grupos.forEach(g => topo.push(h('div', { class: 'dia-aviso time', 'data-time': '1', text: `Sobreposição no time de ${nomeGestor(g[0].gestor_id) || 'gestor não definido'}: ${g.map(a => a.funcionario_nome).join(', ')}.` })));
   if (!lista.length) return h('div', { class: 'empty', text: 'Nenhum aviso neste dia.' });
@@ -1388,6 +1575,201 @@ function abrirDia(iso) {
 function preencherDia() {
   if (!diaAberto || !document.body.contains(diaAberto.corpo)) { diaAberto = null; return; }
   subst(diaAberto.corpo, conteudoDia(diaAberto.iso));
+}
+
+/* ================= COMENTÁRIOS E ANEXOS DOS AVISOS ================= */
+/* Quem participa do aviso: administradores, quem criou o aviso e o gestor do aviso (mesma regra do banco) */
+const participaAviso = a => !!a && !!S.perfil && (ehAdmin() || a.criado_por === S.perfil.id || a.gestor_id === S.perfil.id);
+const comentariosAviso = id => S.avComentarios.filter(c => c.aviso_id === id).sort((a, b) => a.criado_em.localeCompare(b.criado_em) || a.id - b.id);
+const anexosAviso = (id, comentarioId = null) => S.avAnexos.filter(a => a.aviso_id === id && (a.comentario_id ?? null) === comentarioId);
+const podeApagarItem = x => ehAdmin() || (x.criado_por != null && x.criado_por === S.perfil.id);
+/* Mencionáveis: administradores e quem criou o aviso */
+const candidatosAviso = a => S.perfis.filter(p => p.id !== S.perfil.id && (p.papel === 'admin' || (a && a.criado_por != null && p.id === a.criado_por)));
+
+async function abrirAnexoGen(a, urlFn) {
+  try {
+    const previa = /^image\/|^application\/pdf$/.test(a.tipo || '');
+    const url = await urlFn(a, !previa);
+    const l = h('a', { href: url, target: '_blank', rel: 'noopener', download: previa ? null : a.nome });
+    document.body.append(l); l.click(); l.remove();
+  } catch (e) { toast(erroAmigavel(e), true); }
+}
+function linhaAnexoGen(a, { urlFn, excluirFn, depois }) {
+  return h('li', { class: 'anexo', 'data-anexo': a.id },
+    h('button', { type: 'button', class: 'anexo-nome', title: 'Abrir ou baixar', onclick: () => abrirAnexoGen(a, urlFn) }, a.nome),
+    h('small', { text: `${fmtTamanho(a.tamanho)} · ${a.criado_por_nome || '—'}` }),
+    podeApagarItem(a) ? h('button', { type: 'button', class: 'linkbtn danger-link', 'data-acao': 'excluir-anexo', onclick: async () => {
+      if (!confirm(`Remover o anexo "${a.nome}"? Não é possível desfazer.`)) return;
+      if (await acao(() => excluirFn(a), 'Anexo removido.')) await depois();
+    } }, 'Remover') : null);
+}
+async function refrescarAvisos() {
+  try { await recarregar(); } catch (e) { toast(erroAmigavel(e), true); return; }
+  atualizarAvisos(); atualizarBadge(); desenharAviso(); desenharAnexosAnalise(); atualizarAnalises(); atualizarNotificacoes();
+  if (typeof preencherDia === 'function') preencherDia();
+}
+
+let dlgAviso = null, avisoAbertoId = null;
+function abrirAviso(id) {
+  const a0 = S.avisos.find(x => x.id === id); if (!a0) { toast('Este aviso não está mais disponível.', true); return; }
+  avisoAbertoId = id;
+  ui.avA = h('div', { id: 'av-a' }); ui.avB = h('div', { id: 'av-b' });
+  let corpo;
+  if (S.avExtraIndisponivel) {
+    corpo = h('div', { id: 'aviso-detalhe' }, ui.avA, h('div', { class: 'err', id: 'av-indisponivel', text: 'O banco de dados ainda não tem as tabelas de comentários e anexos dos avisos. Rode o arquivo atualizacao_09_perfis_comentarios_anexos.sql no Supabase (veja o README) e recarregue a página.' }));
+  } else {
+    const btnEnviarA = h('button', { class: 'btn sm primary hidden', type: 'button', id: 'av-enviar-anexos', onclick: async () => {
+      const arqs = selAv.arquivos(); if (!arqs.length) return;
+      btnEnviarA.disabled = true; let falhas = [];
+      const ok = await acao(async () => { falhas = await api.anexarAoAviso(avisoAbertoId, arqs); }, null);
+      btnEnviarA.disabled = false; if (!ok) return;
+      selAv.limpar();
+      if (falhas.length) toast('Alguns anexos falharam: ' + falhas.join(' · '), true); else toast('Anexos enviados.');
+      await refrescarAvisos();
+    } }, 'Enviar anexos');
+    const selAv = seletorArquivos('Anexar ao aviso', n => btnEnviarA.classList.toggle('hidden', n === 0));
+    const mc = campoMencao({ id: 'avc-texto', maxlength: '4000', placeholder: 'Escreva um comentário... use @ para mencionar um administrador ou quem criou o aviso (Ctrl+Enter para enviar)', 'aria-label': 'Novo comentário' }, () => candidatosAviso(S.avisos.find(x => x.id === avisoAbertoId)));
+    const txt = mc.ta;
+    const btnCom = h('button', { class: 'btn primary', type: 'button', id: 'avc-enviar', onclick: enviarComentarioAviso }, 'Comentar');
+    const selCom = seletorArquivos('Anexar arquivos');
+    txt.addEventListener('keydown', e => { if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) { e.preventDefault(); enviarComentarioAviso(); } });
+    async function enviarComentarioAviso() {
+      const texto = mc.valor().trim(), arqs = selCom.arquivos();
+      if (!texto && !arqs.length) { toast('Escreva um comentário ou anexe um arquivo.', true); return; }
+      btnCom.disabled = true; let res = null;
+      const ok = await acao(async () => { res = await api.criarComentarioAviso(avisoAbertoId, texto, arqs); }, null);
+      btnCom.disabled = false; if (!ok) return;
+      txt.value = ''; selCom.limpar();
+      if (res && res.falhas && res.falhas.length) toast('Comentário publicado, mas alguns anexos falharam: ' + res.falhas.join(' · '), true); else toast('Comentário publicado.');
+      await refrescarAvisos();
+      const sc = dlgAviso && dlgAviso.querySelector('.dlg-body'); if (sc) sc.scrollTop = sc.scrollHeight;
+    }
+    corpo = h('div', { id: 'aviso-detalhe' }, ui.avA, h('div', { class: 'det-anexar' }, selAv.el, btnEnviarA), ui.avB, h('div', { class: 'coment-form' }, mc.el, h('div', { class: 'coment-form-foot' }, selCom.el, btnCom)));
+  }
+  dlgAviso = modal({ titulo: 'Aviso: comentários e anexos', corpo, largo: true });
+  dlgAviso.addEventListener('close', () => { dlgAviso = null; avisoAbertoId = null; ui.avA = ui.avB = null; });
+  desenharAviso();
+}
+
+function desenharAviso() {
+  if (!dlgAviso || !ui.avA) return;
+  const a = S.avisos.find(x => x.id === avisoAbertoId);
+  if (!a) { dlgAviso.close(); return; }
+  const unico = a.data_inicio === a.data_fim;
+  const quando = unico ? `${diaSemana(a.data_inicio)}, ${fmtData(a.data_inicio)}` : `${fmtCurta(a.data_inicio)} a ${fmtData(a.data_fim)}`;
+  const anexosA = anexosAviso(a.id), coments = comentariosAviso(a.id);
+  const opcoesAnexo = { urlFn: (x, baixar) => api.urlAnexoAviso(x, baixar), excluirFn: x => api.excluirAnexoAviso(x), depois: refrescarAvisos };
+  subst(ui.avA,
+    h('div', { class: 'det-head', style: `--cor:${corNatureza(a.natureza)}` },
+      h('div', { class: 'det-tags' }, h('span', { class: 'tag', text: a.natureza }),
+        a.status !== 'aprovado' ? h('span', { class: 'chip ' + a.status, text: a.status === 'pendente' ? 'Aguardando aprovação' : 'Recusado' }) : null),
+      h('h3', { class: 'det-titulo', text: a.funcionario_nome }),
+      h('div', { class: 'meta', text: [quando, textoHorario(a), a.setor, 'Gestor: ' + (nomeGestor(a.gestor_id) || 'Sem gestor definido')].filter(Boolean).join(' · ') }),
+      h('div', { class: 'meta', text: `Enviado por ${a.criado_por_nome || '—'} em ${fmtDataHora(a.criado_em)}` })),
+    a.observacao ? h('div', { class: 'obs det-desc', text: a.observacao }) : null,
+    h('h4', { class: 'det-sub', text: `Anexos do aviso (${anexosA.length})` }),
+    anexosA.length ? h('ul', { class: 'anexos' }, anexosA.map(x => linhaAnexoGen(x, opcoesAnexo))) : h('div', { class: 'hint', text: 'Nenhum arquivo anexado ao aviso.' }));
+  if (!ui.avB) return;
+  subst(ui.avB,
+    h('h4', { class: 'det-sub', text: `Comentários (${coments.length})` }),
+    coments.length ? h('ul', { class: 'coments' }, coments.map(c => {
+      const ax = anexosAviso(a.id, c.id);
+      return h('li', { class: 'coment', 'data-coment': c.id },
+        h('div', { class: 'coment-head' }, h('strong', { text: c.criado_por_nome || '—' }), h('small', { text: fmtDH(c.criado_em) }),
+          podeApagarItem(c) ? h('button', { type: 'button', class: 'linkbtn danger-link', 'data-acao': 'excluir-comentario', onclick: async () => {
+            if (!confirm('Excluir este comentário e os anexos dele? Não é possível desfazer.')) return;
+            if (await acao(() => api.excluirComentarioAviso(c.id), 'Comentário excluído.')) await refrescarAvisos();
+          } }, 'Excluir') : null),
+        c.texto ? h('div', { class: 'coment-texto' }, textoComMencoes(c.texto)) : null,
+        ax.length ? h('ul', { class: 'anexos' }, ax.map(x => linhaAnexoGen(x, opcoesAnexo))) : null);
+    })) : h('div', { class: 'hint', text: 'Ainda não há comentários neste aviso.' }));
+}
+
+/* Admin: vincula um aviso (ex.: de um perfil excluído) a outro gestor */
+function abrirVincularAviso(a) {
+  const sel = h('select', { id: 'va-gestor', required: true }, h('option', { value: '' }, 'Selecione...'), S.perfis.slice().sort(byNome).map(p => h('option', { value: String(p.id) }, `${p.nome} · ${p.papel === 'admin' ? 'Administrador' : 'Supervisor'}`)));
+  const erro = h('div', { class: 'err hidden', role: 'alert' });
+  const form = h('form', { id: 'form-vincular', novalidate: true, onsubmit: async ev => {
+    ev.preventDefault(); erro.classList.add('hidden');
+    if (!sel.value) { erro.textContent = 'Escolha o gestor.'; erro.classList.remove('hidden'); return; }
+    const btn = $('#va-salvar'); btn.disabled = true;
+    const gid = Number(sel.value);
+    const ok = await acao(async () => { await api.vincularAvisoGestor(a.id, gid); await atualizarDepois(); }, `Aviso vinculado a ${nomeGestor(gid)}.`);
+    if (ok) dlg.close(); else btn.disabled = false;
+  } },
+    h('p', { class: 'hint', style: 'margin:0 0 10px', text: `Aviso de ${a.funcionario_nome} (${a.natureza}). Escolha o gestor responsável por ele.` }),
+    h('div', { class: 'field' }, h('label', { for: 'va-gestor', text: 'Gestor' }), sel), erro);
+  const dlg = modal({ titulo: 'Vincular aviso a um gestor', corpo: form,
+    rodape: [h('button', { class: 'btn', type: 'button', onclick: () => dlg.close() }, 'Cancelar'), h('button', { class: 'btn primary', id: 'va-salvar', type: 'submit', form: 'form-vincular' }, 'Vincular')] });
+}
+
+/* ---- anexos das avaliações de atendimento ---- */
+let dlgAnexAn = null, analiseAbertaId = null;
+function abrirAnexosAnalise(id) {
+  const a0 = S.analises.find(x => x.id === id); if (!a0) return;
+  analiseAbertaId = id; ui.anxA = h('div', { id: 'anx-a' });
+  let corpo;
+  if (S.avExtraIndisponivel) corpo = h('div', {}, h('div', { class: 'err', id: 'anx-indisponivel', text: 'O banco de dados ainda não tem a tabela de anexos das avaliações. Rode o arquivo atualizacao_09_perfis_comentarios_anexos.sql no Supabase (veja o README) e recarregue a página.' }));
+  else {
+    const btnEnviar = h('button', { class: 'btn sm primary hidden', type: 'button', id: 'anx-enviar', onclick: async () => {
+      const arqs = sel.arquivos(); if (!arqs.length) return;
+      btnEnviar.disabled = true; let falhas = [];
+      const ok = await acao(async () => { falhas = await api.anexarAAnalise(analiseAbertaId, arqs); }, null);
+      btnEnviar.disabled = false; if (!ok) return;
+      sel.limpar();
+      if (falhas.length) toast('Alguns anexos falharam: ' + falhas.join(' · '), true); else toast('Anexos enviados.');
+      await refrescarAvisos();
+    } }, 'Enviar anexos');
+    const sel = seletorArquivos('Anexar arquivos', n => btnEnviar.classList.toggle('hidden', n === 0));
+    corpo = h('div', {}, ui.anxA, h('div', { class: 'det-anexar' }, sel.el, btnEnviar));
+  }
+  dlgAnexAn = modal({ titulo: 'Anexos do atendimento avaliado', corpo, largo: true });
+  dlgAnexAn.addEventListener('close', () => { dlgAnexAn = null; analiseAbertaId = null; ui.anxA = null; });
+  desenharAnexosAnalise();
+}
+function desenharAnexosAnalise() {
+  if (!dlgAnexAn || !ui.anxA) return;
+  const a = S.analises.find(x => x.id === analiseAbertaId);
+  if (!a) { dlgAnexAn.close(); return; }
+  const lista = S.anAnexos.filter(x => x.analise_id === a.id);
+  const opcoes = { urlFn: (x, baixar) => api.urlAnexoAnalise(x, baixar), excluirFn: x => api.excluirAnexoAnalise(x), depois: refrescarAvisos };
+  subst(ui.anxA,
+    h('div', { class: 'det-head', style: '--cor:#0f766e' },
+      h('h3', { class: 'det-titulo', text: `Atendimento ${a.id_atendimento}` }),
+      h('div', { class: 'meta', text: [a.atendente, a.canal, fmtData(a.data_atendimento)].filter(Boolean).join(' · ') })),
+    h('h4', { class: 'det-sub', text: `Anexos (${lista.length})` }),
+    lista.length ? h('ul', { class: 'anexos' }, lista.map(x => linhaAnexoGen(x, opcoes))) : h('div', { class: 'hint', text: 'Nenhum arquivo anexado a este atendimento.' }));
+}
+
+/* ---- visão macro do dia: "2 atestados, 4 ausências temporárias, 3 folgas" ---- */
+const PREPOSICOES = new Set(['de', 'da', 'do', 'das', 'dos', 'e', 'em', 'para', 'por']);
+const PLURAIS_FIXOS = { 'day off': 'day offs', 'home office': 'home offices' };
+function pluralPalavra(w) {
+  if (/(ões|ães|ãos|s|x)$/.test(w)) return w;
+  if (/ão$/.test(w)) return w.replace(/ão$/, 'ões');
+  if (/[aeiouáéíóúâêôãõ]$/.test(w)) return w + 's';
+  if (/m$/.test(w)) return w.replace(/m$/, 'ns');
+  if (/il$/.test(w)) return w.replace(/il$/, 'is');
+  if (/l$/.test(w)) return w.replace(/l$/, 'is');
+  if (/[rz]$/.test(w)) return w + 'es';
+  return w + 's';
+}
+function textoNaturezaContada(nome, n) {
+  const base = String(nome || '').trim().toLowerCase();
+  if (n === 1) return `${n} ${base}`;
+  if (PLURAIS_FIXOS[base]) return `${n} ${PLURAIS_FIXOS[base]}`;
+  return `${n} ${base.split(/\s+/).map(p => PREPOSICOES.has(p) ? p : pluralPalavra(p)).join(' ')}`;
+}
+function resumoDoDia(lista) {
+  if (!lista.length) return null;
+  const cont = new Map(); lista.forEach(a => cont.set(a.natureza, (cont.get(a.natureza) || 0) + 1));
+  const ordem = n => { const o = S.naturezas.find(x => x.nome === n); return o ? o.ordem : 1e6; };
+  const itens = [...cont.entries()].sort((a, b) => ordem(a[0]) - ordem(b[0]) || a[0].localeCompare(b[0], 'pt-BR'));
+  const pend = lista.filter(a => a.status === 'pendente').length;
+  return h('div', { class: 'dia-resumo', id: 'dia-resumo', 'data-total': lista.length },
+    h('span', { class: 'rot', text: 'Resumo do dia:' }),
+    itens.map(([nat, n]) => h('span', { class: 'tag', 'data-natureza': nat, 'data-n': n, style: `--cor:${corNatureza(nat)}`, text: textoNaturezaContada(nat, n) })),
+    pend ? h('small', { class: 'hint', text: `(inclui ${pend} aguardando aprovação)` }) : null);
 }
 
 /* ================= ANÁLISE DE ATENDIMENTOS ================= */
@@ -1409,20 +1791,24 @@ function viewAnalises() {
   const tAval = h('textarea', { id: 'an-aval', required: true, maxlength: '4000' });
   const tMelhoria = h('textarea', { id: 'an-melhoria', required: true, maxlength: '4000' });
   const erro = h('div', { class: 'err hidden', role: 'alert' });
+  const arqsAn = seletorArquivos('Anexar arquivos');
   const form = h('form', { id: 'form-analise', novalidate: true, onsubmit: async ev => {
     ev.preventDefault(); erro.classList.add('hidden');
     const d = { atendente: iAtend.value.trim(), id_atendimento: iId.value.trim(), resumo: tResumo.value.trim(), avaliacao: tAval.value.trim(), pontos_melhoria: tMelhoria.value.trim(), canal: selCanal.value, data_atendimento: iData.value };
     const faltando = [['ID do atendimento', d.id_atendimento], ['Atendente', d.atendente], ['Resumo do atendimento', d.resumo], ['Avaliação do atendimento', d.avaliacao], ['Pontos de melhoria', d.pontos_melhoria], ['Canal do atendimento', d.canal], ['Data do atendimento', d.data_atendimento]].filter(x => !x[1]).map(x => x[0]);
     if (faltando.length) { erro.textContent = 'Preencha: ' + faltando.join(', ') + '.'; erro.classList.remove('hidden'); return; }
     const b = $('#an-enviar'); b.disabled = true;
-    const ok = await acao(async () => { await api.criarAnalise(d); await atualizarDepois(); }, 'Atendimento registrado.');
+    let res = null;
+    const ok = await acao(async () => { res = await api.criarAnalise(d, arqsAn.arquivos()); await atualizarDepois(); }, 'Atendimento registrado.');
     b.disabled = false;
-    if (ok) { iId.value = ''; iAtend.value = ''; tResumo.value = ''; tAval.value = ''; tMelhoria.value = ''; selCanal.value = ''; iId.focus(); }
+    if (ok && res && res.falhas && res.falhas.length) toast('Atendimento registrado, mas alguns anexos falharam: ' + res.falhas.join(' · '), true);
+    if (ok) { arqsAn.limpar(); iId.value = ''; iAtend.value = ''; tResumo.value = ''; tAval.value = ''; tMelhoria.value = ''; selCanal.value = ''; iId.focus(); }
   } },
     h('div', { class: 'form-grid' },
       campo('an-id', 'ID do atendimento', iId), campo('an-atendente', 'Atendente', iAtend), campo('an-canal', 'Canal do atendimento', selCanal), campo('an-data', 'Data do atendimento', [iData, h('small', { text: 'Dia em que o seu liderado realizou o atendimento.' })]),
       campo('an-resumo', 'Resumo do atendimento', tResumo, 'span-all'),
-      campo('an-aval', 'Avaliação do atendimento', tAval), campo('an-melhoria', 'Pontos de melhoria', tMelhoria)),
+      campo('an-aval', 'Avaliação do atendimento', tAval), campo('an-melhoria', 'Pontos de melhoria', tMelhoria),
+      h('div', { class: 'field span-all' }, h('label', { text: 'Anexos (opcional)' }), arqsAn.el)),
     dlAtend, erro, h('div', { class: 'right envio-info' }, h('small', { class: 'hint', id: 'an-envio-aviso', text: 'Ao registrar, o sistema guarda automaticamente a data e a hora do envio.' }), h('button', { class: 'btn primary', id: 'an-enviar', type: 'submit' }, 'Registrar atendimento')));
 
   const txt = (id, rot, chave) => h('div', { class: 'field' }, h('label', { for: id, text: rot }), h('input', { id, type: 'search', value: f[chave], autocomplete: 'off', oninput: e => { f[chave] = e.target.value; S.anLimite = 200; atualizarAnalises(); } }));
@@ -1466,6 +1852,7 @@ function atualizarAnalises() {
     adm ? h('td', { class: 'col-gestor', title: a.gestor_nome || nomeGestor(a.gestor_id) || '', text: nomeEnxuto(a.gestor_nome || nomeGestor(a.gestor_id)) || '—' }) : null,
     longo(a.resumo), longo(a.avaliacao), longo(a.pontos_melhoria),
     h('td', { class: 'col-acoes' }, h('span', { class: 'acoes' },
+      h('button', { class: 'ic', type: 'button', 'data-acao': 'anexos-analise', title: 'Anexos do atendimento', 'aria-label': 'Anexos do atendimento', onclick: () => abrirAnexosAnalise(a.id) }, S.anAnexos.some(x => x.analise_id === a.id) ? `📎${S.anAnexos.filter(x => x.analise_id === a.id).length}` : '📎'),
       h('button', { class: 'ic', type: 'button', 'data-acao': 'editar-analise', title: 'Editar', 'aria-label': 'Editar o registro', onclick: () => abrirEditarAnalise(a) }, '✎'),
       adm ? h('button', { class: 'ic ic-x', type: 'button', 'data-acao': 'excluir-analise', title: 'Excluir', 'aria-label': 'Excluir o registro', onclick: () => {
         if (!confirm(`Excluir o registro do atendimento ${a.id_atendimento}? Esta ação não pode ser desfeita.`)) return;
@@ -2365,7 +2752,10 @@ const TIPOS_NOTIF = {
   colaborador_novo: { cor: '#0f766e', glifo: '+', aba: 'org' },
   gestor_alterado: { cor: '#7e3ff2', glifo: '⇄', aba: 'org' },
   mencao_topico: { cor: '#be185d', glifo: '@', aba: 'gerencia' },
-  mencao_demanda: { cor: '#be185d', glifo: '@', aba: 'demandas' }
+  mencao_demanda: { cor: '#be185d', glifo: '@', aba: 'demandas' },
+  mencao_aviso: { cor: '#be185d', glifo: '@', aba: 'avisos' },
+  comentario_aviso: { cor: '#0369a1', glifo: '✎', aba: 'avisos' },
+  gestor_removido: { cor: '#d97706', glifo: '!', aba: 'avisos' }
 };
 const naoLidas = () => S.notifs.filter(n => !n.lida).length;
 const maiorNotifId = () => S.notifs.reduce((m, n) => Math.max(m, n.id), 0);
@@ -2448,6 +2838,7 @@ async function abrirNotif(n) {
   if (t.aba === 'gerencia' && !ehAdmin()) return;
   S.aba = t.aba; render();
   if (n.tipo === 'mencao_topico') { if (S.topicos.some(x => x.id === d.topico_id)) abrirTopico(d.topico_id); else toast('Este tópico não está mais disponível.', true); }
+  if (n.tipo === 'mencao_aviso' || n.tipo === 'comentario_aviso') { if (S.avisos.some(x => x.id === d.aviso_id)) abrirAviso(d.aviso_id); else toast('Este aviso não está mais disponível.', true); }
   if (n.tipo === 'mencao_demanda') { if (S.demandas.some(x => x.id === d.demanda_id)) abrirDemanda(d.demanda_id); else toast('Esta demanda não está mais disponível para você.', true); }
 }
 
@@ -2898,9 +3289,15 @@ function painelGestores() {
       h('td', { text: pessoas().filter(f => f.gestor_id === p.id).length }),
       h('td', {}, h('span', { class: 'acoes', style: 'display:flex;gap:6px;flex-wrap:wrap' },
         !p.user_id ? h('button', { class: 'btn sm', 'data-acao': 'novo-codigo', onclick: async () => { let cod; const ok = await acao(async () => { cod = await api.novoCodigo(p.id); }); if (ok) { S.ultimoConvite = { nome: p.nome, email: p.email, codigo: cod, reativado: false }; desenharAdmin(); } } }, 'Novo código') : null,
-        h('button', { class: 'btn sm danger', 'data-acao': 'excluir-gestor', disabled: eu, title: eu ? 'Você não pode excluir o seu próprio perfil' : '', onclick: () => {
-          if (!confirm(`Excluir o perfil de ${p.nome}? Ele perde o acesso ao site. Os funcionários do time ficam sem gestor até você reatribuir.`)) return;
-          adminAcao(() => api.excluirGestor(p.id), 'Perfil excluído.');
+        h('button', { class: 'btn sm', 'data-acao': 'editar-gestor', onclick: () => abrirEditarGestor(p) }, 'Editar'),
+        h('button', { class: 'btn sm danger', 'data-acao': 'excluir-gestor', disabled: eu, title: eu ? 'Você não pode excluir o seu próprio perfil' : '', onclick: async () => {
+          if (!confirm(`Excluir o perfil de ${p.nome}? Ele perde o acesso ao site.\n\n• Os avisos criados por ele ficam pendentes, para você vincular a outro gestor.\n• As pessoas lideradas por ele ficam sem gestor, para você vincular a um novo.`)) return;
+          let res = {};
+          const ok = await adminAcao(async () => { res = (await api.excluirGestor(p.id)) || {}; }, null);
+          if (!ok) return;
+          const na = res.avisos_pendentes || 0, nl = res.liderados_sem_gestor || 0;
+          toast('Perfil excluído.' + (na ? ` ${plural(na, 'aviso ficou pendente', 'avisos ficaram pendentes')} (vincule a outro gestor no Quadro de avisos).` : '') + (nl ? ` ${plural(nl, 'pessoa ficou sem gestor', 'pessoas ficaram sem gestor')} (vincule em Colaboradores).` : ''));
+          try { await recarregar(); } catch { /* ok */ } atualizarBadge();
         } }, 'Excluir'))));
   });
   return h('div', {},
@@ -2908,6 +3305,33 @@ function painelGestores() {
     h('h3', { style: 'margin:6px 0 10px', text: 'Adicionar gestor' }), form,
     h('h3', { style: 'margin:22px 0 10px', text: `Gestores com acesso (${S.perfis.length})` }),
     h('div', { class: 'table-wrap' }, h('table', { class: 'mini-table' }, h('thead', {}, h('tr', {}, ['Nome', 'E-mail', 'Perfil', 'Situação', 'Time', ''].map(c => h('th', { text: c })))), h('tbody', {}, linhas))));
+}
+
+function abrirEditarGestor(p) {
+  const eu = p.id === S.perfil.id;
+  const nome = h('input', { id: 'eg-nome', type: 'text', required: true, value: p.nome });
+  const email = h('input', { id: 'eg-email', type: 'email', required: true, value: p.email, disabled: !!p.user_id });
+  const papel = h('select', { id: 'eg-papel', disabled: eu }, h('option', { value: 'supervisor' }, 'Supervisor'), h('option', { value: 'admin' }, 'Administrador')); papel.value = p.papel;
+  const func = h('select', { id: 'eg-func' }, h('option', { value: '' }, 'Nenhum / não está na lista'), pessoas().sort(byNome).map(f => h('option', { value: f.id }, `${f.nome}${f.subsetor ? ' · ' + f.subsetor : ''}`)));
+  func.value = p.funcionario_id != null ? String(p.funcionario_id) : '';
+  const erro = h('div', { class: 'err hidden', role: 'alert' });
+  const form = h('form', { id: 'form-editar-gestor', novalidate: true, onsubmit: async ev => {
+    ev.preventDefault(); erro.classList.add('hidden');
+    if (!nome.value.trim() || !email.value.trim()) { erro.textContent = 'Informe nome e e-mail.'; erro.classList.remove('hidden'); return; }
+    const btn = $('#eg-salvar'); btn.disabled = true;
+    const ok = await acao(async () => { await api.editarGestor(p.id, { nome: nome.value.trim(), email: email.value.trim(), papel: papel.value, funcionario_id: func.value ? Number(func.value) : null }); }, 'Perfil atualizado.');
+    if (!ok) { btn.disabled = false; return; }
+    try { await recarregar(); } catch { /* ok */ }
+    const eu_ = S.perfis.find(x => x.id === S.perfil.id); if (eu_) S.perfil = { ...S.perfil, ...eu_ };
+    atualizarBadge(); desenharAdmin(); dlg.close();
+  } },
+    h('div', { class: 'form-grid' },
+      h('div', { class: 'field' }, h('label', { for: 'eg-nome', text: 'Nome' }), nome),
+      h('div', { class: 'field' }, h('label', { for: 'eg-email', text: 'E-mail corporativo' }), email, p.user_id ? h('small', { text: 'Quem já fez o primeiro acesso entra com este e-mail; ele não pode ser alterado aqui.' }) : null),
+      h('div', { class: 'field' }, h('label', { for: 'eg-papel', text: 'Perfil' }), papel, eu ? h('small', { text: 'Você não pode alterar o seu próprio perfil de acesso.' }) : null),
+      h('div', { class: 'field' }, h('label', { for: 'eg-func', text: 'Este gestor na lista de funcionários' }), func)), erro);
+  const dlg = modal({ titulo: `Editar perfil de ${p.nome}`, corpo: form,
+    rodape: [h('button', { class: 'btn', type: 'button', onclick: () => dlg.close() }, 'Cancelar'), h('button', { class: 'btn primary', id: 'eg-salvar', type: 'submit', form: 'form-editar-gestor' }, 'Salvar alterações')] });
 }
 
 function painelNaturezas() {
